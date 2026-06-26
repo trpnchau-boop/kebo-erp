@@ -1,0 +1,28 @@
+.tag-group{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-top:8px;
+align-items:center;
+max-width:100%;
+flex-wrap:nowrap; 
+
+}
+
+.tag-btn{
+border:1px solid #d1d5db;
+background:#fff;
+padding:4px 10px;
+border-radius:999px;
+font-size:13px;
+cursor:pointer;
+line-height:1.2;
+flex:none;
+white-space:nowrap;
+}
+
+.tag-btn.active{
+background:#1677ff;
+color:#fff;
+border-color:#1677ff;
+}

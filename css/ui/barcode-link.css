@@ -1,0 +1,17 @@
+.barcode-link{
+  color:#0216c4;
+  text-decoration:none;
+}
+
+.barcode-link:hover{
+  text-decoration:underline;
+}
+
+.barcode-link a{
+    color:#0216c4;
+    text-decoration:none;
+}
+
+.barcode-link a:hover{
+    text-decoration:underline;
+}

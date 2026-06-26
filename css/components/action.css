@@ -1,0 +1,30 @@
+.action-menu{
+  position:relative;
+  top:0px;
+}
+
+/* =========================
+TRIGGER
+========================= */
+
+.action-trigger{
+  width:23px;
+  height:28px;
+
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+
+  padding:0;
+
+  border:none;
+  background:none;
+
+  cursor:pointer;
+}
+
+.action-trigger img{
+  width:21px;
+  height:21px;
+  display:block;
+}

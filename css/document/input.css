@@ -1,0 +1,121 @@
+.doc-input-center{
+    flex:none;
+    background:white;
+    border-radius:5px;
+    padding:18px 20px 12px 12px;
+    margin:10px 0px;
+}
+
+.doc-input{
+    width:100%;
+    padding:0px 16px 0 0px; 
+}
+
+#document-input{
+    position:relative;
+    display:flex;
+    flex-wrap:nowrap;
+    gap:0;
+
+    justify-content:center;
+
+    background:#fff;
+    border:1px solid #000;
+    border-radius:10px;
+
+    overflow:visible; 
+    margin:0 -4px; 
+}
+
+.doc-input-label{
+    display:inline-block;
+    width:fit-content; 
+
+    font-size:14px;
+    color:#000;
+    font-weight:600;
+    border-radius:10px;
+
+    white-space:nowrap;
+    margin-top: -25px;
+    padding:8px 10px; 
+
+    background:#fff;
+    position:relative;
+    z-index:2;
+}
+
+.doc-input-field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    position:relative;
+    padding:8px 12px;    
+}
+
+.doc-input-field{
+    flex:1 1 0;
+    min-width:0;
+    flex:none;
+}
+
+.doc-input-field .doc-select{
+    width:100%;
+}
+
+.doc-input-field input,
+.doc-input-field select,
+.doc-input-field textarea{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+}
+
+.doc-input-field input,
+.doc-input-field select{
+    border:none;
+    outline:none;
+    background:transparent;
+    box-shadow:none;
+    font-size:15px;
+    padding:0 10px;
+    min-height:20px;
+}
+
+.doc-input-field:not(:last-child)::after{
+    content:"";
+
+    position:absolute;
+    top:8px;
+    bottom:8px;
+    right:0;
+
+    width:1px;
+    background:#fff;
+}
+
+
+#document-input .doc-add-btn{
+    width:20px;
+    height:20px;
+
+    transform:translateY(50%);;
+
+    border:1px solid #d1d5db !important;
+    border-radius:50%;
+
+    background:#fff !important;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:600;
+    line-height:1;
+}
+
+#document-input .doc-add-btn:hover{
+    background:#f3f4f6;
+    border-color:#9ca3af;
+}

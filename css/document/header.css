@@ -1,0 +1,50 @@
+.doc-header{
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        320px;
+
+    grid-template-areas:
+        "type actions"
+        "form payment";
+
+    gap:14px 16px;
+    background:white;
+    border-radius:5px;
+
+    padding:8px 0px 12px 12px;
+}
+
+/* =========================================================
+BOX - Btn ACTIONS
+========================================================= */
+
+.doc-field-inline{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.doc-group-wrap{
+    flex:1;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: none;
+    gap:36px;
+}
+
+.doc-inline-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.doc-group-item{
+    display:flex;
+    align-items:center;
+    gap:6px;    
+}

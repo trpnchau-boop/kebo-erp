@@ -1,0 +1,84 @@
+.dropdown-select{
+  min-width:120px;
+  position:relative;
+}
+
+.dropdown-select-trigger{
+
+  width:100%; 
+
+  display:flex;
+  align-items:center;
+
+  min-height:24px;
+
+  font-size:16px;
+
+  text-align:left;
+
+  border:none;
+  background:none;
+
+  padding:0;
+
+  font:inherit;
+  color:inherit;
+
+  cursor:pointer;
+}
+
+.dropdown-select.empty:not(.stock-filter):not(.print-filter)
+.dropdown-select-trigger{
+
+  width:36px;
+  height:20px;
+
+  background-image:
+    url("/icons/add-user.svg");
+
+  background-repeat:no-repeat;
+
+  background-position:center;
+
+  background-size:36px 20px;
+
+  font-size:0;
+}
+#sidebar-panel
+.dropdown-select.empty
+.dropdown-select-trigger{
+    background:none;
+    width:100%;
+    font-size:16px;
+}
+
+.form-page .dropdown-select.form-dropdown{
+  width:100%;
+  min-width:0;
+}
+
+.form-page .dropdown-select.form-dropdown .dropdown-select-trigger{
+  width:100%;
+  min-height:24px;
+  justify-content:space-between;
+}
+
+.form-page .dropdown-select.form-dropdown.empty .dropdown-select-trigger{
+  width:100%;
+  height:auto;
+  background-image:none;
+  background:none;
+  font-size:16px;
+}
+
+.form-page .dropdown-select.form-dropdown .dropdown-panel{
+  left:0;
+  right:auto;
+  min-width:100%;
+  width:100%;
+}
+
+.form-page .dropdown-select.form-dropdown.open::before{
+  left: 12px;
+  right: auto;
+}

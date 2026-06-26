@@ -1,0 +1,83 @@
+.date-filter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:0px;
+  margin-right: 52px;
+}
+
+.date-filter span{
+  font-size:14px;
+  font-weight:550;
+  color:#6b7280;
+  white-space:nowrap;
+}
+
+.date-filter input{
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  outline:none;
+
+  height:35px;
+  padding:0 12px;
+
+  text-align:center;
+
+  font-size:14px;
+  font-weight:500;
+  color:#6b7280;
+
+  border-bottom:1px solid #dbe2ea;
+}
+
+.date-filter input:focus{
+  border-bottom-color:#3b82f6;
+}
+
+.air-datepicker{
+  border:none;
+  border-radius:16px;
+  z-index:99999 !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.air-datepicker-cell{
+  border-radius:50% !important;
+}
+
+.air-datepicker-cell.-focus-{
+  border-radius:50% !important;
+}
+
+.air-datepicker-cell.-current-{
+  background:#eef2f7;
+  color:#4b5563;
+  border-radius:50% !important;
+}
+
+/* ngày được chọn */
+.air-datepicker-cell.-selected-{
+  background:#2196f3;
+  color:#fff;
+  border-radius:50% !important;
+}
+
+.air-datepicker-nav{
+  border-bottom:none;
+}
+
+.air-datepicker-cell.-month-{
+  width:40px !important;
+  height:40px !important;
+
+  min-width:40px !important;
+
+  padding:0 !important;
+
+  border-radius:50% !important;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}

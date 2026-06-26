@@ -1,0 +1,24 @@
+.excel-btn{
+  width:32px;
+  height:28px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:none;
+  background:transparent;
+  cursor:pointer;
+
+  padding:0;
+}
+
+.excel-btn img{
+  width:26px;
+  height:25px;
+  display:block;
+}
+
+.excel-btn:hover{
+  transform:translateY(-1px);
+}

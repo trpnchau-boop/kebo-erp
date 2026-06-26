@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>
+    Phát hành hàng loạt
+  </title>
+
+<style>
+
+  *{
+    box-sizing:border-box;
+  }
+
+  body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f3f4f6;
+  }
+
+  .release-page{
+    padding:20px;
+  }
+
+  .release-toolbar{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:16px;
+
+  }
+
+  .release-toolbar-right{
+
+    display:flex;
+    gap:8px;
+
+  }
+
+  .release-btn{
+
+    height:36px;
+
+    padding:0 14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+  }
+
+  .release-card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    border:1px solid #e5e7eb;
+
+    overflow:auto;
+
+  }
+
+  .release-table{
+
+    width:100%;
+
+    min-width:1800px;
+
+    border-collapse:collapse;
+
+  }
+
+  .release-table th{
+
+    background:#f9fafb;
+
+    font-weight:700;
+
+    font-size:14px;
+
+    color:#374151;
+
+    border-bottom:1px solid #e5e7eb;
+
+    white-space:nowrap;
+
+  }
+
+  .release-table th,
+  .release-table td{
+
+    padding:10px 12px;
+
+    text-align:left;
+
+    border-bottom:1px solid #f1f5f9;
+
+    white-space:nowrap;
+
+    vertical-align:middle;
+
+  }
+
+  .release-input{
+
+    width:100%;
+
+    min-width:120px;
+
+    height:34px;
+
+    padding:0 10px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    outline:none;
+
+  }
+
+  .release-input:focus{
+
+    border-color:#007aff;
+
+  }
+
+  .release-qty,
+  .release-price,
+  .release-amount{
+
+    text-align:right;
+
+  }
+
+  .ta-c{
+    text-align:center;
+  }
+
+  .ta-r{
+    text-align:right;
+  }
+
+</style>  
+
+</head>
+
+<body>
+
+  <div class="release-page">
+
+    <!-- =====================
+    TOOLBAR
+    ====================== -->
+
+    <div class="release-toolbar">
+
+      <div class="release-title">
+
+        <span>
+          📤
+        </span>
+
+        <span>
+          Phát hành hàng loạt
+        </span>
+
+      </div>
+
+      <div class="release-toolbar-right">
+
+        <button
+          class="
+            release-btn
+            release-btn-save
+          "
+        >
+          Lưu
+        </button>
+
+        <button
+          class="
+            release-btn
+            release-btn-submit
+          "
+        >
+          Phát hành
+        </button>
+
+        <button
+          class="
+            release-btn
+            release-btn-close
+          "
+        >
+          Đóng
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- =====================
+    TABLE
+    ====================== -->
+
+    <div class="release-card">
+
+      <table class="release-table">
+
+        <thead>
+
+          <tr>
+
+            <th class="w-stt ta-c">
+              <input
+                type="checkbox"
+                class="release-check-all"
+              />  
+              <span>STT</span>
+            </th>           
+
+            <th class="w-date">
+              Ngày
+            </th>
+
+            <th>
+              Mã KH
+            </th>
+
+            <th>
+              Tên đơn vị
+            </th>
+
+            <th class="w-tax">
+              MST
+            </th>
+
+            <th class="w-address">
+              Địa chỉ
+            </th>
+
+            <th class="w-buyer">
+              Người mua hàng
+            </th>
+
+            <th>
+              HT thanh toán
+            </th>
+
+            <th class="w-product">
+              Tên SP
+            </th>
+
+            <th>
+              ĐVT
+            </th>
+
+            <th class="ta-r">
+              SL
+            </th>
+
+            <th class="w-money ta-r">
+              Đơn giá
+            </th>
+
+            <th class="w-money ta-r">
+              Thành tiền
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody class="release-tbody">
+
+          <!-- JS render -->
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <script
+    type="module"
+    src="./release.js"
+  ></script>
+
+</body>
+
+</html>

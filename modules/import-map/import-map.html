@@ -1,0 +1,56 @@
+<div class="import-page">
+
+    <div class="import-toolbar">
+
+        <div class="import-actions">
+        <h2 id="title">Nạp Excel</h2>
+<input
+type="file"
+id="excel-file"
+accept=".xlsx,.xls"
+hidden>
+
+<label
+class="file-btn"
+for="excel-file">
+    Chọn tệp
+</label>
+
+<span id="file-name">
+    Chưa chọn tệp
+</span>
+
+            <label>
+                Dòng tiêu đề
+<select id="header-row">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option selected>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
+</select>
+</label>
+
+<select id="dup-mode">
+<option value="skip">Bỏ qua dòng trùng code</option>
+<option value="update">Cập nhật nếu trùng code</option>
+</select>
+
+<button id="btn-run">Nạp dữ liệu</button>
+
+</div>
+
+    </div>
+
+    <div id="import-preview">
+        <div id="preview-box"></div>
+    </div>
+
+</div>
+
+

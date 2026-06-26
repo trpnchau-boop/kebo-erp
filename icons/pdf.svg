@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+
+  <path d="M16 4h24l12 12v36c0 4.4-3.6 8-8 8H16c-4.4 0-8-3.6-8-8V12c0-4.4 3.6-8 8-8z"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"/>
+
+  <path d="M40 4v12h12"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"/>
+
+  <text x="26"
+        y="30"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="800"
+        fill="#16a34a">
+    PDF
+  </text>
+
+  <circle cx="44"
+          cy="46"
+          r="15"
+          fill="#16a34a"/>
+
+  <path d="M44 40V50"
+        fill="none"
+        stroke="#fff"
+        stroke-width="3.5"
+        stroke-linecap="round"/>
+
+  <path d="M39 45L44 51L49 45"
+        fill="none"
+        stroke="#fff"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+</svg>

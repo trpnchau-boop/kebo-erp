@@ -1,0 +1,32 @@
+.doc-field{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.doc-field-label{
+    width:110px;      /* cố định cột label */
+    flex-shrink:0;
+}
+
+.doc-form-input-row{
+    position:relative;
+    display:flex;
+    align-items:center;
+    flex:1;          
+    min-width:0;
+}
+
+.doc-form-input-row input,
+.doc-form-input-row select,
+.doc-form-input-row .suggest-wrapper{
+    width:100%;
+    flex:1;
+    min-width:0;
+    box-sizing:border-box;
+
+}
+
+.doc-form-input-row:has(.doc-lookup-add-btn) input{
+    padding-right:0px;
+}

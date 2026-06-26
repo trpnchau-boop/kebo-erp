@@ -1,0 +1,115 @@
+.doc-table-wrap{
+    flex:1 1 auto;
+    min-height:0;
+
+    padding:0px 0;
+
+    max-height:520px;
+
+    overflow:visible;
+    border-radius:5px;
+
+    scrollbar-width:none;     /* Firefox */
+    -ms-overflow-style:none;  /* IE/Edge cũ */
+}
+
+.doc-table-wrap::-webkit-scrollbar{
+    width:0;
+    height:0;
+    display:none;             /* Chrome/Safari */
+}
+
+.doc-table{
+    table-layout:auto;
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:5px;
+
+}
+
+.doc-table th:first-child{
+    padding-left:14px;
+}
+
+.doc-table th,
+.doc-table td{
+    font-size:16px;
+
+    border-bottom:1px solid #ddd;
+    border-radius:5px;
+    padding:8px;
+
+    white-space:nowrap;
+    text-align:left;
+
+}
+
+.doc-table thead th{
+    position:sticky;
+    top:0;
+    background:#fff;
+    z-index:2;
+}
+
+.doc-table td input,
+.doc-table td select{
+    width:100%;
+    box-sizing:border-box;
+    font-size:16px;
+
+    border:none;
+    outline:none;
+    background:transparent;
+    box-shadow:none;
+
+    border-radius:5px;
+    padding:2px 18px 2px 2px;
+
+    transition:box-shadow .15s ease;
+}
+
+.doc-table td input:focus,
+.doc-table td select:focus{
+    box-shadow:0 0 0 1px #007aff;
+}
+
+.doc-table input[type="checkbox"]{
+    outline:none;
+    box-shadow:none;
+}
+
+.doc-table input[type="checkbox"]:focus{
+    outline:none;
+    box-shadow:none;
+}
+
+.doc-table input[type="checkbox"]:focus-visible{
+    outline:none;
+    box-shadow:none;
+}
+
+.doc-table .doc-select-trigger{
+    border:1px solid transparent;
+    border-radius:5px;
+
+    box-shadow:none;
+    background:transparent;
+
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;  
+
+    padding:0px 4px 0px 0px;       
+}
+
+/* Hover vẫn không hiện gì */
+.doc-table .doc-select-trigger:hover{
+    border-color:transparent;
+}
+
+.doc-table .doc-select.open .doc-select-trigger{
+    border:0.5px solid #007aff;
+    box-shadow:0 0 0 1px #007aff !important;
+    background:#fff !important;
+}

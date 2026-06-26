@@ -1,0 +1,68 @@
+.switch{
+  position:relative;
+  display:inline-block;
+  width:36px;
+  height:20px;
+}
+
+.switch span{
+  position:absolute;
+  left:0;
+  right:0;
+
+  top:50%;
+  height:8px;               /* nhỏ hơn nút tròn */
+
+  transform:translateY(-50%);
+
+  background:#b8dfb4;
+  border-radius:999px;
+}
+
+.switch span:before{
+  content:"";
+
+  position:absolute;
+
+  width:16px;
+  height:17px;
+
+  left:0;
+  top:50%;
+
+  transform:translateY(-50%);
+
+  background:#16a34a;
+  border-radius:50%;
+
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+  transition:.2s;
+}
+
+.switch input{
+  position:absolute;
+  opacity:0;
+  width:0;
+  height:0;
+}
+
+.switch input:checked + span:before{
+  transform:translate(20px,-50%);
+}
+
+/* tắt */
+.switch input:not(:checked) + span{
+  background:#d9d9d9;
+}
+
+.switch input:not(:checked) + span:before{
+  background:#fff;
+}
+
+.switch{
+  cursor:pointer;
+}
+
+.switch:hover{
+  filter:brightness(1.04);
+}

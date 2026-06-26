@@ -1,0 +1,130 @@
+.list-page{
+  padding:12px 0 12px 0;
+}
+
+.list-page table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:5px;
+}
+
+.list-page th{
+position:sticky;
+top:45px;
+z-index:200;  
+background:#fff;
+}
+
+.list-page th,
+.list-page td{
+
+font-size:16px;
+
+border-bottom:1px solid #ddd;
+border-radius:5px;
+padding:10px 20px;
+
+white-space:nowrap;
+text-align:left;
+
+}
+
+.list-page .row-menu{
+position:relative;
+display:inline-block;
+}
+
+.list-filter{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.list-actions{
+  display:flex;
+  gap:8px;
+}
+
+.table-select,
+.table-input{
+
+  font-size:16px;
+
+  border:none !important;
+  outline:none !important;
+  background-color:transparent !important;
+  box-shadow:none !important;
+
+  padding:0;
+  margin:0;
+
+  width:auto;
+  min-width:0;
+}
+
+.table-select:hover,
+.table-select:focus,
+.table-input:hover,
+.table-input:focus{
+  border:none !important;
+  outline:none !important;
+  box-shadow:none !important;
+}
+
+.input-name{
+  border:none;
+  outline:none;
+  background:transparent;
+
+  width:100%;
+  padding:0;
+  margin:0;
+
+  font:inherit;
+  color:inherit;
+}
+
+.input-name:focus{
+  border:none;
+  outline:none;
+  box-shadow:none;
+}
+
+.list-page .input-name{
+  color:#f97316;   /* cam */
+}
+
+.row-actions{
+white-space:nowrap;
+text-align:right;
+}
+
+.row-posted td{
+  color:#16a34a;
+}
+
+
+.money-green{
+
+  color:#16a34a;
+  font-weight:600;
+
+}
+
+.money-red{
+
+  color:#dc2626;
+  font-weight:600;
+
+}
+
+
+tr.active-row{
+background:#eff6ff;
+}
+
+.thumb{
+  cursor:pointer;
+}

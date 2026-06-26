@@ -1,0 +1,556 @@
+/* =========================================================
+DOCUMENT TABLE MOBILE - CLEAN FINAL
+YÊU CẦU JS:
+tr.className = `doc-row doc-row-${docType.toLowerCase()}`
+========================================================= */
+
+@media (max-width: 768px){
+
+  /* =======================================================
+  1. TABLE WRAP / TABLE / TBODY
+  ======================================================= */
+  .doc-table-wrap{
+    padding:0 !important;
+    background:transparent !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    overflow:visible !important;
+    max-height:none !important;
+  }
+
+  .doc-table{
+    width:100% !important;
+    border:none !important;
+    background:transparent !important;
+    table-layout:auto !important;
+    border-collapse:separate !important;
+    border-spacing:0 !important;
+  }
+
+  .doc-table thead{
+    display:none !important;
+  }
+
+  .doc-table tbody{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:12px !important;
+  }
+
+  /* =======================================================
+  2. CARD CHUNG
+  ======================================================= */
+  .doc-table tbody tr.doc-row{
+    position:relative !important;
+    display:grid !important;
+    grid-template-columns:repeat(2, minmax(0, 1fr)) !important;
+    gap:10px !important;
+
+    width:100% !important;
+    margin:0 !important;
+    padding:38px 12px 12px !important;
+
+    background:#fff !important;
+    border:1px solid #e6ebf2 !important;
+    border-radius:5px !important;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,.04),
+      0 6px 16px rgba(0,0,0,.05) !important;
+  }
+
+  /* reset td thật sạch */
+  .doc-table tbody tr.doc-row > td{
+    position:relative !important;
+    display:flex !important;
+    align-items:center !important;
+
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+
+    border:none !important;
+    background:transparent !important;
+    vertical-align:top !important;
+    font-size:14px !important;
+
+    grid-column:auto !important;
+    grid-row:auto !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    bottom:auto !important;
+  }
+
+  .doc-table tbody tr.doc-row > td > *{
+    min-width:0 !important;
+  }
+
+  /* chặn pseudo cũ nếu còn */
+  .doc-table tbody tr.doc-row > td::before,
+  .doc-table tbody tr.doc-row > td::after{
+    content:none !important;
+  }
+
+  /* nút xóa */
+  #document .doc-table td .doc-delete-btn{
+    width:20px !important;
+    height:20px !important;
+    min-width:20px !important;
+    min-height:20px !important;
+    border-radius:999px !important;
+    font-size:14px !important;
+  }
+
+  /* =======================================================
+  3. INPUT / SELECT CHUNG
+  ======================================================= */
+  .doc-table tbody tr.doc-row .doc-select,
+  .doc-table tbody tr.doc-row .suggest-wrapper{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  .doc-table tbody tr.doc-row .doc-select-trigger,
+  .doc-table tbody tr.doc-row input,
+  .doc-table tbody tr.doc-row select{
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    min-height:34px !important;
+    height:34px !important;
+    padding:6px 10px !important;
+
+    border:1px solid #dfe4ea !important;
+    background:#fff !important;
+    box-shadow:none !important;
+    font-size:14px !important;
+  }
+
+  .doc-table tbody tr.doc-row textarea{
+    width:100% !important;
+    min-width:0 !important;
+    min-height:68px !important;
+    padding:8px 10px !important;
+
+    border:1px solid #dfe4ea !important;
+    border-radius:10px !important;
+    background:#fff !important;
+    font-size:14px !important;
+    resize:vertical !important;
+  }
+
+  .doc-table tbody tr.doc-row .doc-select-trigger{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:8px !important;
+  }
+
+  .doc-select-panel{
+    max-height:240px !important;
+    z-index:99999 !important;
+  }
+
+  .doc-select-item{
+    min-height:38px !important;
+    padding:10px 12px !important;
+    font-size:15px !important;
+  }
+
+  /* =======================================================
+  4. CASE A - ROW KHÔNG CÓ CHECKBOX
+  DOM:
+  1 stt
+  2 product
+  3 line
+  4 note
+  5 kho
+  6 sl
+  7 dvt
+  8 dvtGoc
+  9 tongSL
+  10 donGia
+  11 thanhTien
+  12 phiPB / giaVon
+  13 tienVon (export)
+  14 delete
+  ======================================================= */
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(1){
+    position:absolute !important;
+    top:9px !important;
+    left:12px !important;
+
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    display:flex !important;
+    align-items:center !important;
+    font-size:14px !important;
+    font-weight:700 !important;
+    color:#111827 !important;
+    z-index:3 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:last-child{
+    position:absolute !important;
+    top:8px !important;
+    right:8px !important;
+
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    z-index:3 !important;
+  }
+
+  /* row1: sản phẩm | ghi chú */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2){
+    grid-column:1 !important;
+    grid-row:1 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(4){
+    grid-column:2 !important;
+    grid-row:1 !important;
+  }
+
+  /* row2: định lượng | kho */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(3){
+    grid-column:1 !important;
+    grid-row:2 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(5){
+    grid-column:2 !important;
+    grid-row:2 !important;
+  }
+
+  /* row3: SL | ĐVT */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(6){
+    grid-column:1 !important;
+    grid-row:3 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(7){
+    grid-column:2 !important;
+    grid-row:3 !important;
+  }
+
+  /* row4: Tổng SL | ĐVT gốc */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(9){
+    grid-column:1 !important;
+    grid-row:4 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(8){
+    grid-column:2 !important;
+    grid-row:4 !important;
+  }
+
+  /* row5: Đơn giá | Thành tiền */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(10){
+    grid-column:1 !important;
+    grid-row:5 !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(11){
+    grid-column:2 !important;
+    grid-row:5 !important;
+  }
+
+  /* row6 IMPORT: phí PB full width */
+  .doc-table tbody tr.doc-row-import:not(:has(.doc-td-checkbox)) > td:nth-child(12){
+    grid-column:1 / -1 !important;
+    grid-row:6 !important;
+  }
+
+  /* row6 EXPORT: giá vốn | tiền vốn */
+  .doc-table tbody tr.doc-row-export:not(:has(.doc-td-checkbox)) > td:nth-child(12){
+    grid-column:1 !important;
+    grid-row:6 !important;
+  }
+
+  .doc-table tbody tr.doc-row-export:not(:has(.doc-td-checkbox)) > td:nth-child(13){
+    grid-column:2 !important;
+    grid-row:6 !important;
+  }
+
+  /* nhấn mạnh ô sản phẩm - case không checkbox */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) .doc-select-trigger,
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) input,
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) .suggest-wrapper input{
+    font-weight:600 !important;
+  }
+
+  /* =======================================================
+  5. CASE B - ROW CÓ CHECKBOX
+  DOM:
+  1 checkbox
+  2 stt
+  3 product
+  4 line
+  5 note
+  6 kho
+  7 sl
+  8 dvt
+  9 dvtGoc
+  10 tongSL
+  11 donGia
+  12 thanhTien
+  13 phiPB / giaVon
+  14 tienVon (export)
+  15 delete
+  ======================================================= */
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(1){
+    position:absolute !important;
+    top:0px !important;
+    left:12px !important;
+
+    width:18px !important;
+    min-width:18px !important;
+    max-width:18px !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    z-index:3 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(1) input[type="checkbox"]{
+    width:14px !important;
+    height:14px !important;
+    margin:0 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(2){
+    position:absolute !important;
+    top:9px !important;
+    left:38px !important;
+
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    display:flex !important;
+    align-items:center !important;
+    font-size:14px !important;
+    font-weight:700 !important;
+    color:#111827 !important;
+    z-index:3 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:last-child{
+    position:absolute !important;
+    top:8px !important;
+    right:8px !important;
+
+    width:auto !important;
+    min-width:0 !important;
+    max-width:none !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    z-index:3 !important;
+  }
+
+  /* row1: sản phẩm | ghi chú */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3){
+    grid-column:1 !important;
+    grid-row:1 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(5){
+    grid-column:2 !important;
+    grid-row:1 !important;
+  }
+
+  /* row2: định lượng | kho */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(4){
+    grid-column:1 !important;
+    grid-row:2 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(6){
+    grid-column:2 !important;
+    grid-row:2 !important;
+  }
+
+  /* row3: SL | ĐVT */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(7){
+    grid-column:1 !important;
+    grid-row:3 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(8){
+    grid-column:2 !important;
+    grid-row:3 !important;
+  }
+
+  /* row4: Tổng SL | ĐVT gốc */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(10){
+    grid-column:1 !important;
+    grid-row:4 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(9){
+    grid-column:2 !important;
+    grid-row:4 !important;
+  }
+
+  /* row5: Đơn giá | Thành tiền */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(11){
+    grid-column:1 !important;
+    grid-row:5 !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(12){
+    grid-column:2 !important;
+    grid-row:5 !important;
+  }
+
+  /* row6 IMPORT: phí PB */
+  .doc-table tbody tr.doc-row-import:has(.doc-td-checkbox) > td:nth-child(13){
+    grid-column:1 / -1 !important;
+    grid-row:6 !important;
+  }
+
+  /* row6 EXPORT: giá vốn | tiền vốn */
+  .doc-table tbody tr.doc-row-export:has(.doc-td-checkbox) > td:nth-child(13){
+    grid-column:1 !important;
+    grid-row:6 !important;
+  }
+
+  .doc-table tbody tr.doc-row-export:has(.doc-td-checkbox) > td:nth-child(14){
+    grid-column:2 !important;
+    grid-row:6 !important;
+  }
+
+  /* nhấn mạnh ô sản phẩm - case có checkbox */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) .doc-select-trigger,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) input,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) .suggest-wrapper input{
+    min-height:36px !important;
+    height:36px !important;
+    font-size:15px !important;
+    font-weight:600 !important;
+  }
+
+  /* =======================================================
+  6. NHẤN MẠNH CỤM TIỀN
+  ======================================================= */
+
+  /* no checkbox */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(10) input,
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(11) input,
+  .doc-table tbody tr.doc-row-import:not(:has(.doc-td-checkbox)) > td:nth-child(12) input,
+  .doc-table tbody tr.doc-row-export:not(:has(.doc-td-checkbox)) > td:nth-child(12) input,
+  .doc-table tbody tr.doc-row-export:not(:has(.doc-td-checkbox)) > td:nth-child(13) input{
+    font-weight:600 !important;
+  }
+
+  /* has checkbox */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(11) input,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(12) input,
+  .doc-table tbody tr.doc-row-import:has(.doc-td-checkbox) > td:nth-child(13) input,
+  .doc-table tbody tr.doc-row-export:has(.doc-td-checkbox) > td:nth-child(13) input,
+  .doc-table tbody tr.doc-row-export:has(.doc-td-checkbox) > td:nth-child(14) input{
+    font-weight:600 !important;
+  }
+
+  .doc-table tbody tr.doc-row td:empty{
+    min-height:34px !important;
+  }
+}
+
+
+/* =========================================================
+MOBILE NHỎ
+========================================================= */
+@media (max-width: 420px){
+
+  .doc-table tbody{
+    gap:10px !important;
+  }
+
+  .doc-table tbody tr.doc-row{
+    gap:8px !important;
+    padding:34px 10px 10px !important;
+    border-radius:14px !important;
+  }
+
+  .doc-table tbody tr.doc-row > td{
+    font-size:13px !important;
+  }
+
+  /* no checkbox */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(1){
+    top:8px !important;
+    left:10px !important;
+    font-size:13px !important;
+  }
+
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:last-child{
+    top:6px !important;
+    right:6px !important;
+  }
+
+  /* has checkbox */
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(1){
+    top:10px !important;
+    left:10px !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(2){
+    top:8px !important;
+    left:34px !important;
+    font-size:13px !important;
+  }
+
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:last-child{
+    top:6px !important;
+    right:6px !important;
+  }
+
+  .doc-table tbody tr.doc-row .doc-select-trigger,
+  .doc-table tbody tr.doc-row input,
+  .doc-table tbody tr.doc-row select{
+    min-height:32px !important;
+    height:32px !important;
+    padding:5px 8px !important;
+    font-size:13px !important;
+  }
+
+  .doc-table tbody tr.doc-row textarea{
+    min-height:60px !important;
+    padding:7px 8px !important;
+    font-size:13px !important;
+  }
+
+  /* product lớn hơn chút */
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) .doc-select-trigger,
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) input,
+  .doc-table tbody tr.doc-row:not(:has(.doc-td-checkbox)) > td:nth-child(2) .suggest-wrapper input,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) .doc-select-trigger,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) input,
+  .doc-table tbody tr.doc-row:has(.doc-td-checkbox) > td:nth-child(3) .suggest-wrapper input{
+    min-height:34px !important;
+    height:34px !important;
+    font-size:14px !important;
+  }
+
+  #document .doc-table td .doc-delete-btn{
+    width:28px !important;
+    height:28px !important;
+    min-width:28px !important;
+    min-height:28px !important;
+  }
+}

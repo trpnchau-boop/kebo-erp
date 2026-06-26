@@ -1,0 +1,89 @@
+.variant-row{
+padding:10px 0;
+border-bottom:1px solid #ececec;
+margin-bottom:10px;
+}
+
+.variant-units{
+margin-top:8px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.add-variant-unit{
+  margin-top:10px;
+  height:24px;
+  padding:0 10px;
+
+  transition:.15s ease;
+}
+
+/* hover */
+.add-variant-unit:hover{
+  color:#16a34a;
+}
+
+/* focus bằng bàn phím */
+.add-variant-unit:focus{
+  color:#16a34a;
+  outline:none;
+}
+
+/* lúc đang click */
+.add-variant-unit:active{
+  color:#16a34a;
+}
+
+.variant-group,
+.variant-kho,
+.variant-dvt{
+display:flex;
+align-items:flex-end;
+min-height:24px;
+}
+
+.variant-group select,
+.variant-kho select,
+.variant-dvt select{
+width:100%;
+height:24px;
+line-height:24px;
+border:none;
+background:transparent;
+padding:0;
+margin:0;
+outline:none;
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+}
+
+.variant-unit-row{
+display:grid;
+grid-template-columns:0.9fr 1.1fr 70px;
+column-gap:14px;
+row-gap:8px;
+margin-top:8px;
+padding:8px 0;
+border-bottom:1px solid #ececec;
+align-items:end;
+}
+
+.variant-unit-row input,
+.variant-unit-row select{
+width:100%;
+height:20px;
+line-height:20px;
+border:none;
+background:transparent;
+outline:none;
+padding:0;
+font-size:16px;
+}
+
+.variant-unit-row select{
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+}

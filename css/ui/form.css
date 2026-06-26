@@ -1,0 +1,240 @@
+.form-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:16px;
+}
+
+.form-head h2{
+  margin:0;
+  padding:0px 20px; 
+  line-height:1.1;
+  font-size:18px;
+  font-weight:600;  
+  white-space:nowrap; 
+  transform:translateY(-8px);   
+
+}
+
+/* =========================
+FORM PAGE
+========================= */
+
+.form-page{
+padding:10px;
+
+border-radius:5px;
+background:#fff;
+}
+
+/* list không khung */
+.form-page #list{
+width:100%;
+}
+
+/* mỗi dòng */
+.form-page .card{
+ 
+  display:grid;
+
+  grid-template-columns:
+    repeat(var(--form-cols,4), minmax(0,1fr))
+    60px;
+
+  gap:24px;
+  align-items:start;
+
+  border-bottom:1px solid #eee;
+  padding:10px 20px; 
+}
+
+/* fields bung thẳng ra grid */
+.form-page:not(.company-page)
+:not(.form-layout-inline)
+:not(.form-layout-3col)
+.fields{
+  display:contents;
+}
+
+.form-page .field:has(.tag-group) label{
+top:0px;
+transform:none;
+}
+/* =========================
+FIELD CHUNG
+========================= */
+
+.form-page .field{
+display:flex;
+flex-direction:column;
+position:relative;
+gap:0px;
+}
+
+.form-page .field.field-inline{
+  display:grid;
+  grid-template-columns:80px 1fr;
+  align-items:center;
+  gap:12px;
+}
+
+.form-page .field.field-inline label{
+  position:static;
+  transform:none;
+  pointer-events:auto;
+}
+
+.form-page .field.field-inline.has-value label{
+  opacity:1;
+  visibility:visible;
+}
+
+.form-page .field label{
+position:absolute;
+left:0;
+top:50%;
+transform:translateY(-50%);
+font-size:13px;
+color:#888;
+pointer-events:none;
+transition:.15s ease;
+margin:0;
+}
+
+.form-page .field:has(input:focus) label,
+.form-page .field:has(select:focus) label,
+.form-page .field:has(textarea:focus) label{
+  color:#f97316;
+}
+
+.form-page .field:has(:focus) label{
+  color:#f97316;
+}
+
+.form-page .field.column-focus label{
+  color:#f97316;
+}
+
+.form-page .field input,
+.form-page .field select,
+.form-page .field textarea{
+width:100%;
+height:20px;
+line-height:20px;
+border:none;
+background:transparent;
+outline:none;
+padding:0;
+font-size:16px;
+resize:none;
+}
+
+.form-page .field.has-value label{
+opacity:0;
+visibility:hidden;
+}
+
+/* select bỏ arrow */
+.form-page .field select{
+appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+}
+
+/* checkbox */
+.form-page .field input[type="checkbox"]{
+width:16px;
+height:16px;
+margin-top:4px;
+}
+
+/* =========================
+FORM 3 CỘT
+========================= */
+
+#form.form-layout-3col .fields{
+display:grid;
+grid-template-columns:0.9fr 1.1fr 1fr;
+column-gap:14px;
+row-gap:8px;
+padding:0px 10px; 
+}
+
+#form.form-layout-3col .field{
+padding:8px 0;
+border-bottom:1px solid #ececec;
+}
+
+/* =========================
+FORM INLINE
+========================= */
+
+#form.form-layout-inline .fields{
+display:grid;
+grid-template-columns:1fr;
+gap:0;
+padding:0px 10px; 
+}
+
+#form.form-layout-inline .field{
+display:grid;
+grid-template-columns:180px 1fr;
+align-items:center;
+gap:16px;
+padding:8px 0;
+border-bottom:1px solid #ececec;
+}
+
+
+/* =========================
+GRID DÙNG CHUNG CHO UNIT / VARIANT / COMBO
+========================= */
+
+.editor-grid-3{
+display:grid;
+grid-template-columns:0.9fr 1.1fr 1fr;
+column-gap:14px;
+row-gap:8px;
+}
+
+.editor-field{
+display:flex;
+flex-direction:column;
+position:relative;
+gap:0;
+padding:8px 0;
+border-bottom:1px solid #ececec;
+}
+
+.editor-label{
+position:absolute;
+left:0;
+top:50%;
+transform:translateY(-50%);
+font-size:13px;
+color:#888;
+pointer-events:none;
+transition:.15s ease;
+margin:0;
+}
+
+.editor-input{
+width:100%;
+height:20px;
+line-height:20px;
+border:none;
+background:transparent;
+outline:none;
+padding:0;
+font-size:16px;
+}
+
+.editor-field.has-value .editor-label{
+opacity:0;
+visibility:hidden;
+}
+
+.form-page .delete{
+  justify-self:end;
+  margin-right:8px;
+}

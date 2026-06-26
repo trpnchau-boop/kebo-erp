@@ -1,0 +1,500 @@
+/* =========================================================
+DOCUMENT LIST MOBILE - SALE FINAL
+- không sửa HTML
+- toolbar mobile gọn, date chia đều
+- table -> card
+- card SALE map theo data-field
+========================================================= */
+
+@media (max-width: 768px){
+
+  /* =====================================================
+  SHELL
+  ===================================================== */
+
+    #sidebar{
+        display:block !important;
+
+        position:fixed;
+        top:0;
+        left:0;
+        bottom:0;
+
+        width:100%;
+        max-width:420px;
+
+        transform:translateX(-100%);
+        transition:transform .25s ease;
+
+        z-index:9999;
+    }
+
+
+  .main,
+  #content{
+    width:100%;
+    min-width:0;
+  }
+
+  #content{
+    padding:0 12px 12px;
+    box-sizing:border-box;
+  }
+
+  /* =====================================================
+  TOOLBAR
+  H1: search full
+  H2: add + more | filter
+  H3: from | to
+  ===================================================== */
+
+  .toolbar{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:
+      "search actions"
+      "from   to";
+    gap:10px 12px;
+    align-items:center;
+
+    margin:0 0 12px;
+    padding:12px;
+
+    background:#fff;
+    border-radius:5px;
+    box-sizing:border-box;
+  }
+
+  /* =========================
+     ROW 1 LEFT: SEARCH = 1/2
+  ========================= */
+  .toolbar .search-doc{
+    grid-area:search;
+    width:100% !important;
+    min-width:0;
+  }
+
+  .toolbar .search-box{
+    width: 180px;
+    min-width:0;
+  }
+
+  .toolbar .search-box input{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+  }
+
+  /* =========================
+     ROW 1 RIGHT: ACTIONS
+     + thêm | ... | filter
+  ========================= */
+
+  /* list-actions chiếm ô phải */
+  .toolbar .list-actions{
+    grid-area:actions;
+    width:100%;
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:right;
+    gap:8px;
+
+    /* chừa chỗ bên phải cho filter */
+    padding-right:25px;
+    box-sizing:border-box;
+    position:relative;
+  }
+
+  .toolbar .list-actions > *{
+    flex:0 0 auto;
+  }
+
+  /* filter vẫn là sibling riêng, nhưng đè vào cùng ô actions */
+  .toolbar .filter-menu{
+    grid-area:actions;
+    justify-self:end;
+    align-self:center;
+
+    position:static !important;
+    top:auto !important;
+    margin-bottom: 8px;
+    z-index:2;
+  }
+
+  /* nếu filter-menu có top:-6px hay flex lạ từ file cũ thì chặn */
+  .toolbar .filter-menu,
+  .toolbar .list-actions{
+    align-self:center !important;
+  }
+
+  /* =========================
+     ROW 2: DATE 50/50
+  ========================= */
+
+  .toolbar .date-filter{
+    width:100%;
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+
+
+  .toolbar .date-filter span{
+    display:inline-block;
+    flex:0 0 auto;
+
+    font-size:12px;
+    line-height:1.2;
+    font-weight:600;
+    color:#6b7280;
+    white-space:nowrap;
+  }
+
+  .toolbar .date-filter input{
+    flex:1 1 auto;
+    width:auto;
+    min-width:0;
+    box-sizing:border-box;
+    height: 20px !important;
+    padding: 0 !important;
+  }
+
+  /* =====================================================
+  LIST PAGE / TABLE
+  ===================================================== */
+
+  .list-page{
+    padding:0;
+    overflow:visible;
+  }
+
+  .list-page > table{
+    width:100%;
+    border:none;
+    border-collapse:separate;
+    border-spacing:0;
+    background:transparent;
+    table-layout:auto;
+  }
+
+  .list-page thead{
+    display:none;
+  }
+
+  .list-page tbody{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    width:100%;
+  }
+
+  /* =====================================================
+  CARD
+  ===================================================== */
+
+.list-page tbody tr{
+  position:relative;
+  margin:0;
+  padding:12px;
+
+  border:1px solid #e5e7eb;
+  border-radius:5px;
+  background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.04);
+
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-areas:
+    "customer customer"
+    "code day"
+    "employee total"
+    "note paid"
+    "actions actions";
+  column-gap:16px;
+  row-gap:0;
+  align-items:stretch;
+  box-sizing:border-box;
+}
+
+  .list-page tbody tr.row-posted{
+    border-color:#fed7aa;
+    background:#fffaf5;
+  }
+
+  /* checkbox ẩn */
+  .list-page tbody td.row-check{
+    display:none !important;
+  }
+
+  /* reset cell */
+  .list-page tbody td{
+    box-sizing:border-box;
+  }
+
+  .list-page tbody td:not(.row-check):not(.row-actions){
+    display:flex;
+    align-items:center;
+    min-height:0px;
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:8px 0;
+
+    border:none;
+    border-top:1px dashed #eef0f3;
+    background:none;
+
+    font-size:14px;
+    color:#111827;
+    overflow:hidden;
+  }
+
+  /* bỏ label mặc định */
+  .list-page tbody td:not(.row-check):not(.row-actions)::before{
+    display:none !important;
+    content:none !important;
+  }
+
+/* =====================================================
+MAP THEO DATA-FIELD
+Layout:
+- customer
+- code      | day
+- employee  | total
+- note      | paid
+- actions   | actions
+===================================================== */
+
+/* customer - dòng đầu */
+.list-page tbody td[data-field="id_customer"]{
+  grid-area:customer;
+
+  min-height:auto;
+  border-top:none;
+  padding-top:0;
+  padding-bottom:12px;
+
+  justify-content:flex-start;
+  text-align:left;
+
+  font-size:18px;
+  font-weight:700;
+  color:#111827;
+}
+
+/* code - hàng 2 trái */
+.list-page tbody td[data-field="code"]{
+  grid-area:code;
+  justify-content:flex-start;
+  text-align:left;
+  color:#1d4ed8;
+  font-weight:600;
+}
+
+/* nếu code nằm trong .barcode-link */
+.list-page tbody td[data-field="code"] .barcode-link{
+  display:inline-block;
+  max-width:100%;
+  margin:0;
+  text-align:left;
+  word-break:break-word;
+  font-weight:600;
+  font-size:14px;
+  color:#1d4ed8;
+}
+
+/* day - hàng 2 phải */
+.list-page tbody td[data-field="day"]{
+  grid-area:day;
+  justify-content:flex-end;
+  text-align:right;
+  color:#6b7280;
+}
+
+/* employee - hàng 3 trái */
+.list-page tbody td[data-field="id_employee"]{
+  grid-area:employee !important;
+
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+
+  padding:8px 0 !important;
+  border-top:1px dashed #eef0f3 !important;
+
+  text-align:left !important;
+}
+
+.list-page tbody td[data-field="id_employee"] > *{
+  display:block !important;
+  width:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-align:left !important;
+}
+
+/* total - hàng 3 phải */
+.list-page tbody td[data-field="tongthanhtoan"]{
+  grid-area:total;
+  justify-content:flex-end;
+  text-align:right;
+  font-weight:700;
+  color:#111827;
+}
+
+/* note - hàng 4 trái */
+.list-page tbody td[data-field="note"]{
+  grid-area:note;
+  justify-content:flex-start;
+  text-align:left;
+  color:#374151;
+}
+
+/* paid - hàng 4 phải */
+.list-page tbody td[data-field="tien_tt"]{
+  grid-area:paid;
+  justify-content:flex-end;
+  text-align:right;
+  font-weight:700;
+  color:#ef4444;
+}
+
+  /* =====================================================
+  INPUT / SELECT nếu có trong list
+  ===================================================== */
+
+  .list-page tbody .table-input{
+    width:140px;
+    max-width:100%;
+    margin-left:auto;
+    text-align:right;
+    box-sizing:border-box;
+  }
+
+  .list-page tbody .dropdown-select{
+    width:140px;
+    max-width:100%;
+    margin-left:auto;
+  }
+
+  .list-page tbody .dropdown-select-trigger{
+    width:35px;
+    max-width:100%;
+    margin-right:auto;
+  }
+
+  /* =====================================================
+  ACTIONS
+  ===================================================== */
+
+  .list-page tbody td.row-actions{
+    grid-area:actions;
+
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:12px 0 0;
+
+    border:none;
+    border-top:1px solid #eef0f3;
+    background:none;
+  }
+
+  .list-page tbody td.row-actions::before{
+    display:none !important;
+    content:none !important;
+  }
+
+  .list-page tbody .row-btn{
+    padding:0 3px;
+    border-radius:10px;
+    font-size:13px;
+    line-height:1;
+  }
+
+  .list-page tbody .icon-btn{
+    width:34px;
+    min-width:34px;
+    padding:0 3px;
+    top: -2px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* =====================================================
+  EMPTY
+  ===================================================== */
+
+  .list-page tbody tr.empty-row{
+    display:block !important;
+    padding:18px 14px;
+    text-align:center;
+  }
+
+  .list-page tbody tr.empty-row td{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:none !important;
+    background:none !important;
+    text-align:center !important;
+    min-height:0 !important;
+  }
+
+  .list-page tbody tr.empty-row td::before{
+    display:none !important;
+    content:none !important;
+  }
+
+  /* =====================================================
+  FOOTER
+  ===================================================== */
+
+  .list-footer{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding:12px 4px 4px;
+  }
+
+  .list-total{
+    font-size:14px;
+    line-height:1.4;
+  }
+
+  .air-datepicker{
+    border:none;
+    border-radius:16px;
+    z-index:99999 !important;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+  }
+
+  /* Đang focus ô Từ ngày */
+  body:has(#from-date:focus) .air-datepicker--pointer{
+    left:42px !important;
+    right:auto !important;
+  }
+
+  /* Đang focus ô Đến ngày */
+  body:has(#to-date:focus) .air-datepicker--pointer{
+    left:auto !important;
+    right:42px !important;
+  }
+}
+
+@media (max-width:768px){
+
+    #sidebar.mobile-open{
+        transform:translateX(0);
+    }
+
+}

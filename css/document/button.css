@@ -1,0 +1,259 @@
+/* =========================================================
+RESET BUTTON
+========================================================= */
+
+#document button{
+    border:none;
+    background:none;
+    outline:none;
+    box-shadow:none;
+    font-family:inherit;
+    height:24px;
+    color:inherit;
+}
+
+/* =========================================================
+ACTION BUTTONS
+Lưu / In / Xóa / Ghi sổ / Tách đơn
+========================================================= */
+
+#document button.doc-action-btn{
+    min-width:60px;
+
+    padding:2px 8px;
+
+    border:1px solid #bdbdbd;
+    border-radius:10px;
+
+    background:#fff;
+
+    text-align:center;
+    cursor:pointer;
+
+    transition:
+        border-color .15s ease,
+        background-color .15s ease,
+        box-shadow .15s ease,
+        transform .1s ease;
+}
+
+/* nút đồng hồ cát */
+#document .doc-inline-actions .doc-action-btn:first-child{
+    min-width:auto;
+    border:none;
+    background:none;
+    padding:2px 8px;
+}
+
+/* màu viền từng nút */
+#document button.doc-action-btn.primary{
+    border-color:#007aff;
+}
+
+#document button.doc-action-btn[data-event="printDocument"]{
+    border-color:#8e8e93;
+}
+
+#document button.doc-action-btn.danger{
+    border-color:#ff3b30;
+}
+
+#document button.doc-action-btn.success{
+    border-color:#34c759;
+}
+
+#document button.doc-action-btn[data-event="splitDocument"]{
+    border-color:#ff9500;
+}
+
+/* hover */
+#document button.doc-action-btn:hover{
+    background:#f5f5f5;
+}
+
+#document button.doc-action-btn.primary:hover{
+    background:#eef6ff;
+}
+
+#document button.doc-action-btn.danger:hover{
+    background:#fff1f0;
+}
+
+#document button.doc-action-btn.success:hover{
+    background:#f1fff5;
+}
+
+#document button.doc-action-btn[data-event="splitDocument"]:hover{
+    background:#fff7ed;
+}
+
+/* focus */
+#document button.doc-action-btn:focus,
+#document button.doc-action-btn:focus-visible{
+    outline:none;
+    box-shadow:0 0 0 2px rgba(0,122,255,.16);
+}
+
+/* active */
+#document button.doc-action-btn:active{
+    transform:scale(.98);
+}
+
+/* =========================================================
+LOOKUP + BUTTON
+nút + nằm trong ô lookup
+========================================================= */
+
+#document button.doc-lookup-add-btn{
+    position:absolute;
+    top:50%;
+    right:4px;
+
+    transform:translateY(-50%);
+
+    width:20px;
+    height:20px;
+
+    margin:0;
+    padding:0;
+
+    border:1px solid #2563eb;
+    border-radius:50%;
+
+    background:#fff;
+    color:#2563eb;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:600;
+    line-height:1;
+
+    z-index:2;
+    cursor:pointer;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease,
+        transform .1s ease;
+}
+
+#document button.doc-lookup-add-btn:hover{
+    background:#e8f4ff;
+}
+
+#document button.doc-lookup-add-btn:focus,
+#document button.doc-lookup-add-btn:focus-visible{
+    outline:none;
+    background:#e8f4ff;
+    border-color:#2563eb;
+    box-shadow:0 0 0 2px rgba(37,99,235,.18);
+}
+
+#document button.doc-lookup-add-btn:active{
+    transform:translateY(-50%) scale(.95);
+}
+
+/* =========================================================
+ADD LINE +
+nút + thêm dòng ở input bar
+========================================================= */
+
+#document button.doc-add-btn{
+    width:20px;
+    height:20px;
+
+    margin:0;
+    padding:0;
+
+    border:1px solid #2563eb !important;
+    border-radius:50%;
+
+    background:#fff;
+    color:#2563eb;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:600;
+    line-height:1;
+
+    cursor:pointer;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease,
+        transform .1s ease;
+}
+
+#document button.doc-add-btn:hover{
+    background:#e8f4ff !important;
+}
+
+#document button.doc-add-btn:focus,
+#document button.doc-add-btn:focus-visible{
+    outline:none;
+    background:#e8f4ff;
+    border-color:#2563eb;
+    box-shadow:0 0 0 2px rgba(37,99,235,.18);
+}
+
+#document button.doc-add-btn:active{
+    transform:scale(.95);
+}
+
+/* =========================================================
+DELETE X BUTTON
+nút xóa dòng trong bảng
+========================================================= */
+
+#document .doc-table td .doc-delete-btn{
+    width:20px;
+    height:20px;
+
+    padding:0;
+
+    border:1px solid #ff3b30;
+    border-radius:50%;
+
+    background:#fff1f0;
+    color:#ff3b30;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+    font-weight:700;
+    line-height:1;
+
+    cursor:pointer;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease,
+        transform .1s ease;
+}
+
+#document .doc-table td .doc-delete-btn:hover{
+    background:#fee2e2;
+}
+
+#document .doc-table td .doc-delete-btn:focus,
+#document .doc-table td .doc-delete-btn:focus-visible{
+    outline:none;
+    background:#fee2e2;
+    border-color:#ff3b30;
+    box-shadow:0 0 0 2px rgba(255,59,48,.22);
+}
+
+#document .doc-table td .doc-delete-btn:active{
+    transform:scale(.95);
+}

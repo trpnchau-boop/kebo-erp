@@ -1,0 +1,114 @@
+/* ===== TABS ===== */
+
+#tabs-bar{
+  display:flex;
+  align-items:flex-end;
+  flex-wrap:nowrap;
+  height:100%;
+  gap:2px;
+  scrollbar-width:none;
+}
+
+#tabs-bar::-webkit-scrollbar{
+  display:none;
+}
+
+.tab{
+  position:relative;
+
+  height:32px;
+
+  color:#000;
+  font-size:13px;
+  font-weight:450;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  padding:0 18px;
+
+  border-radius:8px 8px 0 0;
+
+  box-sizing:border-box;
+
+  z-index:1;
+
+  white-space:nowrap;
+
+  transition:
+    transform .18s ease,
+    color .18s ease,
+    text-shadow .18s ease,
+    background .18s ease;
+
+  opacity:.9;
+}
+
+/* phần thân hình thang */
+
+.tab::before,
+.tab::after{
+  content:"";
+
+  position:absolute;
+  top:0;
+
+  width:20px;
+  height:100%;
+
+  background:inherit;
+
+  z-index:-1;
+}
+
+.tab::before{
+  left:-10px;
+
+  transform:skewX(-10deg);
+
+  border-top-left-radius:8px;
+}
+
+.tab::after{
+  right:-10px;
+
+  transform:skewX(18deg);
+
+  border-top-right-radius:8px;
+}
+
+.tab > *{
+  position:relative;
+  z-index:2;
+}
+
+/* ===== ACTIVE ===== */
+
+.tab.active{
+  color:#6D28D9; 
+  font-size:14px;
+  font-weight:600;
+
+  background:#fff;
+
+  margin-bottom:-1px;
+
+  transform:none;
+
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.8);
+
+  opacity:1;
+
+  z-index:20;
+}
+
+.tab.active{
+  box-shadow:
+    0 2px 8px #EFEEF1;
+}
+
+#page-title{
+  display:none;
+}

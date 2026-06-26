@@ -1,0 +1,260 @@
+/* =========================================================
+IMPORT PAGE
+========================================================= */
+
+.import-page{
+    padding:0 12px ;
+}
+
+/* =========================================================
+TOOLBAR
+========================================================= */
+
+.import-toolbar{
+
+    position:sticky;
+    top:0;
+    z-index:500;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+
+    padding:12px 24px 6px;
+
+    background:#fff;
+    border-radius:5px;
+}
+
+.import-toolbar h2{
+    margin:0;
+    font-size:16px;
+    font-weight:700;
+}
+
+.import-actions{
+    display:flex;
+    flex: 1;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.import-actions label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:14px;
+    color:#374151;
+}
+
+.import-actions select{
+
+    height:28px;
+    padding:0 12px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    background:#fff;
+    font-size:14px;
+}
+
+.import-actions button{
+
+    height:28px;
+    padding:0 12px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#f97316;
+    color:#fff;
+
+    font-size:14px;
+    font-weight:500;
+
+    cursor:pointer;
+}
+
+.import-actions button:hover{
+    background:#ea580c;
+}
+
+#btn-run{
+    margin-left:auto !important;
+}
+
+/* =========================================================
+FILE
+========================================================= */
+
+.file-btn{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    height:28px;
+    padding:0 12px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    background:#fff;
+
+    font-size:14px;
+    cursor:pointer;
+}
+
+.file-btn:hover{
+    border-color:#f97316;
+    color:#f97316;
+}
+
+#file-name{
+
+    min-width:180px;
+    max-width:260px;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+    font-size:14px;
+    color:#6b7280;
+}
+
+/* =========================================================
+PREVIEW TABLE
+========================================================= */
+
+#preview-box{
+
+    margin-top:12px;
+
+    overflow:auto;
+
+    background:#fff;
+    border-radius:5px;
+}
+
+#preview-box table{
+
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+}
+
+#preview-box th{
+
+    position:sticky;
+    top:53px;
+    z-index:200;
+
+    background:#fff;
+}
+
+#preview-box th,
+#preview-box td{
+
+    padding:10px 20px;
+
+    border-bottom:1px solid #ddd;
+
+    white-space:nowrap;
+    text-align:left;
+
+    font-size:16px;
+}
+
+#preview-box tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* =========================================================
+SIDEBAR MAP
+========================================================= */
+
+.import-map-panel{
+    padding:20px;
+}
+
+.import-map-panel h3{
+
+    margin:0 0 16px;
+    font-size:22px;
+    font-weight:700;
+}
+
+.import-map-panel table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.import-map-panel th{
+
+    padding:8px 0;
+
+    text-align:left;
+
+    font-size:13px;
+    color:#6b7280;
+}
+
+.import-map-panel td{
+    padding:5px 0;
+}
+
+.import-map-panel td:first-child{
+
+    width:45%;
+    padding-right:12px;
+
+    font-weight:500;
+}
+
+.import-map-panel select{
+
+    width:100%;
+    height:35px;
+
+    padding:0 10px;
+
+    border:1px solid #ddd;
+    border-radius:5px;
+
+    background:#fff;
+    font-size:14px;
+}
+
+.import-map-panel select:focus{
+
+    outline:none;
+    border-color:#f97316;
+}
+
+/* =========================================================
+SCROLLBAR
+========================================================= */
+
+#preview-box::-webkit-scrollbar,
+#sidebar-panel::-webkit-scrollbar{
+    width:8px;
+    height:8px;
+}
+
+#preview-box::-webkit-scrollbar-thumb,
+#sidebar-panel::-webkit-scrollbar-thumb{
+
+    background:#c7c7c7;
+    border-radius:999px;
+}
+
+#preview-box::-webkit-scrollbar-thumb:hover,
+#sidebar-panel::-webkit-scrollbar-thumb:hover{
+
+    background:#9ca3af;
+}

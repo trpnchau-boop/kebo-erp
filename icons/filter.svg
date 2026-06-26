@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512"
+     width="64"
+     height="64">
+
+  <!-- Thanh trên -->
+  <rect x="0" y="0" width="440" height="70" rx="10"
+        fill="#2F80B9"/>
+
+  <!-- Miệng phễu -->
+  <path d="
+    M20 70
+    L420 70
+    L270 270
+    L270 450
+    Q270 470 250 476
+    L190 500
+    Q170 506 170 484
+    L170 270
+    Z"
+    fill="#4094D1"/>
+
+  <!-- Kính lúp -->
+  <circle cx="290" cy="290" r="125"
+          fill="#AFCBE7"/>
+
+  <!-- Hiệu ứng sáng -->
+  <circle cx="320" cy="335" r="85"
+          fill="#8BAFD3"/>
+
+  <!-- Cán kính -->
+  <g transform="rotate(45 400 400)">
+    <rect x="385"
+          y="385"
+          width="120"
+          height="42"
+          rx="21"
+          fill="#F2A11F"/>
+  </g>
+
+  <circle cx="290" cy="290" r="125"
+          fill="none"
+          stroke="#9DAAAC"
+          stroke-width="36"/>  
+
+</svg>

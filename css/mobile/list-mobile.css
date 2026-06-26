@@ -1,0 +1,108 @@
+@media (max-width:768px){
+
+[data-tab="list_document_items"] .toolbar{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+
+    grid-template-areas:
+        "search search"
+        "from to";
+}
+
+[data-tab="list_document_items"] .search-wrap{
+    grid-area:search;
+    width:97%;
+    min-width:0;
+}
+
+
+
+[data-tab="list_document_items"] .list-page tbody tr{
+
+    grid-template-areas:
+        "day day"
+        "code customer"
+        "product note"
+        "qty unit"
+        "price total";
+}
+
+}
+@media (max-width:768px){
+
+[data-tab="list_document_items"] td[data-field="code"]{
+    grid-area:code;
+}
+
+[data-tab="list_document_items"] td[data-field="day"]{
+    grid-area:day;
+    justify-content:flex-start !important;
+    text-align:left;
+}
+
+[data-tab="list_document_items"] td[data-field="id_customer"]{
+    grid-area:customer;
+}
+
+[data-tab="list_document_items"] td[data-field="id_product"]{
+    grid-area:product;
+}
+
+[data-tab="list_document_items"] td[data-field="note"]{
+    grid-area:note;
+}
+
+[data-tab="list_document_items"] td[data-field="tongsoluong"]{
+    grid-area:qty;
+}
+
+[data-tab="list_document_items"] td[data-field="dvtGoc"]{
+    grid-area:unit;
+}
+
+[data-tab="list_document_items"] td[data-field="dongia"]{
+    grid-area:price;
+}
+
+[data-tab="list_document_items"] td[data-field="thanhtien"]{
+    grid-area:total;
+}
+
+}
+@media (max-width:768px){
+
+.search-btn {
+    transform: translate(50%, -52%);
+}    
+
+[data-tab="list_document_items"] .search-group{
+    display:flex;
+    width:100%;
+    min-width:0;
+}
+
+[data-tab="list_document_items"] .search-group input{
+    flex:1 1 0;
+    min-width:0;
+    width:0;
+}
+
+[data-tab="list_document_items"] .search-btn{
+    flex:0 0 34px;   /* hoặc 36px */
+}
+
+}  
+@media (max-width:768px){
+
+  .sidebar-logo{
+      cursor:pointer;
+      user-select:none;
+  }
+
+  .sidebar-logo:active{
+      opacity:.7;
+  }
+
+}

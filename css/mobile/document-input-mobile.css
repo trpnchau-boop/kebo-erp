@@ -1,0 +1,329 @@
+@media (max-width: 768px){
+  /* =======================================================
+  INPUT BAR WRAP
+  ======================================================= */
+
+  .doc-input-center{
+    background:#fff;
+    border-radius:5px;
+    padding:32px 10px 10px !important;
+    position: sticky !important;
+    top: 30px;
+
+    z-index: 90;
+
+    border-bottom:1px solid #eee;
+  }
+
+  .doc-input{
+    width:100%;
+    padding:0 !important;
+  }
+
+  /* bỏ viền desktop dạng 1 thanh dài */
+  #document-input{
+    display:grid !important;
+    grid-template-columns:1fr 1fr;
+    gap:10px !important;
+
+    justify-content:stretch !important;
+    align-items:start;
+
+    padding: 10px 0 0 !important;
+
+    border:none !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    overflow:visible !important;
+  }
+
+  .doc-input-field{
+    position:relative;
+    display:block !important;
+    min-width:0;
+    width:100%;
+    padding:3px 0 0 !important;  /* chừa chỗ cho label nổi */
+    flex:none !important;
+  }
+
+  .doc-input-field::after,
+  .doc-input-field:not(:last-child)::after{
+    display:none !important;
+  }
+
+  .doc-input-label{
+    position:absolute !important;
+    top:-1px !important;
+    left:10px !important;
+    z-index:3 !important;
+
+    display:inline-block !important;
+    width:auto !important;
+    margin:0 !important;
+    padding:0 6px !important;
+
+    background:#fff !important;
+    border:none !important;
+
+    font-size:12px !important;
+    line-height:1.1 !important;
+    font-weight:600 !important;
+    color:#6b7280 !important;
+    white-space:nowrap !important;
+    pointer-events:none !important;
+  }
+
+  .doc-input-field input,
+  .doc-input-field select,
+  .doc-input-field textarea,
+  .doc-input-field .doc-select-trigger,
+  .doc-input-field .suggest-wrapper input{
+    width:100%;
+    min-height:35px;
+    height:35px !important;
+    padding:7px 10px 3px !important;
+    border:1px solid #dcdcdc !important;
+    border-radius:5px !important;
+    background:#fff !important;
+    font-size:15px !important;
+    line-height:1.2 !important;
+    box-shadow:none !important;
+  }
+
+  .doc-input-field textarea{
+    min-height:76px;
+    height:auto !important;
+    resize:vertical;
+    padding-top:12px !important;
+    padding-bottom:8px !important;
+  }
+
+  .doc-input-field .doc-select-trigger{
+    justify-content:space-between;
+    align-items:flex-end !important;
+  }
+
+  .doc-input-field:has(.doc-lookup-add-btn) input,
+  .doc-input-field:has(.doc-lookup-add-btn) .doc-select-trigger{
+    padding-right:38px !important;
+  }
+
+  /* =======================================================
+  GRID CHO INPUT BAR - MOBILE SALE
+  tên SP
+  ghi chú | kho
+  SL | Đvt
+  đơn giá | thành tiền
+  ======================================================= */
+
+  /* ẩn Mã SP trên mobile SALE */
+  #document-input .doc-input-field:has([data-key="product_code"]){
+    display:none !important;
+  }
+
+  /* ẩn tổng SL + định lượng */
+  #document-input .doc-input-field:has([data-key="tongsoluong"]),
+  #document-input .doc-input-field:has([data-key="line"]){
+    display:none !important;
+  }
+
+  /* ===== HÀNG 1: TÊN SP full ===== */
+  #document-input .doc-input-field:has([data-key="id_product"]){
+    grid-column:1 / -1 !important;
+    grid-row:1;
+  }
+
+  /* ===== HÀNG 2: GHI CHÚ | KHO ===== */
+  #document-input .doc-input-field:has([data-key="note"]){
+    grid-column:1 !important;
+    grid-row:2;
+  }
+
+  #document-input .doc-input-field:has([data-key="id_warehouse"]){
+    grid-column:2 !important;
+    grid-row:2;
+  }
+
+  /* ===== HÀNG 3: SL | ĐVT ===== */
+  #document-input .doc-input-field:has([data-key="qty"]){
+    grid-column:1 !important;
+    grid-row:3;
+  }
+
+  #document-input .doc-input-field:has([data-key="id_unit"]){
+    grid-column:2 !important;
+    grid-row:3;
+  }
+
+  /* ===== HÀNG 4: ĐƠN GIÁ | THÀNH TIỀN ===== */
+  #document-input .doc-input-field:has([data-key="dongia"]){
+    grid-column:1 !important;
+    grid-row:4;
+  }
+
+  #document-input .doc-input-field:has([data-key="thanhtien"]){
+    grid-column:2 !important;
+    grid-row:4;
+  }
+
+  /* =======================================================
+KILL WIDTH DESKTOP TRONG INPUT BAR
+======================================================= */
+#document-input > .doc-input-field{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  justify-self:stretch !important;
+}
+
+#document-input > .doc-input-field[style]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+}
+
+#document-input .doc-input-field .doc-form-input-row,
+#document-input .doc-input-field .suggest-wrapper,
+#document-input .doc-input-field .doc-select,
+#document-input .doc-input-field .doc-select-trigger,
+#document-input .doc-input-field input,
+#document-input .doc-input-field select,
+#document-input .doc-input-field textarea{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+}
+
+  /* nút thêm dòng full width nằm cuối */
+  #document-input .doc-add-btn{
+    position:absolute !important;
+    top:-27px !important;
+    right:0 !important;
+    left:auto !important;
+    transform:none !important;
+
+    grid-column:auto !important;
+    grid-row:auto !important;
+
+    width:auto !important;
+    height:25px !important;
+    min-height:25px !important;
+    margin:0 !important;
+    padding:0 8px !important;
+
+    border:1px solid #2563eb !important;
+    border-radius:10px !important;
+    background:#fff !important;
+    color:#2563eb !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:6px !important;
+
+    font-size:14px !important;
+    font-weight:600 !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    z-index:3 !important;
+  }
+
+  #document-input .doc-add-btn::after{
+    content:"Thêm";
+    font-size:14px !important;
+    font-weight:700 !important;
+  }
+}
+@media (max-width: 768px){
+
+  /* =======================================================
+  INPUT TEXT = CÙNG CHIỀU CAO VỚI SELECT TRIGGER
+  ======================================================= */
+
+  /* chuẩn hóa chiều cao field trong input bar */
+  #document-input .doc-input-field input:not([type="checkbox"]):not([type="radio"]),
+  #document-input .doc-input-field .suggest-wrapper input{
+    min-height:35px !important;
+    height:35px !important;
+    padding:7px 10px 3px !important;
+    font-size:15px !important;
+    line-height:1.2 !important;
+  }
+
+  /* select trigger giữ cùng chiều cao */
+  #document-input .doc-input-field .doc-select-trigger{
+    min-height:35px !important;
+    height:35px !important;
+    padding:7px 10px 3px !important;
+    font-size:15px !important;
+    line-height:1.2 !important;
+    align-items:flex-end !important;
+  }
+
+  /* label nổi của input bar hạ nhẹ xuống cho hợp ô thấp hơn */
+  #document-input .doc-input-label{
+    top:-1px !important;
+    left:10px !important;
+    padding:0 6px !important;
+    font-size:12px !important;
+    font-weight: 600 !important;
+    line-height:1.1 !important;
+  }
+
+  #document-input .doc-input-field{
+    padding-top:3px !important;
+  }
+}
+@media (max-width: 768px){
+
+  /* =======================================================
+  INPUT BAR HEADER
+  title bên trái + nút thêm dòng bên phải
+  ======================================================= */
+
+  /* grid input giữ nguyên phía dưới */
+  #document-input{
+    margin:0 !important;
+  }
+
+  /* nút thêm dòng kéo lên header, nằm góc phải */
+  #document-input .doc-add-btn{
+    position:absolute !important;
+    top:-27px !important;
+    right:0 !important;
+    left:auto !important;
+    transform:none !important;
+
+    grid-column:auto !important;
+    grid-row:auto !important;
+
+    width:auto !important;
+    height:25px !important;
+    min-height:25px !important;
+    margin:0 !important;
+    padding:0 8px !important;
+
+    border-radius:10px !important;
+    background:#fff !important;
+    color:#2563eb !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:6px !important;
+
+    font-size:14px !important;
+    font-weight:600 !important;
+    line-height:1 !important;
+    white-space:nowrap !important;
+    z-index:3 !important;
+  }
+
+  /* bỏ style full-width cũ của nút */
+  #document-input .doc-add-btn::after{
+    content:"Thêm";
+    font-size:14px !important;
+    font-weight:700 !important;
+  }
+
+}

@@ -1,0 +1,53 @@
+.stock-filter.open::before{
+  left:13px;
+  right:auto;
+}
+
+
+.stock-filter:not(.empty)
+.dropdown-select-trigger{
+
+  color:#f97316;
+  font-size:14px;  
+  font-weight:500;
+}
+
+.dropdown-filter-icon{
+  width:16px;
+  height:16px;
+  flex:none;
+}
+
+.stock-filter .dropdown-select-trigger{
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  height:35px;
+
+  font-size:14px;
+  font-weight:500;
+  color:#f97316;
+}
+
+#btn-load,
+#btn-refresh{
+  width:35px;
+  height:35px;
+
+  border:none;
+  background:
+    url("/icons/load.svg")
+    center/28px 28px
+    no-repeat;
+
+  cursor:pointer;
+}
+
+.count-input,
+.transfer-qty{
+  width:100px;
+  text-align:left;
+}
+

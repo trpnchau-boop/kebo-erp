@@ -1,0 +1,96 @@
+<div class="list-page">
+<div class="toolbar">
+
+<input type="month" id="month">
+<select id="employee"></select>
+
+<button id="btn-load">Tải</button>
+<button id="btn-save">Lưu</button>
+
+</div>
+
+<h3 id="title-month">BẢNG LƯƠNG - THÁNG xx</h3>
+
+<p>
+<b id="employee-info">
+Nhân viên - Chức vụ
+</b>
+</p>
+
+<table border="0" width="100%">
+<tr>
+
+<td width="48%" valign="top">
+
+<table cellpadding="6" cellspacing="0" width="100%">
+
+<thead>
+<tr>
+<th>STT</th>
+<th>KHOẢN THU NHẬP</th>
+<th  width="110">Tiêu chuẩn</th>
+<th  width="110">Thực tế</th>
+</tr>
+</thead>
+
+<tbody id="tbody-income"></tbody>
+
+<tfoot>
+<tr>
+<td colspan="2" align="center">
+<b>TỔNG THU NHẬP</b>
+</td>
+<td colspan="2" align="right">
+<b id="sum-income">0</b>
+</td>
+</tr>
+</tfoot>
+
+</table>
+
+</td>
+
+<td width="4%"></td>
+
+<td width="48%" valign="top">
+
+<table cellpadding="6" cellspacing="0" width="100%">
+
+<thead>
+<tr>
+<th>STT</th>
+<th>KHOẢN GIẢM TRỪ</th>
+<th  width="110"></th>
+<th  width="110"></th>
+</tr>
+</thead>
+
+<tbody id="tbody-deduct"></tbody>
+
+<tfoot>
+<tr>
+<td colspan="2" align="center">
+<b>TỔNG GIẢM TRỪ</b>
+</td>
+<td colspan="2" align="right">
+<b id="sum-deduct">0</b>
+</td>
+</tr>
+</tfoot>
+
+</table>
+
+</td>
+
+</tr>
+</table>
+
+<br>
+
+<h3>
+TỔNG THỰC NHẬN:
+<span id="net-pay">0</span>
+</h3>
+
+</div>
+</div>

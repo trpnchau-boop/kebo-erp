@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 270 270"
+     width="270"
+     height="270"
+     fill="none">
+
+  <!-- Viền đen ngoài -->
+  <circle
+    cx="132"
+    cy="132"
+    r="126"
+    fill="none"
+    stroke="#000000"
+    stroke-width="7"/>
+
+  <!-- Nền vàng -->
+  <circle
+    cx="132"
+    cy="132"
+    r="124"
+    fill="#F2C75C"/>
+
+  <!-- Giấy trên -->
+  <rect
+    x="90"
+    y="50"
+    width="52"
+    height="60"
+    rx="3"
+    fill="#F3F3F3"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <g stroke="#D9D9D9"
+     stroke-width="4"
+     stroke-linecap="round">
+    <line x1="102" y1="62" x2="130" y2="62"/>
+    <line x1="102" y1="72" x2="130" y2="72"/>
+    <line x1="102" y1="82" x2="130" y2="82"/>
+  </g>
+
+  <!-- Thân sau -->
+  <rect
+    x="70"
+    y="75"
+    width="106"
+    height="42"
+    rx="4"
+    fill="#73A6D9"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Hông trái -->
+  <rect
+    x="48"
+    y="94"
+    width="24"
+    height="74"
+    rx="10"
+    fill="#3D7BC2"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Hông phải -->
+  <rect
+    x="184"
+    y="94"
+    width="24"
+    height="74"
+    rx="10"
+    fill="#3D7BC2"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Thân chính -->
+  <rect
+    x="58"
+    y="94"
+    width="140"
+    height="74"
+    rx="12"
+    fill="#4686D1"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Nút -->
+  <rect
+    x="122"
+    y="106"
+    width="36"
+    height="16"
+    rx="3"
+    fill="#8CB8E8"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Khe giấy -->
+  <rect
+    x="76"
+    y="138"
+    width="88"
+    height="30"
+    rx="2"
+    fill="#2E4662"
+    stroke="#000000"
+    stroke-width="4"/>
+
+  <!-- Giấy dưới -->
+  <path
+    d="M88 148 L152 148 L158 202 L82 202 Z"
+    fill="#F3F3F3"
+    stroke="#000000"
+    stroke-width="4"
+    stroke-linejoin="round"/>
+
+  <g stroke="#D9D9D9"
+     stroke-width="4"
+     stroke-linecap="round">
+    <line x1="104" y1="166" x2="140" y2="166"/>
+    <line x1="104" y1="178" x2="140" y2="178"/>
+    <line x1="104" y1="190" x2="140" y2="190"/>
+  </g>
+
+</svg>

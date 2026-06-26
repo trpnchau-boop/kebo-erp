@@ -1,0 +1,96 @@
+.bar{
+  position:sticky;
+  z-index:500;
+  top:0;
+  display:flex;
+  justify-content:flex-end;
+
+  background:#fff;
+  border-radius:5px;
+
+
+}
+
+.toolbar{
+  position:sticky;
+  z-index:500;
+  top:0;
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+
+  background:#fff;
+  border-radius:5px;
+
+  padding:12px 24px 6px 24px ;
+}
+
+.toolbar-action{
+
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  outline:none;
+
+  height:35px;
+  padding:0 12px;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  font-size:14px;
+  font-weight:500;
+  color:#6b7280;
+
+  cursor:pointer;
+
+}
+
+#btn-edit-many:hover{
+  color:#3b82f6;
+}
+
+#btn-cancel:hover,
+#btn-del:hover{
+  color:#dc2626;
+}
+
+#btn-show-all:hover,
+#btn-transfer:hover,
+#btn-mode:hover{
+  color:#15803d;
+}
+
+#btn-save-check:hover,
+#btn-save-transfer:hover,
+#btn-save:hover{
+  color:#fc9002;
+}
+
+#btn-show-all::before{
+  content:"◎";
+  color:#15803d;
+  font-size:14px;
+}
+
+#btn-edit-many::before{
+  content:"✎";
+  color:#3b82f6;
+  font-size:14px;
+}
+
+#btn-cancel::before,
+#btn-del::before{
+  content:"🗑";
+  color:#dc2626;
+  font-size:14px;
+}
+#btn-save-check::before,
+#btn-save-transfer::before,
+#btn-save::before{
+  content:"💾";
+  color:#f97316;
+  font-size:13px;
+}
+

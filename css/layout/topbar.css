@@ -1,0 +1,79 @@
+/* ===== TOPBAR ===== */
+
+.topbar{
+  height:48px;
+  background:#EFEEF1;
+  border-bottom:none;
+  border-radius:none;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 40px;
+
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.topbar h1{
+  font-size:18px;
+  margin:0;
+  font-weight:600;
+}
+
+#btn-toggle{
+  margin-left:auto;
+  background:transparent;
+  border:none;
+  color:#6D28D9;
+  font-size:18px;
+  font-weight:600;
+}
+
+/* ===== BUTTON GROUP ===== */
+
+.btn-group{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+/* =========================================================
+MOBILE
+========================================================= */
+
+@media (max-width: 768px){
+
+  .topbar{
+    min-height:12px;
+    height:auto;
+    padding:0px 12px 0px 17px;
+    gap:8px;
+    align-items:center;
+    flex-wrap:nowrap;
+  }
+
+  .topbar h1{
+    display:none;
+  }
+
+  #tabs-bar{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+  }
+
+  #btn-toggle{
+    margin-left:0;
+    flex:0 0 auto;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    font-size:20px;
+    border-radius:10px;
+  }
+}

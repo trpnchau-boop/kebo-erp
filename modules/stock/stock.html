@@ -1,0 +1,101 @@
+<div class="toolbar">
+
+<div class="search-box">
+  <input id="search-stock" type="text" placeholder="Search..." />
+
+  <button class="search-btn">
+    🔍
+  </button>
+</div>
+
+<div id="filter-kho"></div>
+
+<div id="filter-status"></div>
+
+<button id="btn-mode" class="toolbar-action">
+Kiểm kê
+</button>
+
+<button id="btn-transfer" class="toolbar-action">
+Chuyển kho
+</button>
+
+<button
+class="toolbar-action"
+id="btn-save-check"
+style="display:none">
+Lưu kiểm kê
+</button>
+
+<!-- ===== TRANSFER HEADER ===== -->
+
+<div
+  id="transfer-to"
+  class="transfer-col"
+  style="display:none"
+></div>
+
+<button
+id="btn-save-transfer"
+class="toolbar-action transfer-col"
+style="display:none">
+Lưu chuyển kho
+</button>
+
+<button id="btn-refresh"> </button>
+
+</div>
+
+
+<div class="list-page">
+
+<table>
+
+<thead>
+<tr>
+
+<th width="110">Mã SP</th>
+<th>Tên sản phẩm</th>
+<th width="140">Kho</th>
+<th width="110">Tồn kho</th>
+
+<th
+width="110"
+class="check-col"
+style="display:none">
+Thực đếm
+</th>
+
+<th
+width="110"
+class="check-col"
+style="display:none">
+Lệch
+</th>
+
+<th
+width="110"
+class="transfer-col"
+style="display:none">
+SL chuyển
+</th>
+
+<th width="120">Giá vốn</th>
+<th width="140">Giá trị tồn</th>
+
+</tr>
+</thead>
+
+<tbody id="stock-body">
+
+<tr>
+<td colspan="10" style="text-align:center;padding:20px">
+Đang tải...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>

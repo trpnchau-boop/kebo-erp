@@ -1,0 +1,67 @@
+.employee-select.open::before{
+  left:14px;
+  right:auto;
+}
+
+.icon-btn.print::after{
+
+  width:36px;
+  height:20px;  
+
+  content:"";
+
+  background:
+    url("/icons/print.svg")
+    center center / contain
+    no-repeat;
+
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+}
+
+.row-actions .icon-btn{
+  top:2px;
+}
+
+.row-btn{
+  border:none;
+  background:none;
+
+  padding:0 6px;
+
+  color:#6b7280;
+
+  font-size:14px;
+  font-weight:500;
+
+  cursor:pointer;
+
+  position:relative;
+  top:-3px;
+}
+
+.row-btn:hover{
+  color:#3b82f6;
+}
+
+.row-btn.icon-btn{
+  padding:0;
+  font-size:0;
+}
+
+.payment-green{
+  color:#16a34a;
+}
+
+.payment-green:hover{
+  color:#15803d;
+}
+
+.post-orange{
+  color:#f97316;
+}
+
+.post-orange:hover{
+  color:#ea580c;
+}

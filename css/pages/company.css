@@ -1,0 +1,33 @@
+.form-page.company-page .card{
+  display:grid;
+  grid-template-columns:1fr 32px;
+  column-gap:24px;
+
+  padding:10px 20px; 
+  border-bottom:1px solid #eee;
+}
+
+.form-page.company-page .fields{
+  display:grid;
+  gap:12px;
+}
+
+.form-page.company-page .field{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  column-gap:24px;
+  align-items:center;
+}
+
+.form-page.company-page .field label{
+  position:static;
+  transform:none;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+.form-page.company-page .delete{
+  align-self:start;
+  justify-self:center;
+  margin:0;
+}

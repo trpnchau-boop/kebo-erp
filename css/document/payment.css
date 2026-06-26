@@ -1,0 +1,55 @@
+.payment-summary{
+    grid-area:payment;
+
+    width:auto;
+
+    align-self:start;
+    margin-top:24px;
+    padding:12px 24px 0 0;
+
+
+}
+
+.payment-summary .doc-group-wrap{
+    display:flex;
+    flex-direction:column;
+
+    gap:12px;
+}
+
+
+.payment-summary .doc-group-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.payment-summary .doc-field-label{
+    width:90px;
+    flex-shrink:0;
+    font-size:12px;
+}
+
+.payment-summary input{
+    border:none;
+    background:transparent;
+    padding:0;
+
+    max-width:140px;
+
+    text-align:right;
+    font-size:17px;
+}
+
+.payment-summary input[data-key="tongthanhtoan"]{
+    font-size:28px;
+    font-weight:700;
+
+    max-width:140px;   /* giới hạn */
+    flex:none;         /* không kéo giãn */
+}
+
+/* Mặc định: desktop ẩn */
+.doc-summary-bar{
+  display:none !important;
+}

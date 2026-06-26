@@ -1,0 +1,151 @@
+/* ===== SIDEBAR ===== */
+
+#sidebar{
+width:220px;
+background:#EFEEF1;
+color:rgb(0, 0, 0);
+padding:10px;
+transition:0.3s;
+}
+
+#sidebar a{
+display:block;
+padding:10px 20px;
+color:rgb(0, 0, 0);
+border-radius:10px;
+text-decoration:none;
+}
+
+#sidebar a:hover{
+color: #6D28D9; 
+background: #F1ECF7;
+border: 1px solid #6D28D9;
+font-weight:600;
+}
+
+#sidebar.collapsed{
+width:60px;
+padding:10px 4px;
+}
+
+#sidebar.collapsed a{
+display:none;
+}
+
+#sidebar.collapsed .menu-title{
+display:none;
+}
+
+#sidebar.collapsed .sidebar-logo{
+font-size:13px;
+text-align:center;
+border:none;
+}
+
+.sidebar-logo{
+font-size:18px;
+font-weight:700;
+padding:9px 20px;
+margin-bottom:10px;
+border-bottom:1px solid rgba(3, 0, 0, 0.973);
+}
+
+
+/* =========================
+SIDEBAR PANEL MODE
+========================= */
+
+#sidebar{
+position:relative;
+transition:width .25s ease;
+overflow:hidden;
+}
+
+/* menu mode mặc định */
+#sidebar-menu{
+height:100%;
+overflow:auto;
+}
+
+#sidebar-menu::-webkit-scrollbar{
+  display:none;
+}
+
+/* panel form */
+#sidebar-panel{
+height:100%;
+overflow:auto;
+background:#ffffff;
+color:#111827;
+padding:16px;
+box-sizing:border-box;
+}
+
+/* khi mở form */
+#sidebar.panel-mode{
+width:420px;
+background:#ffffff;
+border-right:1px solid #e5e7eb;
+}
+
+/* ẩn menu khi panel mode */
+#sidebar.panel-mode #sidebar-menu{
+display:none;
+}
+
+/* hiện panel */
+#sidebar.panel-mode #sidebar-panel{
+display:block !important;
+}
+
+/* tiêu đề panel */
+.sidebar-panel-title{
+font-size:18px;
+font-weight:700;
+margin-bottom:14px;
+}
+
+/* nút quay lại */
+.sidebar-back{
+display:inline-block;
+margin-bottom:12px;
+cursor:pointer;
+font-size:13px;
+color:#1677ff;
+}
+
+/* ===== MENU GROUP ===== */
+
+.menu-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px 20px;
+cursor:pointer;
+border-radius:10px;
+}
+
+.menu-title:hover{
+  color: #6D28D9; 
+  background: #F1ECF7;
+  border: 1px solid #6D28D9;
+  font-weight:600;
+}
+
+.submenu{
+display:none;
+padding-left:10px;
+}
+
+.menu-group.open .submenu{
+display:block;
+}
+
+.arrow{
+font-size:13px;
+transition:0.2s;
+}
+
+.menu-group.open .arrow{
+transform:rotate(180deg);
+}

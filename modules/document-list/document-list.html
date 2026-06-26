@@ -1,0 +1,127 @@
+  <div class="toolbar" id="toolbar" >
+
+    <div class="search-doc">
+      <div class="search-box">
+        <input id="search-input" type="text" placeholder="Search..." />
+        <button class="search-btn">
+          🔍
+        </button>
+      </div>
+    </div>
+
+    <div
+      class="list-actions"
+      id="list-actions"
+    ></div>
+    
+    <div class="dropdown-menu filter-menu">
+
+      <button
+        id="btn-filter"
+        class="
+          dropdown-trigger
+          filter-trigger
+        "
+        type="button"
+      >
+        <img
+          src="/icons/filter.svg"
+          alt=""
+        >
+      </button>
+
+      <div
+        class="
+          dropdown-panel
+          filter-dropdown
+        "
+      >
+
+        <button
+          class="
+            dropdown-item
+            filter-item
+          "
+          data-status=""
+        >
+          Tất cả
+        </button>
+
+        <button
+          class="
+            dropdown-item
+            filter-item
+          "
+          data-status="draft"
+        >
+          Chưa ghi sổ
+        </button>
+
+        <button
+          class="
+            dropdown-item
+            filter-item
+          "
+          data-status="posted"
+        >
+          Đã ghi sổ
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="date-filter">
+      <span>Từ ngày:</span>
+      <input id="from-date" placeholder="yyyy-mm-dd">
+    </div>
+
+    <div class="date-filter">
+      <span>Đến ngày:</span>
+      <input id="to-date" placeholder="yyyy-mm-dd">
+    </div>
+
+  </div>
+
+  <!-- =========================
+  TABLE
+  ========================== -->
+
+  <div class="list-page">
+
+    <table>
+
+      <thead
+        id="document-list-head"
+      ></thead>
+
+      <tbody
+        id="document-list-body"
+      ></tbody>
+
+    </table>
+
+  </div>
+
+  <!-- =========================
+  FOOTER
+  ========================== -->
+
+  <div
+    class="list-footer"
+    id="document-list-footer"
+  >
+
+    <div class="list-total">
+
+      Tổng:
+
+      <span id="document-list-total">
+        0
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

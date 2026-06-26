@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 512 512">
+
+  <!-- đường nối -->
+  <path d="M155 230L305 140"
+        fill="none"
+        stroke="#2f55ff"
+        stroke-width="22"
+        stroke-linecap="round"/>
+
+  <path d="M155 282L300 375"
+        fill="none"
+        stroke="#2f55ff"
+        stroke-width="22"
+        stroke-linecap="round"/>
+
+  <!-- nút trên -->
+  <circle cx="360"
+          cy="120"
+          r="90"
+          fill="#c7d6e8"
+          stroke="#2f55ff"
+          stroke-width="18"/>
+
+  <!-- nút trái -->
+  <circle cx="100"
+          cy="256"
+          r="60"
+          fill="#c7d6e8"
+          stroke="#2f55ff"
+          stroke-width="18"/>
+
+  <!-- nút dưới -->
+  <circle cx="355"
+          cy="392"
+          r="70"
+          fill="#c7d6e8"
+          stroke="#2f55ff"
+          stroke-width="18"/>
+
+</svg>

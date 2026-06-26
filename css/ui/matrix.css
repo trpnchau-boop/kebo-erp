@@ -1,0 +1,125 @@
+.matrix-table th,
+.matrix-table td{
+  text-align:center;
+}
+
+.matrix-table th:first-child,
+.matrix-table td:first-child{
+  text-align:left;
+}
+/* =========================
+ATTENDANCE CELL
+========================= */
+
+.attendance-cell{
+
+  width:28px;
+  min-width:28px;
+  height:40px;
+
+  vertical-align:middle;
+
+  cursor:pointer;
+
+  user-select:none;
+
+  text-align:center;
+
+}
+
+/* =========================
+MARK
+========================= */
+
+.attendance-mark{
+
+  width:18px;
+  height:18px;
+
+  margin:auto;
+  
+  border:1px solid #9ca3af;
+  border-radius:999px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:12px;
+  font-weight:700;
+
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease;
+
+}
+
+/* =========================
+DRAGGING
+========================= */
+
+.attendance-cell.dragging
+.attendance-mark{
+
+  transform:scale(1.08);
+
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.12);
+
+}
+
+/* =========================
+OPTIONAL HOVER
+========================= */
+
+.attendance-cell:hover
+.attendance-mark{
+
+  transform:scale(1.05);
+
+}
+
+.matrix-check{
+
+width:18px;
+height:18px;
+
+margin:auto;
+
+border:1px solid #9ca3af;
+border-radius:999px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:12px;
+font-weight:700;
+
+cursor:pointer;
+user-select:none;
+
+}
+
+.matrix-check:hover{
+  transform:scale(1.08);
+}
+
+.matrix-check:active{
+  transform:scale(.92);
+}
+
+.state-none{
+  background:#fff;
+  border:1px solid #d1d5db;
+}
+
+.state-extra{
+  background:#dbeafe;
+  color:#2563eb;
+}
+
+.state-role{
+  background:#dcfce7;
+  color:#16a34a;
+}

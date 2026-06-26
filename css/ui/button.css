@@ -1,0 +1,62 @@
+.icon-btn{
+  position:relative;
+
+  width:36px;
+  height:20px;
+
+  border:none;
+  background:none;
+  padding:0;
+
+  color:transparent;
+  cursor:pointer;
+  top:0px;
+}
+
+
+
+.icon-btn::after{
+  content:"✎";
+
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:18px;
+  height:18px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  background:#eef5ff;      /* nền nhạt */
+  border:1px solid #1677ff; /* viền đậm */
+  color:#1677ff;           /* icon đậm */
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:12px;
+  font-weight:700;
+
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+
+.icon-btn.danger::after{
+
+  content:"✕";
+  background:#fff1f0;
+  border:1px solid #e53935;
+  color:#e53935;
+}
+
+.icon-btn:hover::after{
+  background:#dbeafe;
+}
+
+.icon-btn.danger:hover::after{
+  background:#fee2e2;
+}
+

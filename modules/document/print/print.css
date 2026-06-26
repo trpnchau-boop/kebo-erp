@@ -1,0 +1,61 @@
+/* modules/document/print/print.css */
+
+body{
+
+  margin:0;
+
+  background:#fff;
+
+  font-family:Arial;
+}
+
+.print-page{
+
+  width:210mm;
+  min-height:auto; 
+
+  margin:0 auto;
+
+  position:relative;
+
+  display:flex;
+  flex-direction:column;
+
+  page-break-after:always;
+  break-after:page;  
+}
+
+.print-page:last-child{
+
+  page-break-after:auto;
+  break-after:auto;
+
+}
+
+.print-section{
+
+  position:relative;
+
+  width:100%;
+
+  margin-bottom:0;
+
+  box-sizing:border-box;
+}
+
+.print-table{
+
+  border-collapse:collapse;
+
+  width:100%;
+}
+
+.print-table th,
+.print-table td{
+
+  border:1px solid #000;
+
+  padding:4px;
+
+  font-size:12px;
+}

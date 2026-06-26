@@ -1,0 +1,143 @@
+.sale-preview-popup{
+
+  position:fixed;
+
+  width:360px;
+  max-height:240px;
+
+  overflow:auto;
+
+  background:#fff;
+
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.12);
+
+  z-index:9999;
+
+  padding:6px;
+
+  animation:
+    salePreviewIn .12s ease;
+
+}
+
+.sale-preview-table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+  font-size:12px;
+
+}
+
+.sale-preview-table thead th{
+
+  position:sticky;
+
+  top:0;
+
+  background:#fff;
+
+  z-index:2;
+
+  padding:6px;
+
+  border-bottom:
+    1px solid #e5e7eb;
+
+  text-align:left;
+
+  font-weight:600;
+
+}
+
+.sale-preview-table td{
+
+  padding:4px 6px;
+
+  border-bottom:
+    1px solid #f3f4f6;
+
+  white-space:nowrap;
+
+}
+
+.sale-preview-table tbody tr:hover{
+
+  background:#f8fafc;
+
+}
+
+.sale-preview-open{
+
+  color:#2563eb;
+
+  text-decoration:none;
+
+}
+
+.sale-preview-open:hover{
+
+  text-decoration:underline;
+
+}
+
+.sale-col-money{
+
+  width:94px;
+
+}
+
+.sale-preview-money{
+
+  width:94px;
+
+  text-align:right;
+
+  font-variant-numeric:
+    tabular-nums;  
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+}
+
+
+.sale-preview-empty{
+
+  padding:32px;
+
+  text-align:center;
+
+  color:#6b7280;
+
+}
+
+@keyframes salePreviewIn{
+
+  from{
+
+    opacity:0;
+
+    transform:
+      translateY(-4px)
+      scale(.98);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
