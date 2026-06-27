@@ -1,33 +1,71 @@
-import { db }
-from "/js/supabase.js"
+import { db } from "/js/supabase.js"
 
 export async function uploadImage(
   file,
-  bucket="product-images"
+  bucket = "product-images"
 ){
 
-  const ext =
-    file.name.split(".").pop()
+  try{
 
-  const path =
-    `${Date.now()}.${ext}`
+    alert("1. uploadImage()")
 
-  const { error } =
-    await db.storage
-      .from(bucket)
-      .upload(
-        path,
-        file
-      )
+    if(!file){
+      alert("Không có file")
+      throw new Error("Không có file được chọn")
+    }
 
-  if(error)
-    throw error
+    alert("Tên: " + file.name)
+    alert("Type: " + file.type)
+    alert("Size: " + file.size)
 
-  const { data } =
-    db.storage
-      .from(bucket)
-      .getPublicUrl(path)
+    const ext =
+      file.name.includes(".")
+        ? file.name.split(".").pop().toLowerCase()
+        : "jpg"
 
-  return data.publicUrl
+    const path =
+      `${Date.now()}.${ext}`
+
+    alert("Path: " + path)
+
+    const { data, error } =
+      await db.storage
+        .from(bucket)
+        .upload(path, file, {
+          contentType: file.type,
+          upsert: false
+        })
+
+    alert("Upload xong")
+
+    if(error){
+
+      alert("ERROR:")
+      alert(error.message)
+
+      throw error
+    }
+
+    const { data: publicData } =
+      db.storage
+        .from(bucket)
+        .getPublicUrl(path)
+
+    alert("SUCCESS")
+
+    return publicData.publicUrl
+
+  }catch(err){
+
+    alert("CATCH")
+
+    alert(
+      err.message ||
+      JSON.stringify(err)
+    )
+
+    throw err
+
+  }
 
 }

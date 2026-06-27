@@ -179,7 +179,7 @@ SIDEBAR MAP
 ========================================================= */
 
 .import-map-panel{
-    padding:20px;
+    margin: -14px 0px;
 }
 
 .import-map-panel h3{
@@ -219,7 +219,7 @@ SIDEBAR MAP
 .import-map-panel select{
 
     width:100%;
-    height:35px;
+    height:28px;
 
     padding:0 10px;
 

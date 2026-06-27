@@ -63,10 +63,9 @@ if(f.type === "select"){
     emptyText:""
   })
 }
-
-  /* =========================
-  IMAGE
-  ========================= */
+/* =========================
+IMAGE
+========================= */
 if(f.type === "image"){
 
   return `
@@ -86,31 +85,20 @@ if(f.type === "image"){
       "
     >
 
-    <label class="image-upload-btn">
+    <input
+      id="image_${key}"
+      class="image-input"
+      type="file"
+      accept="image/*"
+      data-field="${key}"
+      style="display:none"
+    >
+
+    <label
+      class="image-upload-btn"
+      for="image_${key}"
+    >
       Chọn ảnh
-
-      <input
-        type="file"
-        accept="image/*"
-        data-field="${key}"
-
-        onchange="
-          const img =
-            this.closest('.image-field')
-                .querySelector('img')
-
-          const file =
-            this.files?.[0]
-
-          if(!file) return
-
-          img.src =
-            URL.createObjectURL(file)
-
-          img.style.display='block'
-        "
-      >
-
     </label>
 
   </div>

@@ -46,8 +46,28 @@ box.innerHTML = html
 box.className = "form-layout-" + layout
 
 initSmartLabels(box)
+
 box.querySelectorAll('[data-format="money"]')
   .forEach(bindMoneyInput)
+
+box.querySelectorAll(".image-input").forEach(input=>{
+
+  input.addEventListener("change",e=>{
+
+    const file = e.target.files?.[0]
+
+    if(!file) return
+
+    const img = input
+      .closest(".image-field")
+      .querySelector(".image-preview")
+
+    img.src = URL.createObjectURL(file)
+    img.style.display = "block"
+
+  })
+
+})  
 }
 
 }
