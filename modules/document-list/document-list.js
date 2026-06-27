@@ -273,6 +273,4 @@ createDatepicker(
 
   }
 
-  console.log("reload")
-
 }

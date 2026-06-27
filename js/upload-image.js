@@ -7,16 +7,9 @@ export async function uploadImage(
 
   try{
 
-    alert("1. uploadImage()")
-
     if(!file){
-      alert("Không có file")
       throw new Error("Không có file được chọn")
     }
-
-    alert("Tên: " + file.name)
-    alert("Type: " + file.type)
-    alert("Size: " + file.size)
 
     const ext =
       file.name.includes(".")
@@ -26,8 +19,6 @@ export async function uploadImage(
     const path =
       `${Date.now()}.${ext}`
 
-    alert("Path: " + path)
-
     const { data, error } =
       await db.storage
         .from(bucket)
@@ -36,12 +27,7 @@ export async function uploadImage(
           upsert: false
         })
 
-    alert("Upload xong")
-
     if(error){
-
-      alert("ERROR:")
-      alert(error.message)
 
       throw error
     }
@@ -51,18 +37,9 @@ export async function uploadImage(
         .from(bucket)
         .getPublicUrl(path)
 
-    alert("SUCCESS")
-
     return publicData.publicUrl
 
   }catch(err){
-
-    alert("CATCH")
-
-    alert(
-      err.message ||
-      JSON.stringify(err)
-    )
 
     throw err
 

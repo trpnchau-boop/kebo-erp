@@ -3,42 +3,66 @@ import {
 }
 from "./share-catalog.js"
 
+import {
+  buildGridImage,
+  buildPdfFile
+}
+from "./export-catalog-share.js"
+
 export async function exportCatalogJpg(
   products,
   share = false
 ){
 
-  const files = []
+  // ===== DOWNLOAD =====
 
-  for(const product of products){
+  if(!share){
 
-    const file =
-      await buildProductImage(
-        product
-      )
+    for(const product of products){
 
-    if(share){
-
-      files.push(file)
-
-    }else{
+      const file =
+        await buildProductImage(product)
 
       downloadFile(file)
 
     }
 
-  }
-
-  if(
-    share &&
-    files.length
-  ){
-
-    await shareImageFiles(
-      files
-    )
+    return
 
   }
+
+  // ===== SHARE 1 =====
+
+  if(products.length === 1){
+
+    const file =
+      await buildProductImage(products[0])
+
+    await shareImageFiles([file])
+
+    return
+
+  }
+
+  // ===== SHARE GRID =====
+
+  if(products.length < 7){
+
+    const file =
+      await buildGridImage(products)
+
+    await shareImageFiles([file])
+
+    return
+
+  }
+
+  // ===== SHARE PDF =====
+
+  const pdf =
+    await buildPdfFile(products)
+
+  await shareImageFiles([pdf])
 
 }
 
