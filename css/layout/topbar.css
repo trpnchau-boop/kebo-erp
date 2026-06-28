@@ -13,13 +13,246 @@
 
   position:sticky;
   top:0;
-  z-index:100;
+  z-index:1000;
 }
 
 .topbar h1{
   font-size:18px;
   margin:0;
   font-weight:600;
+}
+
+
+.topbar-actions{
+
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  outline:none;
+
+  height:35px;
+  padding:0 12px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  font-size:13px;
+  font-weight:500;
+  color:#6b7280;
+
+  cursor:pointer;
+
+  margin-left: auto
+
+}
+
+
+/*=========================
+ROOT
+=========================*/
+
+#notification-root{
+
+position:relative;
+
+}
+
+/*=========================
+BELL
+=========================*/
+
+.notification-bell{
+
+width:29px;
+height:29px;
+
+display:flex;
+align-items:flex-end;
+justify-content:right;
+
+border:none;
+border-radius:50%;
+color: #FF9800;
+
+cursor:pointer;
+
+font-size:18px;
+
+transition:.2s;
+
+}
+
+.notification-bell:hover{
+
+background:#f3f4f6;
+
+}
+
+/*=========================
+BADGE
+=========================*/
+
+.notification-badge{
+
+position:absolute;
+
+top:0px;
+left:18px;
+
+min-width:13px;
+height:13px;
+
+padding:0;
+
+display:flex;
+align-items:center;
+justify-content:space-around;
+
+background:#ef4444;
+
+color:white;
+
+font-size:9px;
+font-weight:700;
+
+border-radius:999px;
+
+}
+
+/*=========================
+PANEL
+=========================*/
+
+.notification-panel{
+
+position:absolute;
+
+top:40px;
+right:12px;
+
+width:140px;
+max-height:420px;
+
+overflow:auto;
+
+background:white;
+
+border: 1px solid #ececec;
+border-radius:5px;
+
+box-shadow:
+
+0 10px 30px rgba(0,0,0,.15);
+display:none;
+
+z-index:9999;
+
+}
+
+.notification-panel.show{
+
+display:block;
+
+}
+
+/*=========================
+ITEM
+=========================*/
+
+.notification-item{
+
+padding: 6px;
+
+border-bottom:
+
+1px solid #ececec;
+
+cursor:pointer;
+
+transition:.15s;
+
+position:relative;
+
+}
+
+.notification-item:hover{
+
+background:#f7f7f7;
+
+}
+
+.notification-title{
+
+font-weight:600;
+
+margin-bottom:4px;
+
+}
+
+.notification-subtitle{
+
+font-size:13px;
+
+color:#666;
+
+}
+
+.notification-status{
+
+margin-top:6px;
+
+font-size:10px;
+
+color:#999;
+
+text-transform:uppercase;
+
+}
+
+.notification-remove{
+
+position:absolute;
+
+top:10px;
+right:10px;
+
+border:none;
+
+background:none;
+
+cursor:pointer;
+
+font-size:14px;
+padding: 0;
+width: 15px;
+height: 15px;
+
+color:#999;
+
+}
+
+
+.notification-remove:hover{
+
+color:red;
+border: 1px solid red;
+border-radius: 999px;
+
+}
+
+/*=========================
+EMPTY
+=========================*/
+
+.notification-empty{
+
+padding:40px;
+
+text-align:center;
+
+color:#999;
+
 }
 
 #btn-toggle{

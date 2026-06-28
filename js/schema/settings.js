@@ -200,4 +200,60 @@ module_groups:{
   })
 },
 
+set_price_rule:{
+  label:"Chính sách giá",
+
+  columns:5,
+
+  fields:withSystemFields({
+
+    module:{
+      label:"Áp dụng",
+      type:"select",
+      options:[
+        {value:"SALE",text:"Đơn bán"},
+        {value:"QUOTE",text:"Báo giá"}
+      ],
+      showInList:true
+    },
+
+    customer_type:{
+      label:"Loại khách",
+      type:"select",
+      ref:"set_kh_money",
+      value:"khachhang",
+      text:"khachhang",
+      showInList:true
+    },
+
+    product_group:{
+      label:"Nhóm SP",
+      type:"select",
+      ref:"set_sp_group",
+      value:"id",
+      text:"name",
+      showInList:true
+    },
+
+    price_field:{
+      label:"Lấy giá",
+      type:"select",
+      options:[
+        {value:"dongia1",text:"Đơn giá"},
+        {value:"dongia2",text:"Đơn giá 2"},
+        {value:"dongia3",text:"Đơn giá 3"},
+        {value:"giavon",text:"Giá vốn"},
+        {value:"gianhapGoc",text:"Giá nhập"}
+      ]
+    },
+
+    adjust:{
+      label:"+/-",
+      type:"number",
+      format:"money"
+    },
+
+  })
 }
+}
+

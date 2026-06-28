@@ -1,4 +1,4 @@
-import { getAll, deleteRow } from "../../js/crud.js"
+import { getAll, deleteRow, updateRow } from "../../js/crud.js"
 import { schema } from "/js/schema/index.js"
 import { loadPage } from "../../js/router.js"
 import { getText } from "/js/relation-cache.js"
@@ -439,7 +439,9 @@ async function buildRow(row, state) {
     const value =
       await formatValue(
         row[k],
-        state.fields[k]
+        state.fields[k],
+        row,
+        k
       )
 
     if (
@@ -517,9 +519,16 @@ async function buildRow(row, state) {
 FORMAT
 ========================= */
 
-async function formatValue(v, f = {}) {
+async function formatValue(
+  v,
+  f={},
+  row={},
+  field=""
+){
 
-  if (v == null) return ""
+  if (v == null &&
+      f.type !== "checkbox"
+    ){ return ""}
 
   if (f.type === "image") {
 
@@ -552,6 +561,8 @@ async function formatValue(v, f = {}) {
         <input
           type="checkbox"
           class="list-switch"
+          data-id="${row.id}"
+          data-field="${field}"
           ${v ? "checked" : ""}
         >
         <span></span>
@@ -694,7 +705,83 @@ if(state.table === "print_templates"){
 BODY CHANGE
 ========================= */
 
-function handleBodyChange(e, state) {
+async function handleBodyChange(e, state) {
+
+  const sw =
+    e.target.closest(
+      ".list-switch"
+    )
+
+  if(sw){
+
+  const data = {
+
+    [sw.dataset.field]:
+      sw.checked
+
+  }
+
+  if(
+
+    state.table === "data_product"
+
+    &&
+
+    sw.dataset.field === "catalog_priority"
+
+  ){
+
+    data.catalog_priority_until =
+
+      sw.checked
+
+        ?
+
+        new Date(
+
+          Date.now()
+
+          +
+
+          30 * 24 * 60 * 60 * 1000
+
+        ).toISOString()
+
+        :
+
+        null
+
+  }
+
+  await updateRow(
+
+    state.table,
+
+    sw.dataset.id,
+
+    data
+
+  )
+
+  const row =
+    state.rows.find(
+      r =>
+        String(r.id)
+        ===
+        sw.dataset.id
+    )
+
+  if(row){
+
+    row[
+      sw.dataset.field
+    ] = sw.checked
+
+  }
+
+    return
+
+  }
 
   const cb =
     e.target.closest(".row-check")

@@ -1,12 +1,23 @@
 /* ===== SIDEBAR ===== */
 
 #sidebar{
-width:220px;
-background:#EFEEF1;
-color:rgb(0, 0, 0);
-padding:10px;
-transition:0.3s;
+  position:relative;
+
+  width:220px;
+  height:100vh;
+
+  display:flex;
+  flex-direction:column;
+
+  background:#EFEEF1;
+  color:#000;
+  padding:10px;
+  box-sizing:border-box;
+
+  transition:.25s ease;
+  overflow:hidden;
 }
+
 
 #sidebar a{
 display:block;
@@ -55,16 +66,11 @@ border-bottom:1px solid rgba(3, 0, 0, 0.973);
 SIDEBAR PANEL MODE
 ========================= */
 
-#sidebar{
-position:relative;
-transition:width .25s ease;
-overflow:hidden;
-}
-
-/* menu mode mặc định */
 #sidebar-menu{
-height:100%;
-overflow:auto;
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 #sidebar-menu::-webkit-scrollbar{

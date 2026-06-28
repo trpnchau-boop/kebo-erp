@@ -53,18 +53,21 @@ label:"Tên sản phẩm",
 type:"text",
 required:true,
 showInList:true,
+showInQuote:true,
 span:3
 },
 
 tinhchat:{
 label:"Tính chất",
 type:"text",
-showInList:true
+showInList:true,
+showInQuote:true,
 },
 
 dvtGoc:{
 label:"ĐVT gốc",
 showInList:true,
+showInQuote:true,
 type:"select",
 ref:"set_sp_dvt",
 value:"dvt",
@@ -75,11 +78,13 @@ dinhluong:{
 label:"Định lượng",
 type:"number",
 required:true,
+showInQuote:true,
 },
 
 dongia1:{
 label:"Giá bán",
 showInList:true,
+showInQuote:true,
 type:"number",
 format:"money"
 },
@@ -98,6 +103,13 @@ format:"money"
 
 giavon:{
 label:"Giá vốn",
+showInQuote:true,
+showInList:true,
+permission:{
+
+  view:"view_sensitive",
+
+},
 type:"number",
 format:"money"
 },
@@ -105,6 +117,13 @@ format:"money"
 gianhapGoc:{
 label:"Giá nhập",
 showInList:true,
+permission:{
+
+  view:"view_sensitive",
+
+  edit:"edit_sensitive"
+
+},
 type:"number",
 format:"money"
 },
@@ -120,6 +139,7 @@ text:"name"
 image_url:{
   label:"Image",
   showInList:true,
+  showInQuote:true,  
   type:"image",
   bucket:"product-images",
   span:3
@@ -129,6 +149,26 @@ show_catalog:{
   label:"Catalog",
   showInList:true,
   type:"checkbox"
+},
+
+catalog_priority:{
+  label:"Ưu tiên Catalog",
+  showInList:true,
+  type:"checkbox"
+},
+
+qty:{
+  label:"Số lượng",
+  showInQuote:true,
+  type:"number",
+  virtual:true
+},
+
+note:{
+  label:"Ghi chú",
+  showInQuote:true,
+  type:"text",
+  virtual:true
 },
 
 })

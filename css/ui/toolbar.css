@@ -62,6 +62,7 @@
   color:#15803d;
 }
 
+#btn-save-draft:hover,
 #btn-save-check:hover,
 #btn-save-transfer:hover,
 #btn-save:hover{
@@ -86,6 +87,8 @@
   color:#dc2626;
   font-size:14px;
 }
+
+#btn-save-draft::before,
 #btn-save-check::before,
 #btn-save-transfer::before,
 #btn-save::before{

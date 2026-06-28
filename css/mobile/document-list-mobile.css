@@ -12,22 +12,34 @@ DOCUMENT LIST MOBILE - SALE FINAL
   SHELL
   ===================================================== */
 
-    #sidebar{
-        display:block !important;
+  #sidebar{
+    display:flex !important;
+    flex-direction:column;
 
-        position:fixed;
-        top:0;
-        left:0;
-        bottom:0;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
 
-        width:100%;
-        max-width:420px;
+    width:100%;
+    max-width:420px;
 
-        transform:translateX(-100%);
-        transition:transform .25s ease;
+    transform:translateX(-100%);
+    transition:transform .25s ease;
 
-        z-index:9999;
-    }
+    overflow:hidden;
+    z-index:9999;
+  }
+
+  #sidebar-menu{
+    flex:1;
+    min-height:0;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    -webkit-overflow-scrolling:touch;
+  }
 
 
   .main,
@@ -251,7 +263,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
 
     font-size:14px;
     color:#111827;
-    overflow:hidden;
+    overflow:visible;
   }
 
   /* bỏ label mặc định */
@@ -453,6 +465,10 @@ Layout:
   .list-page tbody tr.empty-row td::before{
     display:none !important;
     content:none !important;
+  }
+
+  .list-page tbody tr:has(.dropdown-menu.open){
+    z-index:1000;
   }
 
   /* =====================================================

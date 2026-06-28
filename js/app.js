@@ -7,6 +7,14 @@ import {
   restoreTabs,
   activateTab
 } from "./tabs.js"
+import {
+  initNotifications
+}
+from "/js/notification/notification-ui.js"
+import {
+  loadPermissions
+}
+from "./core/permission.js"
 
 /* =========================
 TITLE
@@ -268,6 +276,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
   // =========================
   window.currentUser = session.user
 
+  await loadPermissions()
 
 
   // =========================
@@ -276,6 +285,8 @@ window.addEventListener("DOMContentLoaded", async ()=>{
   initKeyboard()
 
   await preloadRelations()
+
+  initNotifications()
 
   await new Promise(r=>setTimeout(r,0))
 

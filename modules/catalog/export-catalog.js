@@ -46,7 +46,7 @@ export async function exportCatalogJpg(
 
   // ===== SHARE GRID =====
 
-  if(products.length < 7){
+  if(products.length < 5){
 
     const file =
       await buildGridImage(products)

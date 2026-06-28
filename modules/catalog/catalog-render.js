@@ -2,7 +2,8 @@ export function renderCatalog(
   groups,
   products,
   box,
-  selectedIds
+  selectedIds,
+  showHot = false
 ){
 
   const noGroup =
@@ -11,6 +12,80 @@ export function renderCatalog(
     )
 
   let html = ""
+
+if(showHot){
+
+  const hotProducts =
+
+    products.filter(
+      p=>p.catalog_priority
+    )
+
+  if(hotProducts.length){
+
+    const allSelected =
+
+      hotProducts.every(
+        p=>selectedIds.has(p.id)
+      )
+
+    html += `
+      <section class="catalog-group">
+
+        <h2 class="catalog-group-title">
+
+          <label class="group-label">
+
+            <input
+              type="checkbox"
+              class="group-check"
+              data-group-id="hot"
+              ${
+                allSelected
+                  ? "checked"
+                  : ""
+              }
+            >
+
+            <span class="star-wrap">
+
+              <img
+                src="/images/hot-star.webp"
+                class="hot-icon"
+                alt=""
+              >  
+
+              <span class="hot-text">Hot</span>
+            </span>   
+
+          </label>
+
+        </h2>
+
+        <div class="catalog-grid">
+
+          ${
+            hotProducts
+              .map(p=>
+
+                renderCard(
+                  p,
+                  selectedIds.has(
+                    p.id
+                  )
+                )
+
+              )
+              .join("")
+          }
+
+        </div>
+
+      </section>
+    `
+  }
+
+}
 
   for(const group of groups){
 

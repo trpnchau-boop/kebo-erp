@@ -142,6 +142,26 @@ export async function saveData(ctx){
 
   else{
 
+    if(
+      table === "data_product"
+    ){
+
+      row.catalog_priority = true
+
+      row.catalog_priority_until =
+  
+        new Date(
+
+          Date.now()
+
+          +
+
+          30 * 24 * 60 * 60 * 1000
+
+        ).toISOString()
+
+    }
+
     const r =
       await insertRow(
         table,

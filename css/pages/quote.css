@@ -1,0 +1,37 @@
+.quote-image{
+
+  width:60px;
+  height:60px;
+
+  object-fit:cover;
+
+  border-radius:4px;
+
+  cursor:zoom-in;
+
+  transition:.15s;
+
+}
+
+.quote-image:hover{
+
+  transform:scale(1.06);
+
+}
+
+.quote-qty,
+.quote-note{
+
+  border:none !important;
+  outline:none !important;
+  background:transparent !important;
+  box-shadow:none !important;
+
+  padding:0;
+  margin:0;
+
+  width:100%;
+
+  font:inherit;
+  color:#f97316;
+}

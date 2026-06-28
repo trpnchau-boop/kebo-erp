@@ -19,12 +19,15 @@
 @import "./ui/section.css";
 @import "./ui/tag.css";
 @import "./ui/tree.css";
+@import "./ui/image-preview.css";
 
 @import "./pages/company.css";
 @import "./pages/print-template.css";
 @import "./pages/print.css";
 @import "./pages/stock.css";
 @import "./pages/import.css";
+@import "./pages/quote.css";
+@import "./pages/catalog.css";
 
 @import "./btn/add.css";
 @import "./btn/date.css";

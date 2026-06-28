@@ -1,4 +1,9 @@
 import {
+  updateRow
+}
+from "/js/crud.js"
+
+import {
   getCatalogData
 }
 from "./catalog-api.js"
@@ -30,6 +35,8 @@ import {
 }
 from "/js/components/dropdown-menu.js"
 
+let showHot = false
+
 export async function init(
   params,
   root
@@ -38,6 +45,11 @@ export async function init(
   const grid =
     root.querySelector(
       "#catalog-grid"
+    )
+
+  const btnHot =
+    root.querySelector(
+      "#btn-new-products"
     )
 
   const search =
@@ -79,7 +91,51 @@ export async function init(
     groups,
     products
   } =
-    await getCatalogData()
+  await getCatalogData()
+
+  const now = new Date()
+
+for(const p of products){
+
+  if(
+
+    p.catalog_priority
+
+    &&
+
+    p.catalog_priority_until
+
+    &&
+
+    new Date(
+      p.catalog_priority_until
+    ) < now
+
+  ){
+
+    p.catalog_priority = false
+
+    p.catalog_priority_until = null
+
+    await updateRow(
+
+      "data_product",
+
+      p.id,
+
+      {
+
+        catalog_priority:false,
+
+        catalog_priority_until:null
+
+      }
+
+    )
+
+  }
+
+}
 
   const selectedIds =
     new Set()
@@ -203,11 +259,13 @@ renderDropdownSelect({
 
       })
 
+
     renderCatalog(
       groups,
       filtered,
       grid,
-      selectedIds
+      selectedIds,
+      showHot
     )
 
   }
@@ -283,6 +341,22 @@ renderDropdownSelect({
 
   }
 
+  btnHot.addEventListener(
+    "click",
+    ()=>{
+
+      showHot = !showHot
+
+      btnHot.classList.toggle(
+        "active",
+        showHot
+      )  
+
+      applyFilter()
+
+    }
+  )
+
   /* =====================
      FILTER EVENTS
   ===================== */
@@ -294,7 +368,13 @@ renderDropdownSelect({
 
   groupSelect.addEventListener(
     "change",
-    applyFilter
+    ()=>{
+      showHot = false
+      btnHot.classList.remove(
+        "active"
+      )  
+      applyFilter()
+     }  
   )
 
   /* =====================
@@ -349,6 +429,40 @@ renderDropdownSelect({
           e.target.dataset.groupId
 
         let groupProducts
+
+      if(groupId === "hot"){
+
+        const hotProducts =
+
+          products.filter(
+            p=>p.catalog_priority
+          )
+
+        if(e.target.checked){
+
+          hotProducts.forEach(
+            p=>selectedIds.add(
+              p.id
+            )
+          )
+
+        }else{
+
+          hotProducts.forEach(
+            p=>selectedIds.delete(
+              p.id
+            )
+          )
+
+        }
+
+        updateSelectionUI()
+
+        applyFilter()
+
+        return
+
+      }
 
         if(
           groupId === "nogroup"
