@@ -23,6 +23,11 @@ from "./document-sync-inputs.js"
 import {getDocType}
 from "./document-get-doc-type.js"
 
+import {
+  updateSummaryBar
+}
+from "./document-summary-bar.js"
+
 /* =========================================================
 TABLE
 ========================================================= */
@@ -235,6 +240,8 @@ export async function pushItemRow(
     scope: "header"
   })
 
+  updateSummaryBar(state.root)
+
   await renderBody(
     root,
     state.schema,
@@ -415,6 +422,8 @@ async function renderBody(
           target: state.header,
           scope: "header"
         })
+
+        updateSummaryBar(state.root)
 
       }
 

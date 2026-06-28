@@ -33,6 +33,11 @@ import {
 }
 from "./document-input-map.js"
 
+import {
+  updateSummaryBar
+}
+from "./document-summary-bar.js"
+
 /* =========================================================
 DISPLAY NAME
 ========================================================= */
@@ -218,6 +223,8 @@ await syncInputs({
         target: state.header,
         scope: "header"
       })
+
+      updateSummaryBar(state.root)
 
       return
      }
@@ -696,6 +703,8 @@ await syncInputs({
               state.header,
             scope:"header"
           })
+
+          updateSummaryBar(state.root)
 
         }
 

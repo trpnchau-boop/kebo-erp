@@ -374,17 +374,14 @@ Paste ở CUỐI file CSS hiện tại
 
   display:flex !important;
   flex-wrap:wrap !important;
-  gap:6px !important;
+  gap:5px !important;
   justify-content:flex-start !important;
   align-items:center !important;
 
   margin:0 !important;
   padding:6px 8px 0 !important;
 
-  border: 0 !important;
-  border-top: 1px solid #e5e7eb !important;
-
-  width: 94%;
+  width: max-content;
 }
 
   /* =======================================================
@@ -422,7 +419,7 @@ Paste ở CUỐI file CSS hiện tại
     padding:4px 0 !important;
 
     border:none !important;
-    border-bottom:1px dashed #eef2f7 !important;
+    border-bottom:1px dashed #e5e7eb !important;
   }
 
   .payment-summary .doc-group-item:last-child{
@@ -604,19 +601,19 @@ SUMMARY BAR
     align-items:center;
     justify-content:space-between;
     gap:16px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #e5e7eb !important;
   }
 
   .doc-summary-label{
-    font-size:13px;
+    font-size:14px;
     font-weight:600;
-    color:#6b7280;
   }
 
   .doc-summary-value{
     font-size:14px;
     font-weight:800;
     line-height:1;
-    color:#111827;
     white-space:nowrap;
   }
 
