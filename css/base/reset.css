@@ -3,3 +3,8 @@ margin:0;
 font-family:Arial, sans-serif;
 background:#EFEEF1;
 }
+html,
+body{
+    height:100%;
+    overflow:hidden;
+}

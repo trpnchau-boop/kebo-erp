@@ -21,7 +21,10 @@
 
 #content{
 flex:1;
-overflow:auto;
+display:flex;
+flex-direction:column;
+min-height:0; 
+overflow:hidden;
 padding:0px 24px 24px 24px ;
 flex:1;
 overflow:auto;
@@ -30,7 +33,33 @@ border-top:none;
 border-radius:none;
 }
 
+.catalog-page{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
 
+.toolbar{
+    flex-shrink:0;
+}
+
+#catalog-page{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+
+    min-height:0;      /* QUAN TRỌNG */
+
+    overflow:hidden;
+}
+
+#catalog-grid{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
 /* =========================================================
 MOBILE
 ========================================================= */
