@@ -1,14 +1,16 @@
+import {
+  getDropdownValue
+}
+from "/js/components/dropdown-select.js"
+
 export function initPayrollSave(ctx){
 
   ctx.root
-  .querySelector("#btn-save")
-  ?.addEventListener(
-
-    "click",
-
-    ()=> saveSoft(ctx)
-
-  )
+    .querySelector("#btn-save")
+    ?.addEventListener(
+      "click",
+      ()=> saveSoft(ctx)
+    )
 
 }
 
@@ -25,10 +27,12 @@ function saveSoft(ctx){
   const data = {
 
     month:
-    monthInput.value,
+      monthInput.value,
 
     id_employee:
-    employeeSelect.value,
+      getDropdownValue(
+        employeeSelect
+      ),
 
     income:
 
@@ -37,7 +41,7 @@ function saveSoft(ctx){
       )]
 
       .map(
-        x => x.value
+        inp => inp.value
       ),
 
     deduct:
@@ -47,16 +51,18 @@ function saveSoft(ctx){
       )]
 
       .map(
-        x => x.value
+        inp => inp.value
       ),
 
     commission:
 
-      root
-      .querySelector(
-        ".commission-rate"
+      getDropdownValue(
+
+        root.querySelector(
+          ".commission-rate"
+        )
+
       )
-      ?.value || ""
 
   }
 
@@ -74,15 +80,11 @@ function saveSoft(ctx){
 
     key,
 
-    JSON.stringify(
-      data
-    )
+    JSON.stringify(data)
 
   )
 
-  alert(
-    "Đã lưu tạm"
-  )
+  alert("Đã lưu tạm")
 
 }
 
@@ -104,105 +106,93 @@ export function loadSoft(ctx){
 
     "_" +
 
-    employeeSelect.value
+    getDropdownValue(
+      employeeSelect
+    )
 
   const raw =
 
-    localStorage.getItem(
-      key
-    )
+    localStorage.getItem(key)
 
-  if(
-    !raw
-  ) return
+  if(!raw)
+    return
 
   const data =
-
-    JSON.parse(
-      raw
-    )
+    JSON.parse(raw)
 
   /* =====================
      THU NHẬP
   ===================== */
 
   root
-  .querySelectorAll(
-    ".income-formula"
-  )
-  .forEach((inp,i)=>{
+    .querySelectorAll(
+      ".income-formula"
+    )
+    .forEach((inp,i)=>{
 
-    inp.value =
+      inp.value =
 
-      data.income?.[i]
-      ??
-      inp.value
+        data.income?.[i]
+        ??
+        inp.value
 
-    inp.dispatchEvent(
+      inp.dispatchEvent(
 
-      new Event(
-        "input"
+        new Event("input")
+
       )
 
-    )
-
-  })
+    })
 
   /* =====================
      GIẢM TRỪ
   ===================== */
 
   root
-  .querySelectorAll(
-    ".deduct-formula"
-  )
-  .forEach((inp,i)=>{
+    .querySelectorAll(
+      ".deduct-formula"
+    )
+    .forEach((inp,i)=>{
 
-    inp.value =
+      inp.value =
 
-      data.deduct?.[i]
-      ??
-      inp.value
+        data.deduct?.[i]
+        ??
+        inp.value
 
-    inp.dispatchEvent(
+      inp.dispatchEvent(
 
-      new Event(
-        "input"
+        new Event("input")
+
       )
 
-    )
-
-  })
+    })
 
   /* =====================
      HOA HỒNG
   ===================== */
 
-  const commission =
+  const dropdown =
 
     root.querySelector(
       ".commission-rate"
     )
 
   if(
-
-    commission &&
+    dropdown &&
     data.commission
-
   ){
 
-    commission.value =
-    data.commission
+    const item =
 
-    commission.dispatchEvent(
+      dropdown.querySelector(
 
-      new Event(
-        "change"
+        `.dropdown-item[data-value="${data.commission}"]`
+
       )
 
-    )
+    item?.click()
 
   }
 
 }
-

@@ -8,7 +8,6 @@
   background:#fff;
   border-radius:5px;
 
-
 }
 
 .toolbar{
@@ -23,6 +22,20 @@
   border-radius:5px;
 
   padding:12px 24px 6px 24px ;
+}
+
+.toolbar-filter,
+.toolbar-actions,
+.toolbar-export,
+.toolbar-catalog{
+    display:flex;
+    align-items:center;
+    white-space: nowrap;
+    gap:10px;
+}
+
+.toolbar-catalog{
+  margin-right: auto;
 }
 
 .toolbar-action{

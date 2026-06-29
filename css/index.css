@@ -4,6 +4,7 @@
 @import "./layout/sidebar.css";
 @import "./layout/topbar.css";
 @import "./layout/tabs.css";
+@import "./layout/login-popup.css";
 
 @import "./ui/card.css";
 @import "./ui/barcode-link.css";
@@ -28,6 +29,7 @@
 @import "./pages/import.css";
 @import "./pages/quote.css";
 @import "./pages/catalog.css";
+@import "./pages/payroll.css";
 
 @import "./btn/add.css";
 @import "./btn/date.css";
@@ -57,3 +59,5 @@
 @import "./mobile/document-mobile.css";
 @import "./mobile/document-list-mobile.css";
 @import "./mobile/list-mobile.css";
+@import "./mobile/toolbar-mobile.css";
+@import "./mobile/payroll-mobile.css";

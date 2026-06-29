@@ -1,11 +1,14 @@
 export function renderDropdownSelect({
+
   value,
-  options = [],
+  options=[],
   rowId,
   field,
-  className = "",
-  allowEmpty = true,
-  emptyText = "Tất cả kho"
+  className="",
+  allowEmpty=true,
+  emptyText="Tất cả kho",
+  dataset={}
+
 }){
 
   return `
@@ -28,7 +31,29 @@ export function renderDropdownSelect({
         type="button"
         data-id="${rowId || ""}"
         data-field="${field}"
-        data-value="${value ?? ""}"    
+        data-value="${value ?? ""}"
+        ${
+          Object.entries(dataset)
+          .map(([k,v])=>
+            `data-${k}="${v}"`
+          ).join(" ")
+        }
+
+${
+Object.entries(
+
+options.find(
+a=>String(a.value)===String(value)
+)?.dataset || {}
+
+)
+.map(([k,v])=>
+
+`data-${k}="${v}"`
+
+)
+.join(" ")
+}
       >
  
         ${
@@ -71,15 +96,30 @@ export function renderDropdownSelect({
           </button>
         ` : ""}
 
-        ${options.map(a=>`
-          <button
-            class="dropdown-item"
-            data-value="${a.value}"
-            type="button"
-          >
-            ${a.label}
-          </button>
-        `).join("")}
+${options.map(a=>`
+
+  <button
+    class="dropdown-item"
+    data-value="${a.value}"
+
+    ${
+      Object.entries(
+        a.dataset || {}
+      )
+      .map(([k,v])=>
+        `data-${k}="${v}"`
+      )
+      .join(" ")
+    }
+
+    type="button"
+  >
+
+    ${a.label}
+
+  </button>
+
+`).join("")}
 
       </div>
 
@@ -121,11 +161,28 @@ export function bindDropdownSelect(
         item.dataset.value || ""
 
       const text =
-        item.textContent.trim()
+       item.textContent.trim()
 
       trigger.dataset.value =
         value
 
+      Object.keys(trigger.dataset)
+      .forEach(k=>{
+
+        if(k !== "value"){
+
+          delete trigger.dataset[k]
+
+        }
+
+      })
+
+      Object.entries(item.dataset)
+      .forEach(([k,v])=>{
+
+        trigger.dataset[k] = v
+
+      })
       const span =
         trigger.querySelector("span")
 

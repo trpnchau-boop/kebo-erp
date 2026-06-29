@@ -60,7 +60,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
   H3: from | to
   ===================================================== */
 
-  .toolbar{
+.tab-host:not([data-page="matrix"]) .toolbar{
     display:grid;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr);
     grid-template-areas:
@@ -75,6 +75,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
     background:#fff;
     border-radius:5px;
     box-sizing:border-box;
+    top: -2px
   }
 
   /* =========================
@@ -180,12 +181,12 @@ DOCUMENT LIST MOBILE - SALE FINAL
   LIST PAGE / TABLE
   ===================================================== */
 
-  .list-page{
+  .tab-host:not([data-page="matrix"]) .list-page{
     padding:0;
     overflow:visible;
   }
 
-  .list-page > table{
+  .tab-host:not([data-page="matrix"]) .list-page > table{
     width:100%;
     border:none;
     border-collapse:separate;
@@ -194,11 +195,11 @@ DOCUMENT LIST MOBILE - SALE FINAL
     table-layout:auto;
   }
 
-  .list-page thead{
+  .tab-host:not([data-page="matrix"]) .list-page thead{
     display:none;
   }
 
-  .list-page tbody{
+  .tab-host:not([data-page="matrix"]) .list-page tbody{
     display:flex;
     flex-direction:column;
     gap:12px;
@@ -209,7 +210,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
   CARD
   ===================================================== */
 
-.list-page tbody tr{
+.tab-host:not([data-page="matrix"]) .list-page tbody tr{
   position:relative;
   margin:0;
   padding:12px;
@@ -233,22 +234,22 @@ DOCUMENT LIST MOBILE - SALE FINAL
   box-sizing:border-box;
 }
 
-  .list-page tbody tr.row-posted{
+  .tab-host:not([data-page="matrix"]) .list-page tbody tr.row-posted{
     border-color:#fed7aa;
     background:#fffaf5;
   }
 
   /* checkbox ẩn */
-  .list-page tbody td.row-check{
+  .tab-host:not([data-page="matrix"]) .list-page tbody td.row-check{
     display:none !important;
   }
 
   /* reset cell */
-  .list-page tbody td{
+  .tab-host:not([data-page="matrix"]) .list-page tbody td{
     box-sizing:border-box;
   }
 
-  .list-page tbody td:not(.row-check):not(.row-actions){
+  .tab-host:not([data-page="matrix"]) .list-page tbody td:not(.row-check):not(.row-actions){
     display:flex;
     align-items:center;
     min-height:0px;
@@ -267,7 +268,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
   }
 
   /* bỏ label mặc định */
-  .list-page tbody td:not(.row-check):not(.row-actions)::before{
+  .tab-host:not([data-page="matrix"]) .list-page tbody td:not(.row-check):not(.row-actions)::before{
     display:none !important;
     content:none !important;
   }
@@ -283,7 +284,7 @@ Layout:
 ===================================================== */
 
 /* customer - dòng đầu */
-.list-page tbody td[data-field="id_customer"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="id_customer"]{
   grid-area:customer;
 
   min-height:auto;
@@ -300,7 +301,7 @@ Layout:
 }
 
 /* code - hàng 2 trái */
-.list-page tbody td[data-field="code"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="code"]{
   grid-area:code;
   justify-content:flex-start;
   text-align:left;
@@ -309,7 +310,7 @@ Layout:
 }
 
 /* nếu code nằm trong .barcode-link */
-.list-page tbody td[data-field="code"] .barcode-link{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="code"] .barcode-link{
   display:inline-block;
   max-width:100%;
   margin:0;
@@ -321,7 +322,7 @@ Layout:
 }
 
 /* day - hàng 2 phải */
-.list-page tbody td[data-field="day"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="day"]{
   grid-area:day;
   justify-content:flex-end;
   text-align:right;
@@ -329,7 +330,7 @@ Layout:
 }
 
 /* employee - hàng 3 trái */
-.list-page tbody td[data-field="id_employee"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="id_employee"]{
   grid-area:employee !important;
 
   display:block !important;
@@ -342,7 +343,7 @@ Layout:
   text-align:left !important;
 }
 
-.list-page tbody td[data-field="id_employee"] > *{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="id_employee"] > *{
   display:block !important;
   width:auto !important;
   margin:0 !important;
@@ -351,7 +352,7 @@ Layout:
 }
 
 /* total - hàng 3 phải */
-.list-page tbody td[data-field="tongthanhtoan"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="tongthanhtoan"]{
   grid-area:total;
   justify-content:flex-end;
   text-align:right;
@@ -360,7 +361,7 @@ Layout:
 }
 
 /* note - hàng 4 trái */
-.list-page tbody td[data-field="note"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="note"]{
   grid-area:note;
   justify-content:flex-start;
   text-align:left;
@@ -368,7 +369,7 @@ Layout:
 }
 
 /* paid - hàng 4 phải */
-.list-page tbody td[data-field="tien_tt"]{
+.tab-host:not([data-page="matrix"]) .list-page tbody td[data-field="tien_tt"]{
   grid-area:paid;
   justify-content:flex-end;
   text-align:right;
@@ -380,7 +381,7 @@ Layout:
   INPUT / SELECT nếu có trong list
   ===================================================== */
 
-  .list-page tbody .table-input{
+.tab-host:not([data-page="matrix"]) .list-page tbody .table-input{
     width:140px;
     max-width:100%;
     margin-left:auto;
@@ -388,13 +389,13 @@ Layout:
     box-sizing:border-box;
   }
 
-  .list-page tbody .dropdown-select{
+.tab-host:not([data-page="matrix"]) .list-page tbody .dropdown-select{
     width:140px;
     max-width:100%;
     margin-left:auto;
   }
 
-  .list-page tbody .dropdown-select-trigger{
+.tab-host:not([data-page="matrix"]) .list-page tbody .dropdown-select-trigger{
     width:35px;
     max-width:100%;
     margin-right:auto;
@@ -404,7 +405,7 @@ Layout:
   ACTIONS
   ===================================================== */
 
-  .list-page tbody td.row-actions{
+.tab-host:not([data-page="matrix"]) .list-page tbody td.row-actions{
     grid-area:actions;
 
     display:flex;
@@ -419,19 +420,19 @@ Layout:
     background:none;
   }
 
-  .list-page tbody td.row-actions::before{
+.tab-host:not([data-page="matrix"]) .list-page tbody td.row-actions::before{
     display:none !important;
     content:none !important;
   }
 
-  .list-page tbody .row-btn{
+.tab-host:not([data-page="matrix"]) .list-page tbody .row-btn{
     padding:0 3px;
     border-radius:10px;
     font-size:13px;
     line-height:1;
   }
 
-  .list-page tbody .icon-btn{
+.tab-host:not([data-page="matrix"]) .list-page tbody .icon-btn{
     width:34px;
     min-width:34px;
     padding:0 3px;
@@ -445,13 +446,13 @@ Layout:
   EMPTY
   ===================================================== */
 
-  .list-page tbody tr.empty-row{
+.tab-host:not([data-page="matrix"]) .list-page tbody tr.empty-row{
     display:block !important;
     padding:18px 14px;
     text-align:center;
   }
 
-  .list-page tbody tr.empty-row td{
+.tab-host:not([data-page="matrix"]) .list-page tbody tr.empty-row td{
     display:block !important;
     width:100% !important;
     margin:0 !important;
@@ -462,12 +463,12 @@ Layout:
     min-height:0 !important;
   }
 
-  .list-page tbody tr.empty-row td::before{
+.tab-host:not([data-page="matrix"]) .list-page tbody tr.empty-row td::before{
     display:none !important;
     content:none !important;
   }
 
-  .list-page tbody tr:has(.dropdown-menu.open){
+.tab-host:not([data-page="matrix"]) .list-page tbody tr:has(.dropdown-menu.open){
     z-index:1000;
   }
 
@@ -475,14 +476,14 @@ Layout:
   FOOTER
   ===================================================== */
 
-  .list-footer{
+.tab-host:not([data-page="matrix"]) .list-footer{
     display:flex;
     align-items:center;
     justify-content:flex-end;
     padding:12px 4px 4px;
   }
 
-  .list-total{
+.tab-host:not([data-page="matrix"]) .list-total{
     font-size:14px;
     line-height:1.4;
   }

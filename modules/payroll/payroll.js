@@ -33,6 +33,23 @@ renderDeductTable
 }
 from "./payroll-render.js"
 
+import {
+    createMonthpicker
+}
+from "/js/ui/init-datepicker.js"
+
+import {
+  renderDropdownSelect,
+  getDropdownValue,
+  bindDropdownSelect
+}
+from "/js/components/dropdown-select.js"
+
+import {
+  bindDropdownMenus
+}
+from "/js/components/dropdown-menu.js"
+
 function $(id){
 
   return state.root
@@ -95,6 +112,14 @@ export async function init(
       "0"
     )
 
+  createMonthpicker(
+    state.monthInput
+  ) 
+  
+
+  bindDropdownMenus()
+  bindDropdownSelect()  
+
   await loadEmployees()
 
   $("btn-load")
@@ -103,10 +128,19 @@ export async function init(
     render
   )
 
-  state.employeeSelect
-  ?.addEventListener(
+  state.employeeSelect.addEventListener(
     "change",
-    render
+    e => {
+
+      if(
+        e.target.classList.contains(
+          "dropdown-select-trigger"
+        )
+      ){
+        render()
+      }
+
+    }
   )
 
   state.monthInput
@@ -148,33 +182,36 @@ async function loadEmployees(){
 
   )
 
-  state.employeeSelect
-  .innerHTML =
+const options = rows.map(r=>({
 
-    rows.map(r=>`
+    value:r.id,
 
-      <option
-        value="${r.id}"
-      >
+    label:`${r.code} - ${r.name}`
 
-        ${r.code}
-        -
-        ${r.name}
+}))
 
-      </option>
+if(
+    !state.employeeId &&
+    rows.length
+){
+    state.employeeId =
+    rows[0].id
+}
 
-    `).join("")
+state.employeeSelect.innerHTML =
+renderDropdownSelect({
 
-  if(
-    state.employeeId
-  ){
+    value:state.employeeId,
 
-    state.employeeSelect
-    .value =
+    options,
 
-      state.employeeId
+    field:"employee",
 
-  }
+    allowEmpty:false,
+
+    emptyText:"Chọn nhân viên"
+
+  })
 
 }
 
@@ -185,7 +222,9 @@ async function render(){
 
   const id_employee =
   Number(
-    state.employeeSelect.value || 0
+    getDropdownValue(
+      state.employeeSelect
+    )
   )
 
   if(

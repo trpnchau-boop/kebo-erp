@@ -1,0 +1,26 @@
+@media (max-width:768px){
+
+    #btn-load{
+        display:none;
+    }
+
+    #filter-kho .dropdown-select.stock-filter{
+        min-width: 100px;
+        padding: 0 0 0 6px;
+    }
+
+    .toolbar-filter,
+    .toolbar-actions,
+    .toolbar-export{
+        gap:0px;
+    }
+
+    .toolbar-filter{
+        gap:0px;
+        margin-left: auto;
+    }    
+
+    .toolbar-export{
+        gap:10px;
+    }    
+}

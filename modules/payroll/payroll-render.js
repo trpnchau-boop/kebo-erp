@@ -6,6 +6,11 @@ formatDecimal
 }
 from "../../js/core/format.js"
 
+import {
+  renderDropdownSelect
+}
+from "/js/components/dropdown-select.js"
+
 export function renderIncomeTable(
 
   incomes,
@@ -102,37 +107,42 @@ export function renderIncomeTable(
 
       `
 
-      standardHtml = `
+const options = rates.map(r => ({
 
-        <select
-          class="commission-rate"
-          data-revenue="${commissionInfo.revenue}"
-          style="width:100%"
-        >
+    value:r.rate,
 
-          ${rates.map(r=>`
+    label:r.rate + "%",
 
-            <option
-              value="${r.rate}"
-              data-min="${r.dinhmuc_min}"
-              data-max="${r.dinhmuc_max}"
-              ${
-                Number(r.rate) ===
-                Number(tc)
-                ? "selected"
-                : ""
-              }
-            >
+    dataset:{
 
-              ${r.rate}%
-              
-            </option>
+        min:r.dinhmuc_min,
 
-          `).join("")}
+        max:r.dinhmuc_max
 
-        </select>
+    }
 
-      `
+}))
+
+standardHtml =
+
+renderDropdownSelect({
+
+    value:tc,
+
+    options,
+
+    className:"commission-rate",
+
+    allowEmpty:false,
+
+    emptyText:"Chọn %",
+
+    dataset:{
+        revenue:
+        commissionInfo.revenue
+    }
+
+})
 
     }
     else{

@@ -8,3 +8,61 @@ body{
     height:100%;
     overflow:hidden;
 }
+*{
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+}
+
+*::-webkit-scrollbar{
+    display:none;
+}
+[hidden]{
+    display:none !important;
+}
+#login-overlay[hidden]{
+    display:none !important;
+}
+
+#btn-auth{
+    position:relative;
+    width:36px;
+    height:36px;
+    padding:0;
+
+    border:#EFEEF1;
+    background:transparent;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#btn-auth::before{
+    content:"";
+
+    position:absolute;
+
+    width:58px;
+    height:58px;
+
+    background:url("/images/login.webp") center/contain no-repeat;
+
+    z-index:9999;
+    pointer-events:none; /* nếu không muốn chặn click */
+}
+
+#btn-auth.logout::before{
+    background-image:url("/images/logout.webp");
+}
+
+#btn-auth:hover{
+    opacity:.75;
+    background:#f3f4f6;
+    border-radius:999px;
+    transform:scale(1.08);
+}
+
+#btn-auth:active{
+    transform:translateY(-1px);
+}

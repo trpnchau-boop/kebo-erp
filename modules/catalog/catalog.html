@@ -1,37 +1,38 @@
 <div id="catalog-page">
   
-<div class="toolbar">
+  <div class="toolbar">
+    <div class="toolbar-catalog">
 
+      <div class="catalog-selection">
+        <label class="catalog-check-all">
+          <input
+            type="checkbox"
+            id="catalog-check-all"
+          >
+          Chọn tất cả
+        </label>
 
-    <label class="catalog-check-all">
-      <input
-        type="checkbox"
-        id="catalog-check-all"
+        <span id="catalog-selected-count"></span>
+      </div>
+  
+      <button
+        id="btn-new-products"
+        class="new-btn"
+        title="Sản phẩm mới"
       >
-      Chọn tất cả
-    </label>
+        <span class="star-wrap"> 
+          <img
+            src="/images/hot-star.webp"
+            class="hot-icon"
+            alt=""
+          > 
+          <span class="spark spark1"></span>
+          <span class="spark spark2"></span>
+        </span>  
 
-    <span id="catalog-selected-count"></span>
+      </button>
 
-    <button
-      id="btn-new-products"
-      class="new-btn"
-      title="Sản phẩm mới"
-    >
-    <span class="star-wrap">
-
-     <img
-       src="/images/hot-star.webp"
-       class="hot-icon"
-       alt=""
-      > 
-      <span class="spark spark1"></span>
-      <span class="spark spark2"></span>
-    </span>  
-
-    </button>
-
-
+    </div>
 
     <div class="search-box">
       <input id="catalog-search" type="text" placeholder="Search..." />
@@ -41,40 +42,44 @@
       </button>
     </div>    
 
-    <div id="catalog-group"></div>
+    <div class="toolbar-export">
+      <div id="catalog-group"></div>
 
-    <button id="btn-share-selected"
-            class="excel-btn"
-            title="Chia sẻ">
-      <img
-        src="/icons/share.svg"
-        alt="Import"
-      >
-    </button>     
+      <button id="btn-share-selected"
+              class="excel-btn"
+              title="Chia sẻ">
+        <img
+          src="/icons/share.svg"
+          alt="Import"
+        >
+      </button>   
+    </div> 
+    
+    <div class="toolbar-filter">
+      <button id="btn-export-selected"
+              class="excel-btn"
+              title="Tải JPG">
+        <img
+          src="/icons/jpg.svg"
+          alt="Import"
+        >
+      </button>    
 
-    <button id="btn-export-selected"
-            class="excel-btn"
-            title="Tải JPG">
-      <img
-        src="/icons/jpg.svg"
-        alt="Import"
-      >
-    </button>    
-
-    <button id="btn-pdf-selected"
-            class="excel-btn"
-            title="Tải PDF">
-      <img
-        src="/icons/pdf.svg"
-        alt="Import"
-      >
-    </button>   
+      <button id="btn-pdf-selected"
+              class="excel-btn"
+              title="Tải PDF">
+        <img
+          src="/icons/pdf.svg"
+          alt="Import"
+        >
+      </button>   
+    </div>  
 
 
 
-</div>
+  </div>
 
-  <div"
+  <div
     id="catalog-grid"
   ></div>
 

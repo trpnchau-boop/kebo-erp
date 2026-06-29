@@ -1,0 +1,58 @@
+.payroll-title{
+
+    display: flex;
+    font-size: 18px;
+    font-weight: 700;
+    margin-right: auto;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.payroll-items{
+
+    display: flex;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+    color:#f97316
+
+}
+
+#payroll .formula-input{
+
+    border:none !important;
+    outline:none !important;
+    background:transparent;
+    box-shadow:none !important;
+
+    -webkit-appearance:none;
+    appearance:none;
+
+    padding:0;
+}
+
+#sum-income,
+#sum-deduct{
+
+    color:#F97316; /* cam */
+
+}
+
+.commission-rate{
+    min-width:80px;
+}
+
+.commission-rate .dropdown-panel{
+    right:0;
+    left:auto;
+    min-width:100%;
+}
+
+.commission-rate.open::before{
+    right:auto;
+    left:12px;
+}

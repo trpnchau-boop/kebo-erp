@@ -1,101 +1,104 @@
 <div class="toolbar">
 
-<div class="search-box">
-  <input id="search-stock" type="text" placeholder="Search..." />
+  <div class="search-box">
+    <input id="search-stock" type="text" placeholder="Search..." />
 
-  <button class="search-btn">
-    🔍
-  </button>
-</div>
+    <button class="search-btn">
+      🔍
+    </button>
+  </div>
 
-<div id="filter-kho"></div>
+  <div class="toolbar-actions">
+    <div id="filter-kho"></div>
+    <div id="filter-status"></div>
+  </div>
 
-<div id="filter-status"></div>
+  <div class="toolbar-export">
+    <button id="btn-mode" class="toolbar-action">
+      Kiểm kê
+    </button>
 
-<button id="btn-mode" class="toolbar-action">
-Kiểm kê
-</button>
+    <button id="btn-transfer" class="toolbar-action">
+      Chuyển kho
+    </button>
 
-<button id="btn-transfer" class="toolbar-action">
-Chuyển kho
-</button>
+      <button
+        class="toolbar-action"
+        id="btn-save-check"
+        style="display:none">
+        Lưu
+      </button>
 
-<button
-class="toolbar-action"
-id="btn-save-check"
-style="display:none">
-Lưu kiểm kê
-</button>
+      <div
+        id="transfer-to"
+        class="transfer-col"
+        style="display:none"
+      ></div>
 
-<!-- ===== TRANSFER HEADER ===== -->
-
-<div
-  id="transfer-to"
-  class="transfer-col"
-  style="display:none"
-></div>
-
-<button
-id="btn-save-transfer"
-class="toolbar-action transfer-col"
-style="display:none">
-Lưu chuyển kho
-</button>
-
-<button id="btn-refresh"> </button>
+      <button
+        id="btn-save-transfer"
+        class="toolbar-action transfer-col"
+        style="display:none">
+        Lưu chuyển kho
+      </button>
+  </div>
+  
+  <div class="toolbar-filter">
+    <button id="btn-refresh"> </button>
+  </div>
 
 </div>
 
 
 <div class="list-page">
 
-<table>
+  <table>
 
-<thead>
-<tr>
+    <thead>
+      <tr>
 
-<th width="110">Mã SP</th>
-<th>Tên sản phẩm</th>
-<th width="140">Kho</th>
-<th width="110">Tồn kho</th>
+        <th width="110">Mã SP</th>
+        <th>Tên sản phẩm</th>
+        <th width="140">Kho</th>
+        <th width="110">Tồn kho</th>
 
-<th
-width="110"
-class="check-col"
-style="display:none">
-Thực đếm
-</th>
+        <th
+          width="110"
+          class="check-col"
+          style="display:none">
+          Thực đếm
+        </th>
 
-<th
-width="110"
-class="check-col"
-style="display:none">
-Lệch
-</th>
+        <th
+          width="110"
+          class="check-col"
+          style="display:none">
+          Lệch
+        </th>
 
-<th
-width="110"
-class="transfer-col"
-style="display:none">
-SL chuyển
-</th>
+        <th
+          width="110"
+          class="transfer-col"
+          style="display:none">
+          SL chuyển
+        </th>
 
-<th width="120">Giá vốn</th>
-<th width="140">Giá trị tồn</th>
+        <th width="120">Giá vốn</th>
+        <th width="140">Giá trị tồn</th>
 
-</tr>
-</thead>
+      </tr>
+    </thead>
 
-<tbody id="stock-body">
+    <tbody id="stock-body">
 
-<tr>
-<td colspan="10" style="text-align:center;padding:20px">
-Đang tải...
-</td>
-</tr>
+      <tr>
+        <td colspan="10" style="text-align:center;padding:20px">
+          Đang tải...
+        </td>
+      </tr>
 
-</tbody>
+    </tbody>
 
-</table>
+  </table>
 
 </div>

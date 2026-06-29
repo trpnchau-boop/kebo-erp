@@ -27,7 +27,7 @@
   cursor:pointer;
 }
 
-.dropdown-select.empty:not(.stock-filter):not(.print-filter)
+.dropdown-select.empty:not(.stock-filter):not(.print-filter):not(.commission-rate)
 .dropdown-select-trigger{
 
   width:36px;

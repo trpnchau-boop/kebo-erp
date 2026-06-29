@@ -245,7 +245,19 @@ function renderCard(
     <div
       class="catalog-card"
     >
-
+    ${
+      p.catalog_priority
+        ? `
+          <div class="card-hot">
+            <img
+              src="/images/hot-star.webp"
+              class="hot-icon"
+              alt=""
+            >
+          </div>
+        `
+        : ""
+    }
     <div
       class="card-toolbar"
     >

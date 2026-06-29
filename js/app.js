@@ -1,21 +1,22 @@
-import {preloadRelations} from "/js/relation-cache.js"
 import {closeSidebarPanel} from "./sidebar-panel.js"
-import {initKeyboard} from "./keyboard.js"
-import { db } from './supabase.js'
+
 import {
   openTab,
-  restoreTabs,
   activateTab
 } from "./tabs.js"
-import {
-  initNotifications
-}
-from "/js/notification/notification-ui.js"
-import {
-  loadPermissions
-}
-from "./core/permission.js"
 
+import { getSession, logout } from "./auth.js"
+import { initERP } from "./init-erp.js"
+import { loadPage } from "./router.js"
+
+import {
+  openLoginPopup
+}
+from "./login-popup.js"
+
+const PUBLIC_PAGES = [
+  "catalog"
+]
 /* =========================
 TITLE
 ========================= */
@@ -263,63 +264,129 @@ INIT (QUAN TRỌNG NHẤT)
 
 window.addEventListener("DOMContentLoaded", async ()=>{
 
-  const { data: { session }, error: sessionError } = await db.auth.getSession()
+  const session =
+    await getSession()
 
-  if (!session) {
-    console.warn("❌ Chưa login → redirect")
-    window.location.href = "/login.html"
+  const btnAuth =
+    document.getElementById(
+      "btn-auth"
+  )  
+
+  /* =========================
+  PUBLIC MODE
+  ========================= */
+
+  if(!session){
+
+    const page =
+      parseHash()?.page
+
+    if(
+      page &&
+      !PUBLIC_PAGES.includes(page)
+    ){
+
+      location.hash = "#/catalog"
+
+    }
+
+    btnAuth.textContent = "";
+    btnAuth.classList.remove("logout");
+
+    btnAuth.onclick =
+      openLoginPopup
+
+    document.getElementById("sidebar").hidden = true
+
+    document.getElementById("btn-toggle").hidden = true
+
+    document.getElementById("page-title").textContent =
+      "KEBO Catalog"
+
+    await loadPage(
+      "catalog",
+      {},
+      document.getElementById("content")
+    )
+
+    if(!location.hash){
+
+      location.hash = "#/catalog"
+
+    }
+
     return
   }
 
-  // =========================
-  // 2. LOAD USER
-  // =========================
-  window.currentUser = session.user
+  /* =========================
+  ERP MODE
+  ========================= */
 
-  await loadPermissions()
+  document.getElementById("sidebar").hidden = false
 
+  document.getElementById("btn-toggle").hidden = false
 
-  // =========================
-  // 5. APP INIT
-  // =========================
-  initKeyboard()
+  btnAuth.textContent = "";
+  btnAuth.classList.add("logout");
 
-  await preloadRelations()
+  btnAuth.onclick =
+    async ()=>{
 
-  initNotifications()
+      await logout()
 
-  await new Promise(r=>setTimeout(r,0))
+      location.reload()
 
-  await restoreTabs()
+    }
 
-  if(document.querySelector("#tabs-bar .tab")){
-   
-    return
-  }
+  await initERP(session)
 
   if(location.hash){
-  
-    syncFromHash()
-    return
-  }
 
-  openTab(
-    "dashboard_main",
-    "Dashboard",
-    "dashboard",
-    {}
-  )
+    syncFromHash()
+
+  }else{
+
+    setPageTitle("Dashboard")
+
+  }
 
 })
 /* =========================
 BACK / FORWARD
 ========================= */
 
-window.addEventListener("hashchange",()=>{
+window.addEventListener(
+  "hashchange",
+  async ()=>{
 
-  if(window.ignoreHashChange) return
+    if(window.ignoreHashChange)
+      return
 
-  syncFromHash()
+    const session =
+      await getSession()
 
-})
+    if(!session){
+
+      const page =
+        parseHash()?.page
+
+      if(
+        page &&
+        page !== "catalog"
+      ){
+
+        location.hash =
+          "#/catalog"
+
+        return
+
+      }
+
+      return
+    }
+
+    syncFromHash()
+
+  }
+)
 

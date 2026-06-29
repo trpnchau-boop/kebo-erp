@@ -14,6 +14,14 @@ recalcIncomeRows
 }
 from "./payroll-engine.js"
 
+import {
+  getDropdownValue
+}
+from "/js/components/dropdown-select.js"
+
+import {state}
+from "./payroll-state.js"
+
 export function bindInputs(root){
 
   root
@@ -94,76 +102,73 @@ export function bindInputs(root){
 
 export function bindCommission(){
 
-  document
+  state.root
   .querySelectorAll(
-    ".commission-rate"
+    ".dropdown-select.commission-rate"
   )
-  .forEach(sel=>{
+  .forEach(dropdown=>{
 
-    sel.onchange = ()=>{
-
-      const revenue =
-      Number(
-        sel.dataset.revenue || 0
+    const trigger =
+      dropdown.querySelector(
+        ".dropdown-select-trigger"
       )
 
-      const rate =
-      Number(
-        sel.value || 0
-      )
+    trigger?.addEventListener(
+      "change",
+      ()=>{
 
-      const td =
-      sel.closest("tr")
-      .querySelector(
-        ".actual-cell"
-      )
+        const min =
+Number(trigger.dataset.min || 0)
 
-      const option =
+const max =
+Number(trigger.dataset.max || 0)
 
-        sel.options[
-          sel.selectedIndex
-        ]
+dropdown
+.closest("tr")
+.querySelector(".commission-range")
+.innerText =
 
-      const min =
+"└─ Định mức: " +
 
+formatDecimal(min) +
+
+" - " +
+
+formatDecimal(max)
+
+        const revenue =
         Number(
-          option.dataset.min || 0
+          trigger.dataset.revenue || 0
         )
-        
-      const max =
-      
+
+        const rate =
         Number(
-          option.dataset.max || 0
+          getDropdownValue(
+            dropdown
+          )
         )
 
-      sel
-      .closest("tr")
-      .querySelector(
-        ".commission-range"
-      )
-      .innerText =
-
-        "└─ Định mức: " +
-
-        formatDecimal(min) +
-
-        " - " +
-
-       formatDecimal(max)
-
-      td.innerText =
-      formatDecimal(
-
-        Math.round(
-          revenue *
-          rate / 100
+        const td =
+        dropdown
+        .closest("tr")
+        .querySelector(
+          ".actual-cell"
         )
 
-      )
+        td.innerText =
+        formatDecimal(
 
-      calcNet()
+          Math.round(
+            revenue *
+            rate / 100
+          )
 
-    }
+        )
+
+        calcNet()
+
+      }
+    )
 
   })
 

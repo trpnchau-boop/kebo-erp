@@ -25,12 +25,26 @@ display:flex;
 flex-direction:column;
 min-height:0; 
 overflow:hidden;
-padding:0px 24px 24px 24px ;
+padding:0 24px;
 flex:1;
 overflow:auto;
 background:#EFEEF1;
 border-top:none;
 border-radius:none;
+}
+
+.tab-host{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+}
+
+.tab-host.active{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
 }
 
 .catalog-page{
@@ -46,12 +60,11 @@ border-radius:none;
 
 #catalog-page{
     flex:1;
-    display:flex;
-    flex-direction:column;
+    display:block;
 
     min-height:0;      /* QUAN TRỌNG */
 
-    overflow:hidden;
+    overflow:visible;
 }
 
 #catalog-grid{

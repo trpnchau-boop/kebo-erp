@@ -47,7 +47,7 @@ export function toggleCheckMode(root){
   if(btnMode){
     btnMode.textContent =
     stockState.checkMode
-    ? "Thoát kiểm kê"
+    ? "Thoát"
     : "Kiểm kê"
   }
 

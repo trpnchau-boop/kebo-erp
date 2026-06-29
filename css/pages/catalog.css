@@ -1,3 +1,29 @@
+.catalog-selection{
+    display:flex;
+    align-items:center;
+    gap:2px;
+    margin-right: auto;
+    flex-shrink:0;
+}
+
+.catalog-card{
+    position:relative;
+}
+
+.card-hot{
+    position:absolute;
+    top:-3px;
+    left:13px;
+    z-index:20;
+    pointer-events:none;
+}
+
+.card-hot .hot-icon{
+    width:34px;
+    height:34px;
+    display:block;
+}
+
 .new-btn{
 
     width:25px;
@@ -270,7 +296,7 @@
 
     padding:1px 7px;
 
-    margin-bottom: 20px;
+    margin-top: 50px;
     margin-right: 26px;
 
     border-radius:999px;
@@ -379,3 +405,4 @@
     }
 
 }
+

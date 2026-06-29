@@ -34,7 +34,7 @@ export function toggleTransferMode(root){
   if(btnTransfer){
     btnTransfer.textContent =
     stockState.transferMode
-    ? "Thoát chuyển kho"
+    ? "Thoát"
     : "Chuyển kho"
   }
 
