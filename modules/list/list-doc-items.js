@@ -68,11 +68,11 @@ toolbar.innerHTML = `
   <input id="search-code" placeholder="Số CT">
   <input id="search-customer" placeholder="Khách hàng">
   <input id="search-product" placeholder="Sản phẩm">
-
+</div>
   <button class="search-btn">
     🔍
   </button>
-</div>
+
 </div>
 
 <div class="date-filter">

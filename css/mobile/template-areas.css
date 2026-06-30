@@ -1,0 +1,24 @@
+@media (max-width: 768px){
+
+.tab-host:not([data-page="matrix"]):not([data-tab="list_document_items"]) .list-page tbody tr{
+  grid-template-areas:
+    "customer customer"
+    "code day"
+    "employee total"
+    "note paid"
+    "actions actions";
+}
+
+
+
+.tab-host[data-tab="list_document_items"] .list-page tbody tr{
+
+    grid-template-areas:
+        "day day"
+        "code customer"
+        "product note"
+        "qty unit"
+        "price total";
+}
+
+}

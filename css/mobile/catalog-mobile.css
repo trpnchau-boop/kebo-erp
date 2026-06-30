@@ -1,0 +1,11 @@
+@media (max-width:768px){
+
+    .toolbar#catalog-login{
+        display:grid !important;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+        justify-content:initial;
+        padding: 12px 12px 6px 12px;
+    }
+
+}

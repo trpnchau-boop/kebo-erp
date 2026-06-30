@@ -27,6 +27,7 @@
   cursor:pointer;
 }
 
+.list-page:not(.table-set_price_rule)
 .dropdown-select.empty:not(.stock-filter):not(.print-filter):not(.commission-rate)
 .dropdown-select-trigger{
 

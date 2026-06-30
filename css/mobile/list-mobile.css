@@ -16,20 +16,8 @@
     width:97%;
     min-width:0;
 }
-
-
-
-[data-tab="list_document_items"] .list-page tbody tr{
-
-    grid-template-areas:
-        "day day"
-        "code customer"
-        "product note"
-        "qty unit"
-        "price total";
 }
 
-}
 @media (max-width:768px){
 
 [data-tab="list_document_items"] td[data-field="code"]{
@@ -71,11 +59,7 @@
 }
 
 }
-@media (max-width:768px){
-
-.search-btn {
-    transform: translate(50%, -52%);
-}    
+@media (max-width:768px){   
 
 [data-tab="list_document_items"] .search-group{
     display:flex;

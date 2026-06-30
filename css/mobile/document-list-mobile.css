@@ -75,7 +75,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
     background:#fff;
     border-radius:5px;
     box-sizing:border-box;
-    top: -2px
+
   }
 
   /* =========================
@@ -88,7 +88,7 @@ DOCUMENT LIST MOBILE - SALE FINAL
   }
 
   .toolbar .search-box{
-    width: 180px;
+    width: 190px;
     min-width:0;
   }
 
@@ -222,12 +222,6 @@ DOCUMENT LIST MOBILE - SALE FINAL
 
   display:grid !important;
   grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  grid-template-areas:
-    "customer customer"
-    "code day"
-    "employee total"
-    "note paid"
-    "actions actions";
   column-gap:16px;
   row-gap:0;
   align-items:stretch;
@@ -487,6 +481,15 @@ Layout:
     font-size:14px;
     line-height:1.4;
   }
+
+.tab-host[data-tab="list_document_items"] .toolbar{
+
+    grid-template-areas:
+        "search search"
+        "from to";
+
+}
+ 
 
   .air-datepicker{
     border:none;

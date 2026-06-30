@@ -45,6 +45,7 @@ border-radius:none;
     display:flex;
     flex-direction:column;
     min-height:0;
+    overflow: auto;
 }
 
 .catalog-page{
@@ -60,11 +61,12 @@ border-radius:none;
 
 #catalog-page{
     flex:1;
-    display:block;
+    display:flex;
+    flex-direction:column;
 
     min-height:0;      /* QUAN TRỌNG */
 
-    overflow:visible;
+    overflow:hidden;
 }
 
 #catalog-grid{

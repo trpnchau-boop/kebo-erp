@@ -1,7 +1,10 @@
 .search-box{
-  position:relative;
-  width:180px;
-  margin-right:18px;
+
+  margin:auto;
+  display:flex;
+  align-items:center;
+  width:320px;
+
 }
 
 .search-box input{
@@ -13,19 +16,17 @@
   border:1px solid #000;
   border-radius:10px;
   background:#fff;
+  flex:1;
+  padding-right:20px;
 }
 
 .search-btn{
-  position:absolute;
 
-  top:50%;
-  right:0;
-
-  transform:translate(50%,-65%);
-
+  margin-left:-17px;
   width:34px;
   height:34px;
-
+  border-radius:50%;
+  flex-shrink:0;
   border:1px solid #000;
   border-radius:50%;
 
@@ -39,10 +40,13 @@
   position:relative;
   width:540px;
   margin-right:18px;
+      display:flex;
+    align-items:center;
 }
 
 .search-group{
   display:flex;
+  flex:1;
   align-items:center;
 
   height:26px;
@@ -77,10 +81,5 @@
 
 .search-group input:not(:last-child){
   border-right:none;
-}
-
-.print-toolbar .search-btn,
-.search-doc .search-btn{
-  transform:translate(50%,-51%);
 }
 

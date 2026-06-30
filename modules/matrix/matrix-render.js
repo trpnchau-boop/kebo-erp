@@ -45,7 +45,7 @@ if(config.columnsSource === "days"){
 html += "<tr>"
 
 html += `
-<th rowspan="2">
+<th class="matrix-main-head" rowspan="2">
 ${config.label}
 </th>
 `
@@ -53,7 +53,7 @@ ${config.label}
 if(config.showCount){
 
 html += `
-<th rowspan="2">
+<th class="matrix-main-head" rowspan="2">
 Đếm
 </th>
 `
@@ -63,7 +63,7 @@ html += `
 for(const col of cols){
 
 html += `
-<th>
+<th class="matrix-day-head">
 ${String(col.day).padStart(2,"0")}
 </th>
 `

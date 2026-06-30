@@ -9,6 +9,10 @@
         padding: 0 0 0 6px;
     }
 
+    #matrix-filters{
+        padding: 8px 0 0;
+    }
+
     .toolbar-filter,
     .toolbar-actions,
     .toolbar-export{

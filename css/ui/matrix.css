@@ -1,125 +1,286 @@
-.matrix-table th,
-.matrix-table td{
-  text-align:center;
+.matrix-page{
+    height:calc(100vh - 180px);
+    overflow:auto;
+    margin-top: 12px;
+    border-radius: 5px;
+    background: #fff;
 }
 
-.matrix-table th:first-child,
-.matrix-table td:first-child{
-  text-align:left;
+/* ==========================================================
+MATRIX TABLE
+========================================================== */
+
+.matrix-table{
+    width:max-content;
+    min-width:100%;
+    border-collapse:separate;
+    border-spacing:0;
 }
-/* =========================
+
+/* ==========================================================
+CELL
+========================================================== */
+
+.matrix-table th,
+.matrix-table td{
+
+    padding:10px;
+    white-space:nowrap;
+
+    text-align:left;
+    vertical-align:middle;
+
+    background:#fff;
+    border-bottom: 1px solid #ddd;
+    border-collapse: collapse;
+
+}
+
+
+/* ==========================================================
+HEADER
+========================================================== */
+
+.matrix-table thead th{
+
+    position:sticky;
+
+    top:0;
+
+    background:#fff;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+
+/* ==========================================================
+HEADER ROW 1
+Chấm công | Đếm | 01 02 03 ...
+========================================================== */
+
+.matrix-main-head,
+.matrix-day-head{
+
+    top:0;
+
+}
+
+
+/* ==========================================================
+HEADER ROW 2
+T2 T3 T4 ...
+========================================================== */
+
+.weekday-head{
+
+    top:40px;
+
+}
+
+
+/* ==========================================================
+HEADER Z-INDEX
+========================================================== */
+
+.matrix-day-head{
+    z-index:30;
+}
+
+.weekday-head{
+    z-index:29;
+}
+
+.matrix-main-head{
+    z-index:40;
+}
+
+
+/* ==========================================================
+FIRST COLUMN
+========================================================== */
+
+.employee-cell{
+
+    position:sticky;
+
+    left:0;
+
+    background:#fff;
+
+    text-align:left;
+
+    z-index:20;
+
+}
+
+
+/* ==========================================================
+TOP LEFT CELL
+========================================================== */
+.matrix-main-head:first-child,
+.matrix-table thead th:first-child{
+    position:sticky;
+    left:0;
+}
+
+.matrix-main-head:first-child{
+
+    left:0;
+
+    z-index:60;
+
+    position:sticky;
+    top:0;
+    left:0;
+    z-index:60;
+
+}
+
+
+/* nếu có cột Đếm */
+
+.matrix-main-head:nth-child(2){
+
+    z-index:50;
+
+}
+
+
+/* ==========================================================
 ATTENDANCE CELL
-========================= */
+========================================================== */
 
 .attendance-cell{
 
-  width:28px;
-  min-width:28px;
-  height:40px;
+    width:28px;
+    min-width:28px;
+    height:40px;
 
-  vertical-align:middle;
+    cursor:pointer;
+    user-select:none;
 
-  cursor:pointer;
-
-  user-select:none;
-
-  text-align:center;
+    text-align:center;
+    vertical-align:middle;
 
 }
 
-/* =========================
+
+/* ==========================================================
 MARK
-========================= */
+========================================================== */
 
 .attendance-mark{
 
-  width:18px;
-  height:18px;
+    width:18px;
+    height:18px;
 
-  margin:auto;
-  
-  border:1px solid #9ca3af;
-  border-radius:999px;
+    margin-right: auto;
 
-  display:flex;
-  align-items:center;
-  justify-content:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  font-size:12px;
-  font-weight:700;
+    border:1px solid #9ca3af;
+    border-radius:999px;
 
-  transition:
-    transform .12s ease,
-    box-shadow .12s ease;
+    font-size:12px;
+    font-weight:700;
+
+    transition:
+        transform .12s ease,
+        box-shadow .12s ease;
 
 }
 
-/* =========================
+
+/* ==========================================================
 DRAGGING
-========================= */
+========================================================== */
 
-.attendance-cell.dragging
-.attendance-mark{
+.attendance-cell.dragging .attendance-mark{
 
-  transform:scale(1.08);
+    transform:scale(1.08);
 
-  box-shadow:
-    0 2px 8px rgba(0,0,0,.12);
+    box-shadow:
+        0 2px 8px rgba(0,0,0,.12);
+
+}
+
+
+/* ==========================================================
+HOVER
+========================================================== */
+
+.attendance-cell:hover .attendance-mark{
+
+    transform:scale(1.05);
 
 }
 
-/* =========================
-OPTIONAL HOVER
-========================= */
 
-.attendance-cell:hover
-.attendance-mark{
-
-  transform:scale(1.05);
-
-}
+/* ==========================================================
+PERMISSION CHECK
+========================================================== */
 
 .matrix-check{
 
-width:18px;
-height:18px;
+    width:18px;
+    height:18px;
 
-margin:auto;
+    margin-right:auto;
 
-border:1px solid #9ca3af;
-border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-display:flex;
-align-items:center;
-justify-content:center;
+    cursor:pointer;
+    user-select:none;
 
-font-size:12px;
-font-weight:700;
+    border:1px solid #9ca3af;
+    border-radius:999px;
 
-cursor:pointer;
-user-select:none;
+    font-size:12px;
+    font-weight:700;
+
+    transition:transform .12s ease;
 
 }
 
 .matrix-check:hover{
-  transform:scale(1.08);
+
+    transform:scale(1.08);
+
 }
 
 .matrix-check:active{
-  transform:scale(.92);
+
+    transform:scale(.92);
+
 }
 
+
+/* ==========================================================
+STATE
+========================================================== */
+
 .state-none{
-  background:#fff;
-  border:1px solid #d1d5db;
+
+    background:#fff;
+    border-color:#d1d5db;
+
 }
 
 .state-extra{
-  background:#dbeafe;
-  color:#2563eb;
+
+    background:#dbeafe;
+    color:#2563eb;
+
 }
 
 .state-role{
-  background:#dcfce7;
-  color:#16a34a;
+
+    background:#dcfce7;
+    color:#16a34a;
+
 }
