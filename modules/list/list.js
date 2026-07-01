@@ -1,6 +1,5 @@
 import { getAll, deleteRow, updateRow } from "../../js/crud.js"
 import { schema } from "/js/schema/index.js"
-import { loadPage } from "../../js/router.js"
 import { getText } from "/js/relation-cache.js"
 import { openFormSidebar } from "../form/open-sidebar-form.js"
 import { openBarcodePopup } from "./list-barcode.js"
@@ -11,35 +10,50 @@ import {
 }
 from "../../js/tabs.js"
 import {formatMoney} from "../../js/core/format.js"
+import {
+  createTableSelection
+}
+from "/js/core/table-selection.js"
 
 /* =========================
 INIT
 ========================= */
 
-export async function init(params, root) {
+export async function init(params, root){
 
   const table =
+
     params.table ||
+
     params.type ||
+
     ""
 
-  if (!table) {
+  if(!table){
+
     root.innerHTML =
-      `<div style="padding:16px">Thiếu tên bảng</div>`
+
+      `<div style="padding:16px">
+        Thiếu tên bảng
+      </div>`
+
     return
+
   }
 
   const state = {
+
     root,
     table,
 
-    rows: [],
-    filtered: [],
+    rows:[],
+    filtered:[],
 
     fields:
+
       schema[table]?.fields || {},
 
-    listFields: [],
+    listFields:[],
 
     thead:
       root.querySelector("#thead"),
@@ -47,27 +61,92 @@ export async function init(params, root) {
     tbody:
       root.querySelector("#tbody"),
 
-    visibleRows: 100,
-    step: 100,
+    visibleRows:100,
+    step:100,
 
-    sortField: "",
-    sortDir: 1,
+    sortField:"",
+    sortDir:1,
 
-    checked: new Set()
+    selection:null
+
   }
 
-  if (!state.thead || !state.tbody) return
+  if(
+    !state.thead ||
+    !state.tbody
+  ){
+    return
+  }
 
   state.listFields =
+
     Object.keys(state.fields)
-      .filter(k =>
-        !state.fields[k].hidden &&
-        state.fields[k].showInList
+
+      .filter(
+
+        key =>
+
+          !state.fields[key].hidden &&
+
+          state.fields[key].showInList
+
       )
 
   setupTitle(state)
+
   setupButtons(state)
+
   buildHeader(state)
+
+  const totalEl =
+    root.querySelector(
+      "#list-total"
+    )
+
+  const selectedEl =
+    root.querySelector(
+      "#list-selected"
+    )
+
+  state.selection =
+
+    createTableSelection({
+
+      thead:state.thead,
+
+      tbody:state.tbody,
+
+      checkAllSelector:
+        "#check-all",
+
+      rowSelector:
+        ".row-check",
+
+      onChange({
+
+        count,
+        total
+
+      }){
+
+        if(totalEl){
+
+          totalEl.textContent =
+            total
+
+        }
+
+        if(selectedEl){
+
+          selectedEl.textContent =
+            count
+
+        }
+
+      }
+
+    })
+
   bindEvents(state)
 
   await load(state)
@@ -326,29 +405,6 @@ function buildHeader(state) {
     }
   )
 
-  /* check all */
-  state.root
-    .querySelector("#check-all")
-    ?.addEventListener(
-      "change",
-      e => {
-
-        const checked =
-          e.target.checked
-
-        const rows =
-          getVisibleRows(state)
-
-        rows.forEach(r => {
-          if (checked)
-            state.checked.add(String(r.id))
-          else
-            state.checked.delete(String(r.id))
-        })
-
-        render(state)
-      }
-    )
 }
 
 /* =========================
@@ -411,7 +467,7 @@ async function render(state) {
 
   state.tbody.innerHTML = html
 
-  syncCheckAll(state)
+  state.selection.sync()
 }
 
 /* =========================
@@ -421,7 +477,7 @@ ROW
 async function buildRow(row, state) {
 
   const checked =
-    state.checked.has(
+    state.selection.has(
       String(row.id)
     )
       ? "checked"
@@ -433,7 +489,7 @@ async function buildRow(row, state) {
         <input
           type="checkbox"
           class="row-check"
-          data-id="${row.id}"
+          value="${row.id}"
           ${checked}>
       </td>
   `
@@ -786,21 +842,6 @@ async function handleBodyChange(e, state) {
     return
 
   }
-
-  const cb =
-    e.target.closest(".row-check")
-
-  if (!cb) return
-
-  const id =
-    String(cb.dataset.id)
-
-  if (cb.checked)
-    state.checked.add(id)
-  else
-    state.checked.delete(id)
-
-  syncCheckAll(state)
 }
 
 /* =========================
@@ -834,7 +875,7 @@ BULK EDIT
 function bulkEdit(state) {
 
   const ids =
-    [...state.checked]
+    state.selection.getIds()
 
   if (!ids.length) {
     alert("Chưa chọn dòng")
@@ -859,7 +900,7 @@ BULK DELETE
 async function bulkDelete(state) {
 
   const ids =
-    [...state.checked]
+    state.selection.getIds()
 
   if (!ids.length) {
     alert("Chưa chọn dòng")
@@ -879,7 +920,7 @@ async function bulkDelete(state) {
     )
   )
 
-  state.checked.clear()
+  state.selection.clear()
 
   await load(state)
 }
@@ -899,11 +940,7 @@ async function removeOne(id, state) {
   }else{
     await deleteRow(state.table, id)
   }
-
-  state.checked.delete(
-    String(id)
-  )
-
+  state.selection.remove(id)
   await load(state)
 }
 
@@ -949,40 +986,6 @@ function handleScroll(state){
   }
 }
 
-/* =========================
-HELPER
-========================= */
-
-function getVisibleRows(state) {
-
-  return state.filtered
-    .slice(0, state.visibleRows)
-}
-
-function syncCheckAll(state) {
-
-  const el =
-    state.root.querySelector(
-      "#check-all"
-    )
-
-  if (!el) return
-
-  const rows =
-    getVisibleRows(state)
-
-  if (!rows.length) {
-    el.checked = false
-    return
-  }
-
-  el.checked =
-    rows.every(r =>
-      state.checked.has(
-        String(r.id)
-      )
-    )
-}
 
 function stop(e) {
 

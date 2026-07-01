@@ -29,9 +29,9 @@ import {
 from "./bind/document-list-row-actions.js"
 
 import {
-  bindCheckAll
+  createTableSelection
 }
-from "./bind/document-list-selection.js"
+from "/js/core/table-selection.js"
 
 import {
   bindBulkActions
@@ -199,7 +199,40 @@ createDatepicker(
 
     reload
   }
+
   ctx.container = actionsEl
+
+const totalEl =
+  root.querySelector(
+    "#document-list-total"
+  )
+
+const selectedEl =
+  root.querySelector(
+    "#document-list-selected"
+  )
+
+ctx.selection = createTableSelection({
+
+  thead,
+  tbody,
+
+  onChange({
+    count,
+    total
+  }){
+
+    if(totalEl){
+      totalEl.textContent = total
+    }
+
+    if(selectedEl){
+      selectedEl.textContent = count
+    }
+
+  }
+
+})
 
   /* =========================
   TOOLBAR
@@ -247,6 +280,7 @@ createDatepicker(
       schema
 
     )
+    ctx.selection.sync()
 
     /* =====================
     RE-BIND
@@ -264,12 +298,6 @@ createDatepicker(
 
     })
 
-    bindCheckAll({
-
-      thead,
-      tbody
-
-    })
 
   }
 

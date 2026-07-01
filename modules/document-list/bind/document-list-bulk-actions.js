@@ -1,16 +1,16 @@
-import {BULK_ACTION_MAP} from "../actions/bulk/bulk-action-map.js"
-import {getSelectedIds} from "./document-list-selection.js"
+import { BULK_ACTION_MAP }
+from "../actions/bulk/bulk-action-map.js"
 
 export function bindBulkActions(ctx){
 
   const {
-    root,
-    tbody
+    root
   } = ctx
 
   root.addEventListener(
     "click",
     e=>{
+
       const btn =
         e.target.closest(
           "[data-bulk-action]"
@@ -19,13 +19,14 @@ export function bindBulkActions(ctx){
       if(!btn) return
 
       const ids =
-        getSelectedIds(
-          tbody
-        )
+        ctx.selection.getIds()
 
       if(!ids.length){
+
         alert("Chưa chọn chứng từ")
+
         return
+
       }
 
       const action =

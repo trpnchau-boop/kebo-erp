@@ -1,7 +1,7 @@
 .catalog-selection{
     display:flex;
     align-items:center;
-    gap:2px;
+    gap:6px;
     margin-right: auto;
     flex-shrink:0;
 }
@@ -31,9 +31,10 @@
 
     display:flex;
     align-items:center;
-    justify-content:flex-end;
+    justify-content:left;
 
     padding:0;
+    margin-left: 15px;
 
     border:none;
     background:#fff;

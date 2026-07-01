@@ -8,9 +8,6 @@ import {
   BULK_ACTION_MAP
 } from "../actions/bulk/bulk-action-map.js"
 
-import {
-  getSelectedIds
-} from "./document-list-selection.js"
 
 /* =========================================================
 RENDER
@@ -216,9 +213,7 @@ BULK
 function handleBulkAction(ctx){
 
   ctx.ids =
-    getSelectedIds(
-      ctx.tbody
-    )
+    ctx.selection.getIds()
 
   const fn =
     BULK_ACTION_MAP[
@@ -233,6 +228,7 @@ function handleBulkAction(ctx){
     )
 
     return
+
   }
 
   fn(ctx)

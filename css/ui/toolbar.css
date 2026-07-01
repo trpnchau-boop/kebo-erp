@@ -52,11 +52,32 @@
   align-items:center;
   gap:6px;
 
-  font-size:14px;
-  font-weight:500;
+  font-size:15px;
+  font-weight:600;
   color:#6b7280;
 
   cursor:pointer;
+
+}
+
+.list-footer{
+
+    display: flex;
+    align-items: center;
+    padding: 0px;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 14px;
+
+}
+
+.list-chip{
+
+    background: #eef2ff;
+    color: #1e40af;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 700;
 
 }
 
@@ -85,20 +106,20 @@
 #btn-show-all::before{
   content:"◎";
   color:#15803d;
-  font-size:14px;
+  font-size:16px;
 }
 
 #btn-edit-many::before{
   content:"✎";
   color:#3b82f6;
-  font-size:14px;
+  font-size:16px;
 }
 
 #btn-cancel::before,
 #btn-del::before{
   content:"🗑";
   color:#dc2626;
-  font-size:14px;
+  font-size:16px;
 }
 
 #btn-save-draft::before,
@@ -107,6 +128,6 @@
 #btn-save::before{
   content:"💾";
   color:#f97316;
-  font-size:13px;
+  font-size:15px;
 }
 

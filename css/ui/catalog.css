@@ -1,11 +1,11 @@
 #catalog-selected-count{
 
-  width:18px;
-  height:18px;
+  width:25px;
+  height:25px;
 
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:space-between;
   margin-bottom:20px;
 
 
@@ -14,8 +14,8 @@
   background:#eef2ff;
   color:#1e40af;
 
-  font-size:12px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:800;
 
   flex-shrink:0;
 }
