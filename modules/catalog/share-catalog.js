@@ -2,16 +2,19 @@ export async function shareImageFiles(
   files
 ){
 
+  if(!navigator.share){
+
+    alert(
+      "Thiết bị không hỗ trợ chia sẻ"
+    )
+
+    return
+
+  }
+
   if(
-
-    navigator.canShare
-
-    &&
-
-    navigator.canShare({
-      files
-    })
-
+    navigator.canShare &&
+    navigator.canShare({ files })
   ){
 
     await navigator.share({
@@ -27,7 +30,7 @@ export async function shareImageFiles(
   }
 
   alert(
-    "Thiết bị không hỗ trợ Share"
+    "Thiết bị không hỗ trợ chia sẻ"
   )
 
 }

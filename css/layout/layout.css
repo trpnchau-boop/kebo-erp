@@ -13,6 +13,7 @@
   display:flex;
   flex-direction:column;
   height:100vh;
+  min-width: 0;
   background:#EFEEF1;
 
 }
@@ -26,7 +27,6 @@ flex-direction:column;
 min-height:0; 
 overflow:hidden;
 padding:0 24px;
-flex:1;
 overflow:auto;
 background:#EFEEF1;
 border-top:none;
@@ -38,12 +38,14 @@ border-radius:none;
     display:flex;
     flex-direction:column;
     min-height:0;
+    min-width: 0 !important;
 }
 
 .tab-host.active{
     flex:1;
     display:flex;
     flex-direction:column;
+
     min-height:0;
     overflow: auto;
 }

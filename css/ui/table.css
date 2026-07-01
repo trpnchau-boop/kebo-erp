@@ -35,7 +35,7 @@ position:relative;
 display:inline-block;
 }
 
-.list-page input,
+.list-page input:not([type="checkbox"]):not([type="radio"]),
 .list-page select{
 
   border:0 !important;

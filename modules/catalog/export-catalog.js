@@ -2,67 +2,93 @@ import {
   shareImageFiles
 }
 from "./share-catalog.js"
+import{
 
-import {
-  buildGridImage,
-  buildPdfFile
+    showProgress,
+
+    updateProgress,
+
+    hideProgress
+
 }
-from "./export-catalog-share.js"
+from "/js/components/progress-overlay.js"
 
 export async function exportCatalogJpg(
   products,
   share = false
 ){
 
+const isIOS =
+
+  /iPad|iPhone|iPod/.test(
+    navigator.userAgent
+  )
+
+  ||
+
+  (
+    navigator.platform === "MacIntel"
+
+    &&
+
+    navigator.maxTouchPoints > 1
+  )  
+
   // ===== DOWNLOAD =====
 
-  if(!share){
+if(!share){
 
-    for(const product of products){
+    // ===== IOS =====
 
-      const file =
-        await buildProductImage(product)
+    if(isIOS){
 
-      downloadFile(file)
+        // 1 ảnh -> Share để lưu vào Photos
+
+        if(products.length === 1){
+
+            const file =
+                await buildProductImage(products[0])
+
+            await shareImageFiles([file])
+
+            return
+
+        }
+
+        // nhiều ảnh -> ZIP
+
+        await downloadZip(products)
+
+        return
 
     }
 
-    return
+    // Android / PC
+    
+const files =
+  await buildProductImages(
+    products
+  )
 
-  }
+for(const file of files){
 
-  // ===== SHARE 1 =====
+  downloadFile(file)
 
-  if(products.length === 1){
-
-    const file =
-      await buildProductImage(products[0])
-
-    await shareImageFiles([file])
-
-    return
-
-  }
-
-  // ===== SHARE GRID =====
-
-  if(products.length < 5){
-
-    const file =
-      await buildGridImage(products)
-
-    await shareImageFiles([file])
+}
 
     return
 
-  }
+}
+// ===== SHARE =====
 
-  // ===== SHARE PDF =====
+const files =
+  await buildProductImages(
+    products
+  )
 
-  const pdf =
-    await buildPdfFile(products)
-
-  await shareImageFiles([pdf])
+await shareImageFiles(
+  files
+)
 
 }
 
@@ -171,6 +197,11 @@ async function buildProductImage(
         )
 
       )
+    if(!blob){  
+      throw new Error(
+        "Không tạo được ảnh"
+      )  
+    }  
 
     const fileName =
 
@@ -202,35 +233,71 @@ async function buildProductImage(
 
 }
 
+async function buildProductImages(
+  products
+){
+
+  showProgress(
+    "Đang tạo ảnh..."
+  )
+
+  try{
+
+    const files = []
+
+    for(
+      let i = 0;
+      i < products.length;
+      i++
+    ){
+
+      files.push(
+
+        await buildProductImage(
+          products[i]
+        )
+
+      )
+
+      updateProgress(
+        i + 1,
+        products.length
+      )
+
+    }
+
+    return files
+
+  }finally{
+
+    hideProgress()
+
+  }
+
+}
 /* =========================
 DOWNLOAD
 ========================= */
 
-function downloadFile(
-  file
-){
+function downloadFile(file){
 
   const url =
-    URL.createObjectURL(
-      file
-    )
+    URL.createObjectURL(file)
 
   const link =
-    document.createElement(
-      "a"
-    )
+    document.createElement("a")
 
   link.href = url
+  link.download = file.name
 
-  link.download =
-    file.name
+  document.body.appendChild(link)
 
   link.click()
 
+  link.remove()
+
   setTimeout(
-    ()=>URL.revokeObjectURL(
-      url
-    ),
+    ()=>URL.revokeObjectURL(url),
     1000
   )
 
@@ -274,6 +341,74 @@ async function waitImages(
 
     })
 
+  )
+
+}
+
+async function downloadZip(
+  products
+){
+
+  const zip =
+    new JSZip()
+
+  const files =
+    await buildProductImages(
+      products
+    )
+
+  for(const file of files){
+
+    zip.file(
+      file.name,
+      file
+    )
+
+  }
+
+  const blob =
+    await zip.generateAsync({
+
+      type:"blob",
+
+      compression:"DEFLATE",
+
+      compressionOptions:{
+        level:6
+      }
+
+    })
+
+  downloadBlob(
+    blob,
+    "catalog.zip"
+  )
+
+}
+
+function downloadBlob(
+  blob,
+  fileName
+){
+
+  const url =
+    URL.createObjectURL(blob)
+
+  const a =
+    document.createElement("a")
+
+  a.href = url
+  a.download = fileName
+
+  document.body.appendChild(a)
+
+  a.click()
+
+  a.remove()
+
+  setTimeout(
+    ()=>URL.revokeObjectURL(url),
+    1000
   )
 
 }

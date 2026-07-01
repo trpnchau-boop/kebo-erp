@@ -4,8 +4,24 @@ IMPORT PAGE
 
 .import-page{
     padding:0 12px ;
+    width:100%;
+    min-width: 0 !important;
 }
 
+#import-preview{
+    width:100%;
+    min-width:0;
+    height:calc(100vh - 180px);
+    overflow:auto;
+}
+
+.import-preview-table thead th{
+    position:sticky;
+    top:0;
+    z-index:200;
+    background:#fff;
+    box-shadow:0 1px 0 #e6e6e6;
+}
 /* =========================================================
 TOOLBAR
 ========================================================= */
@@ -47,7 +63,7 @@ TOOLBAR
     align-items:center;
     gap:6px;
     font-size:14px;
-    color:#374151;
+    color:#1e40af;
 }
 
 .import-actions select{
@@ -65,13 +81,10 @@ TOOLBAR
 .import-actions button{
 
     height:28px;
+
     padding:0 12px;
 
     border:none;
-    border-radius:10px;
-
-    background:#f97316;
-    color:#fff;
 
     font-size:14px;
     font-weight:500;
@@ -79,9 +92,6 @@ TOOLBAR
     cursor:pointer;
 }
 
-.import-actions button:hover{
-    background:#ea580c;
-}
 
 #btn-run{
     margin-left:auto !important;
@@ -123,7 +133,7 @@ FILE
     text-overflow:ellipsis;
     white-space:nowrap;
 
-    font-size:14px;
+    font-size:15px;
     color:#6b7280;
 }
 
@@ -134,8 +144,11 @@ PREVIEW TABLE
 #preview-box{
 
     margin-top:12px;
-
+    height:100%;
     overflow:auto;
+
+    width:100%;
+    max-width:100%;
 
     background:#fff;
     border-radius:5px;
@@ -143,7 +156,8 @@ PREVIEW TABLE
 
 #preview-box table{
 
-    width:100%;
+    width:max-content;
+    min-width:100%;
     border-collapse:collapse;
     background:#fff;
 }
@@ -151,7 +165,7 @@ PREVIEW TABLE
 #preview-box th{
 
     position:sticky;
-    top:53px;
+    top:0px;
     z-index:200;
 
     background:#fff;
@@ -257,4 +271,139 @@ SCROLLBAR
 #sidebar-panel::-webkit-scrollbar-thumb:hover{
 
     background:#9ca3af;
+}
+.import-info{
+    margin-left:auto;
+    font-size:13px;
+    color:#6b7280;
+    white-space:nowrap;
+}
+.import-summary{
+
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+
+    margin:0 12px ;
+}
+
+.import-summary .item{
+
+    padding:5px 12px;
+
+    border-radius:999px;
+
+    background:#f3f4f6;
+
+    font-size:13px;
+}
+
+.import-summary .ok{
+    background:#e8f7ea;
+    color:#157347;
+}
+
+.import-summary .warn{
+    background:#fff7e6;
+    color:#b26a00;
+}
+
+.import-summary .error{
+    background:#fff1f0;
+    color:#cf1322;
+}
+#preview-box td.mapped,
+#preview-box th.mapped{
+
+    background:#edf9ef;
+
+}
+.row-no{
+    text-align:center;
+    color:#6b7280;
+    background:#fafafa;
+    font-weight:500;
+    min-width:60px;
+}
+
+.import-preview-table thead th:first-child,
+.import-preview-table tbody td:first-child{
+    position:sticky;
+    left:0;
+    z-index:10;
+    background:#fff;
+}
+.excel-col{
+    font-size:13px;
+    font-weight:700;
+    text-align:center;
+}
+.excel-header-row{
+
+    background:#f3f4f6;
+    font-weight:700;
+
+}
+
+.import-preview-table tbody tr:first-child td{
+
+    position:sticky;
+    top:41px;   /* chiều cao hàng ABC */
+
+    background:#fff;
+
+    z-index:150;
+
+}
+.import-preview-table tbody td:first-child{
+
+    position:sticky;
+
+    left:0;
+
+    z-index:260;
+
+    background:#fff;
+
+}
+.import-preview-table tbody tr:first-child td:first-child{
+
+    z-index:350;
+
+}
+.import-page #header-row .dropdown-menu.open::before{
+    left:12px;
+    right:auto;
+}
+#header-row{
+    background: #eef2ff;
+    border-radius:999px;
+    width: 20px;
+    height: 20px;
+}
+#header-row span{
+
+    text-align: center;
+    display: inline-flex;
+
+    font-weight: 600;
+    margin: -6px;
+
+    transform: translateY(-4px);   /* chỉnh 0.5~1px nếu cần */
+
+}
+#dup-mode{
+    color: #f97316;
+}
+
+#btn-map{
+    background:#f97316;
+    color: #fff;
+    border-radius:10px;
+}
+
+#btn-run{
+    background:#3b82f6;
+    color: #fff;
+    border-radius:10px;
 }

@@ -21,6 +21,7 @@
 @import "./ui/tag.css";
 @import "./ui/tree.css";
 @import "./ui/image-preview.css";
+@import "./ui/progress.css";
 
 @import "./pages/company.css";
 @import "./pages/print-template.css";
