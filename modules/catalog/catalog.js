@@ -35,6 +35,8 @@ import {
 }
 from "/js/components/dropdown-menu.js"
 
+import { getSession } from "/js/auth.js"
+
 let showHot = false
 
 export async function init(
@@ -92,6 +94,9 @@ export async function init(
     products
   } =
   await getCatalogData()
+
+  const canViewPrice =
+    !!(await getSession())
 
   const now = new Date()
 
@@ -265,7 +270,8 @@ renderDropdownSelect({
       filtered,
       grid,
       selectedIds,
-      showHot
+      showHot,
+      canViewPrice
     )
 
   }

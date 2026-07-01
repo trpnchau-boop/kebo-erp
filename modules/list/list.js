@@ -259,9 +259,13 @@ const opt = {
     })
 
   /* scroll lazy load */
-  window.addEventListener(
+  const scroller =
+    state.root.closest(".tab-host")
+
+  scroller?.addEventListener(
     "scroll",
-    () => handleScroll(state)
+    () => handleScroll(state),
+    opt
   )
 }
 
@@ -907,32 +911,39 @@ async function removeOne(id, state) {
 SCROLL
 ========================= */
 
-function handleScroll(state) {
+function handleScroll(state){
 
-  if (
-    state.root.offsetParent === null
-  ) return
+  if(state.root.offsetParent===null){
+    return
+  }
 
-  if (
-    state.visibleRows >=
+  if(
+    state.visibleRows>=
     state.filtered.length
-  ) return
+  ){
+    return
+  }
+
+  const scroller =
+    state.root.closest(".tab-host")
+
+  if(!scroller){
+    return
+  }
 
   const bottom =
-    window.innerHeight +
-    window.scrollY
+    scroller.scrollTop +
+    scroller.clientHeight
 
   const height =
-    document.body.offsetHeight
+    scroller.scrollHeight
 
-  if (bottom > height - 200) {
+  if(bottom > height - 200){
 
-    state.visibleRows =
-      Math.min(
-        state.visibleRows +
-        state.step,
-        state.filtered.length
-      )
+    state.visibleRows = Math.min(
+      state.visibleRows + state.step,
+      state.filtered.length
+    )
 
     render(state)
   }

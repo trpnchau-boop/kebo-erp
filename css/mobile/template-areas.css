@@ -28,3 +28,19 @@
 }
 
 }
+
+@media (max-width:768px){
+
+    input,
+    textarea,
+    select,
+    .dropdown-select-trigger,
+    .table-input,
+    .table-select,
+    .suggest-wrapper input{
+
+        font-size:16px !important;
+
+    }
+
+}

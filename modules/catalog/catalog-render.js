@@ -3,7 +3,8 @@ export function renderCatalog(
   products,
   box,
   selectedIds,
-  showHot = false
+  showHot = false,
+  canViewPrice = true
 ){
 
   const noGroup =
@@ -72,7 +73,8 @@ if(showHot){
                   p,
                   selectedIds.has(
                     p.id
-                  )
+                  ),
+                  canViewPrice
                 )
 
               )
@@ -150,7 +152,8 @@ if(showHot){
                   p,
                   selectedIds.has(
                     p.id
-                  )
+                  ),
+                  canViewPrice
                 )
 
               )
@@ -215,7 +218,8 @@ if(showHot){
                   p,
                   selectedIds.has(
                     p.id
-                  )
+                  ),
+                  canViewPrice
                 )
 
               )
@@ -234,7 +238,8 @@ if(showHot){
 
 function renderCard(
   p,
-  checked = false
+  checked = false,
+  canViewPrice = true
 ){
 
   const imageUrl =
@@ -295,12 +300,17 @@ function renderCard(
         ${p.name || ""}
       </div>
 
-      <div class="price">
-        ${formatPrice(
-          p.dongia1
-        )}
-      </div>
-
+      ${
+        canViewPrice
+          ? `
+            <div class="price">
+              ${formatPrice(
+                p.dongia1
+              )}
+            </div>
+          `
+          : ""
+      }
     </div>
   `
 }
