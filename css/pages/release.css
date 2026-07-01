@@ -1,0 +1,8 @@
+.ta-r{
+    text-align:right !important;
+}
+
+.release-table th.ta-r,
+.release-table td.ta-r{
+    text-align:right !important;
+}
