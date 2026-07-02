@@ -42,14 +42,8 @@
   <div id="sidebar-menu">
 
     <a data-page="dashboard">Dashboard</a>
-
     <a data-page="document" data-type="SALE">Bán hàng</a>
-
-    <a data-page="list" data-table="data_customer">Khách hàng</a>
-    <a data-page="list" data-table="data_product">Sản phẩm</a>
-    <a data-page="list" data-table="data_employee">Nhân sự</a>
     <a data-page="list" data-table="document_items">Tra cứu</a>
-    <a data-page="list" data-table="print_templates">Mẫu in</a>
 
     <div class="menu-group">
       <div class="menu-title">
@@ -70,13 +64,9 @@
 
       </div>
     </div>
-
-    <a data-page="matrix"
-       data-type="attendance_matrix">Chấm công</a>
-    <a data-page="stock">Kho</a>
+ 
     <a data-page="catalog">Catalog</a>
-    <a data-page="quote">Báo giá</a>
-    <a data-page="settings" data-table="set_price_rule">Chính sách giá</a>
+    <a data-page="quote">Báo giá</a> 
 
     <div class="menu-group">
       <div class="menu-title">
@@ -85,16 +75,76 @@
       </div>
 
       <div class="submenu">
-        <a data-page="settings" data-table="set_company">Đơn vị</a>
+        <a data-page="list" data-table="print_templates">Mẫu in</a>
         <a data-page="settings" data-table="set_kh_khuvuc">Khu vực</a>
-        <a data-page="settings" data-table="set_kh_money">Type khách hàng</a>
+        
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <div class="menu-title">
+        Kho
+        <span class="arrow">▾</span>
+      </div>
+
+      <div class="submenu">
         <a data-page="settings" data-table="set_kho">Kho</a>
+        <a data-page="stock">Kho</a>  
+        
+      </div>
+    </div>    
+
+     <div class="menu-group">
+      <div class="menu-title">
+        Khách hàng
+        <span class="arrow">▾</span>
+      </div>
+
+      <div class="submenu">
+        <a data-page="list" data-table="data_customer">Khách hàng</a> 
+        <a data-page="settings" data-table="set_kh_money">Type khách hàng</a>    
+      </div>
+    </div>
+
+     <div class="menu-group">
+      <div class="menu-title">
+        Sản phẩm
+        <span class="arrow">▾</span>
+      </div>
+
+      <div class="submenu">
+        <a data-page="list" data-table="data_product">Sản phẩm</a>
         <a data-page="settings" data-table="set_sp_dvt">Đơn vị tính</a>
-        <a data-page="settings" data-table="set_sp_group">Nhóm sản phẩm</a>
+        <a data-page="settings" data-table="set_sp_group">Nhóm sản phẩm</a> 
+        
+      </div>
+    </div>    
+
+    <div class="menu-group">
+      <div class="menu-title">
+        Nhân sự
+        <span class="arrow">▾</span>
+      </div>
+
+      <div class="submenu">
+        <a data-page="list" data-table="data_employee">Nhân sự</a>
+        <a data-page="matrix"
+           data-type="attendance_matrix">Chấm công</a>      
+      </div>
+    </div> 
+    
+    <div class="menu-group">
+      <div class="menu-title">
+        Quản lí
+        <span class="arrow">▾</span>
+      </div>
+
+      <div class="submenu">
+        <a data-page="settings" data-table="set_price_rule">Chính sách giá</a>
         <a data-page="settings" data-table="set_ns_rate">Hoa hồng</a>
         <a data-page="settings" data-table="set_payroll_item">Lương</a>        
       </div>
-    </div>
+    </div>     
 
     <div class="menu-group">
       <div class="menu-title">
@@ -103,6 +153,7 @@
       </div>
 
       <div class="submenu">
+        <a data-page="settings" data-table="set_company">Thông tin doanh nghiệp</a>    
         <a data-page="list" data-table="vw_users">Danh sách người dùng</a>
         <a data-page="module">Nhóm modules</a>
         <a data-page="matrix"

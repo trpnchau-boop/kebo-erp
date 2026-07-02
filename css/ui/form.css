@@ -37,11 +37,9 @@ width:100%;
  
   display:grid;
 
-  grid-template-columns:
-    repeat(var(--form-cols,4), minmax(0,1fr))
-    60px;
+  grid-template-columns: repeat(calc(var(--form-cols, 4) - 1), minmax(0, 1fr)) 26px;
 
-  gap:24px;
+  gap:8px;
   align-items:start;
 
   border-bottom:1px solid #eee;

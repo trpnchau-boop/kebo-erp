@@ -1,0 +1,14 @@
+@media (max-width:768px){
+
+.form-page {
+    padding: 10px 0;
+}
+
+.form-page .card {
+    padding: 15px 8px;
+}
+
+.tag-group {
+    transform: translateX(-245px);
+}
+}
