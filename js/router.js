@@ -29,7 +29,6 @@ export async function loadPage(
     /* =========================
     ROUTE
     ========================= */
-
     const route =
       normalizeRoute(
         page,

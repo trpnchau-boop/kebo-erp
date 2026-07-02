@@ -127,7 +127,7 @@ return `
 <tr>
 
 <td>
-<a href="#" class="stock-ledger-link" data-id="${r.id_product}">
+<a href="#" class="barcode-link" data-id="${r.id_product}">
 ${p.code || ""}
 </a>
 </td>
@@ -207,7 +207,7 @@ LEDGER BUTTON
 
 function bindLedgerButtons(root){
 
-root.querySelectorAll(".stock-ledger-link")
+root.querySelectorAll(".barcode-link")
 .forEach(btn=>{
 
 btn.onclick = ()=>{

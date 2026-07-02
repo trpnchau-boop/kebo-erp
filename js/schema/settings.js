@@ -203,7 +203,7 @@ module_groups:{
 set_price_rule:{
   label:"Chính sách giá",
 
-  columns:5,
+  columns:6,
 
   fields:withSystemFields({
 

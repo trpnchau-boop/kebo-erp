@@ -38,7 +38,23 @@ export function bindEvents(root){
   $(root,"btn-refresh")
   ?.addEventListener(
     "click",
-    ()=>loadStock(root)
+    async e=>{
+
+      const btn = e.currentTarget
+
+      btn.classList.add("loading")
+
+      try{
+
+        await loadStock(root)
+
+      }finally{
+
+        btn.classList.remove("loading")
+
+      }
+  
+    }
   )
 
   $(root,"btn-mode")

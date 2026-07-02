@@ -217,4 +217,5 @@ export async function saveData(ctx){
 
     window.__sidebarOnSave = null
   }
+  alert("Đã lưu")
 }

@@ -33,16 +33,17 @@ export async function clearDocument({
   CLEAR STATE
   ========================= */
 
-  state.header = {
-    type:
-      schema.meta.code,
-    code:
-      `${schema.meta.prefix}...`,
-    day:
-      new Date()
-        .toISOString()
-        .slice(0,10)
-  }
+  Object.keys(state.header).forEach(key=>{
+    delete state.header[key]
+  })
+
+  Object.assign(state.header,{
+    type: schema.meta.code,
+    code: `${schema.meta.prefix}...`,
+    day: new Date()
+      .toISOString()
+      .slice(0,10)
+  })
 
   state.items = []
   state.draftRow = {}
@@ -53,7 +54,8 @@ export async function clearDocument({
 
   await renderDocumentTable(
     root,
-    schema
+    schema,
+    state
   )
 
   /* =========================
@@ -62,7 +64,8 @@ export async function clearDocument({
 
   renderInputBar(
     root,
-    schema
+    schema,
+    state
   )
 
   /* =========================

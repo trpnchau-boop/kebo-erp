@@ -76,7 +76,7 @@ export function bindSave(root){
       new Event("table_modules_changed")
     )
 
-    alert("✅ Đã lưu")
+    alert("Đã lưu")
   }
 }
 

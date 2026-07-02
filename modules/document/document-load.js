@@ -19,9 +19,7 @@ export async function loadDocument(
   if(!id) return
 
   if(!state){
-    console.error(
-      "loadDocument: missing state"
-    )
+
     return
   }
 

@@ -82,18 +82,36 @@ HASH PARSER
 
 function parseHash(){
 
-  const hash = location.hash.replace("#/","")
+  const hash = location.hash.replace(/^#\//,"")
   if(!hash) return null
 
-  const p = hash.split("/")
+  const [page, rest] = hash.split("/")
+
+  if(rest?.startsWith("form?")){
+
+    const qs = rest.slice(5) // bỏ "form?"
+
+    const p = new URLSearchParams(qs)
+
+    return {
+      page,
+      key: p.get("type") || "",
+      ref: p.get("ref") || "",
+      id: p.get("id") || "",
+      action: p.get("action") || "",
+      ids: p.get("ids") || ""
+    }
+  }
+
+  const parts = hash.split("/")
 
   return {
-    page: p[0] || "",
-    key: p[1] || "",
-    ref: p[2] || "",
-    id: p[3] || "",
-    action: p[4] || "",
-    ids: p[5] || ""
+    page: parts[0] || "",
+    key: parts[1] || "",
+    ref: parts[2] || "",
+    id: parts[3] || "",
+    action: parts[4] || "",
+    ids: parts[5] || ""
   }
 }
 

@@ -9,7 +9,7 @@ from "./show-sale-preview.js"
 
 import {printDocument} from "./print-document.js"
 
-import {deleteDocument} from "./delete-document.js"
+import {deleteDocument, clearDocument} from "./delete-document.js"
 
 import { splitDocument} from "./split-document.js"
 
@@ -36,6 +36,8 @@ export const documentActions = {
   printDocument,
 
   deleteDocument,
+
+  clearDocument,
 
   splitDocument,
 

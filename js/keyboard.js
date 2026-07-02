@@ -582,7 +582,7 @@ function moveNext(current){
    HELPERS
 ===================================================== */
 
-function focusTo(id){
+export function focusTo(id){
 
   let el =
     root().querySelector(`#${id}`)

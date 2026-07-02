@@ -3,6 +3,11 @@ import {
 }
 from "./actions/index.js"
 
+import {
+  focusTo
+}
+from "/js/keyboard.js"
+
 export function bindDocumentActions({
 
   root,
@@ -17,6 +22,20 @@ export function bindDocumentActions({
   }
 
   root.dataset.actionsBinded = "1"
+
+  async function finishDocument(state){
+
+    await documentActions.clearDocument({
+
+      root,
+      schema,
+      state
+
+    })
+
+    focusTo("id_customer")
+
+  }
 
   root.addEventListener(
     "click",
@@ -62,6 +81,67 @@ export function bindDocumentActions({
       try{
 
         btn.disabled = true
+
+        /* =====================================
+        SAVE
+        ===================================== */
+
+        if(event === "saveDocument"){
+
+          const result =
+            await documentActions.saveDocument({
+
+              root,
+              schema,
+              state,
+
+              button: btn,
+              input: btn._input
+
+            })
+
+          if(result){
+            await finishDocument(state)
+          }
+
+          return
+
+        }
+
+        /* =====================================
+        PRINT
+        ===================================== */
+
+        if(event === "printDocument"){
+          
+          const result =
+          await documentActions.saveDocument({
+            
+            root,
+            schema,
+            state,
+
+            button: btn,
+            input: btn._input
+
+          })
+
+          if(!result){
+            return
+          }  
+
+          await documentActions.printDocument({
+            document: result.header,
+            items: result.items
+          })
+  
+          await finishDocument(state)
+          return
+        }
+
+        /* =====================================
+        DEFAULT
+        ===================================== */
 
         await handler({
 

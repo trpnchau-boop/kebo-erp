@@ -15,6 +15,7 @@ export async function openTab(
   params = {},
   state = null
 ){
+
   if(tabs[id]){
     await activateTab(id)
     return
@@ -82,6 +83,7 @@ REFRESH TAB
 ========================= */
 
 async function refreshTab(tab){
+
 tab.host.innerHTML = ""  
 
 const {loadPage} =
@@ -374,44 +376,31 @@ state:t.state
 HASH
 ========================= */
 
-function buildHash(
-page,
-p = {}
-){
+function buildHash(page, p = {}){
 
-const query =
-new URLSearchParams()
+  const arr = [page]
 
-for(
-  const key in p
-){
-
-  const value = p[key]
-
-  if(
-    value === undefined ||
-    value === null ||
-    value === ""
-  ){
-    continue
+  if (p.type) {
+    arr.push(p.type)
   }
 
-  query.append(
-    key,
-    value
-  )
+  if (p.ref != null) {
+    arr.push(p.ref)
+  }
 
-}
+  if (p.id != null) {
+    arr.push(p.id)
+  }
 
-const qs =
-query.toString()
+  if (p.action) {
+    arr.push(p.action)
+  }
 
-return qs
+  if (p.ids) {
+    arr.push(p.ids)
+  }
 
-? `#/${page}/form?${qs}`
-
-: `#/${page}`
-
+  return "#/" + arr.join("/")
 }
 
 export async function replaceTab(
