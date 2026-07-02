@@ -160,6 +160,7 @@ catalog_priority:{
 qty:{
   label:"Số lượng",
   showInQuote:true,
+  showInForm:false,
   type:"number",
   virtual:true
 },
@@ -167,6 +168,7 @@ qty:{
 note:{
   label:"Ghi chú",
   showInQuote:true,
+  showInForm:false,
   type:"text",
   virtual:true
 },

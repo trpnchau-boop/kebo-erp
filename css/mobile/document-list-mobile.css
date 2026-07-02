@@ -473,7 +473,7 @@ Layout:
 .tab-host:not([data-page="matrix"]) .list-footer{
     display:flex;
     align-items:center;
-    justify-content:flex-end;
+    justify-content:flex-start;
     padding:12px 4px 4px;
   }
 
@@ -488,6 +488,10 @@ Layout:
         "search search"
         "from to";
 
+}
+
+#document-list-footer{
+  display:none;
 }
  
 

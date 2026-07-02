@@ -13,6 +13,7 @@ for(const key in fields){
   const f = fields[key]
 
   if(f.hidden) continue
+  if(f.showInForm === false) continue
 
   const label = f.label || key
   const input = await buildInput(key,f)

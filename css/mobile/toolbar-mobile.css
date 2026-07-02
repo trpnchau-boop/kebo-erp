@@ -11,6 +11,7 @@
 
     #matrix-filters{
         padding: 8px 0 0;
+        width: 280px;
     }
 
     .toolbar-filter,
@@ -26,5 +27,6 @@
 
     .toolbar-export{
         gap:10px;
+        justify-content: right;
     }    
 }

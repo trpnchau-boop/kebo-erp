@@ -63,7 +63,9 @@
 .list-footer{
 
     display: flex;
+    margin-right: auto;
     align-items: center;
+    white-space: nowrap;
     padding: 0px;
     color: #6b7280;
     font-weight: 600;
