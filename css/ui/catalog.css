@@ -40,11 +40,15 @@
 
 .catalog-card{
 
+  position:relative;
+
   background:#fff;
 
   border-radius:5px;
 
   overflow:hidden;
+
+  box-shadow: 0 3px 8px rgb(0 0 0 / 28%);
 
 }
 
@@ -141,4 +145,62 @@
 
 .catalog-check-all{
   white-space:nowrap;
+}
+
+.catalog-card.out-stock::before{
+    content:"";
+    position:absolute;
+    top: 52px;     /* dưới toolbar */
+    left:0;
+    right:0;
+    aspect-ratio:1;
+
+    background:rgb(255 255 255 / 71%);
+
+    pointer-events:none;
+    z-index:1;
+}
+
+.catalog-card img{
+    display:block;
+}
+
+.card-toolbar,
+.out-stock-badge,
+.card-hot,
+.name,
+.price{
+    position:relative;
+    z-index:2;
+}
+
+.catalog-card{
+    position:relative;
+}
+
+.catalog-card img{
+    display:block;
+}
+
+.out-stock-badge{
+    position:absolute;
+
+    top:calc(44px + 50%);
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    padding:6px 14px;
+
+    border-radius:10px;
+
+    background:rgba(0,0,0,.65);
+    color:#fff;
+
+    font-size:13px;
+    font-weight:700;
+
+    z-index:5;
+
+    pointer-events:none;
 }

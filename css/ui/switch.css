@@ -66,3 +66,10 @@
 .switch:hover{
   filter:brightness(1.04);
 }
+
+td[data-field="catalog_priority"] .list-switch:checked + span{
+    background:#fbcfa1;
+}
+td[data-field="catalog_priority"] .list-switch:checked + span::before{
+    background:#fb7818;
+}

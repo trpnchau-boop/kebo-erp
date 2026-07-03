@@ -6,10 +6,6 @@
     flex-shrink:0;
 }
 
-.catalog-card{
-    position:relative;
-}
-
 .card-hot{
     position:absolute;
     top:-3px;

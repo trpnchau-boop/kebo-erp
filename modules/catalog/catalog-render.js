@@ -246,23 +246,42 @@ function renderCard(
     p.image_url ||
     "/images/no-image.png"
 
+  const outOfStock =
+    Number(p.qty) <= 0
+
   return `
     <div
-      class="catalog-card"
+      class="catalog-card ${
+        outOfStock
+          ? "out-stock"
+          : ""
+      }"
     >
-    ${
-      p.catalog_priority
-        ? `
-          <div class="card-hot">
-            <img
-              src="/images/hot-star.webp"
-              class="hot-icon"
-              alt=""
-            >
-          </div>
-        `
-        : ""
-    }
+
+      ${
+        outOfStock
+          ? `
+            <div class="out-stock-badge">
+              Tạm hết
+            </div>
+          `
+          : ""
+      }
+
+      ${
+        p.catalog_priority
+          ? `
+            <div class="card-hot">
+              <img
+                src="/images/hot-star.webp"
+                class="hot-icon"
+                alt=""
+              >
+            </div>
+          `
+          : ""
+      }
+
     <div
       class="card-toolbar"
     >
@@ -304,16 +323,15 @@ function renderCard(
         canViewPrice
           ? `
             <div class="price">
-              ${formatPrice(
-                p.dongia1
-              )}
+              ${formatPrice(p.dongia1)}
             </div>
           `
           : ""
       }
+
     </div>
   `
-}
+  }
 
 function formatPrice(v){
 
