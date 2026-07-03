@@ -11,10 +11,13 @@ export async function saveData(ctx){
 
   const {table, id, bulk, ids} = ctx
 
-  const inputs =
-    document.querySelectorAll(
-      '#form [data-field], #sidebar-form-page > .field [data-field]'
-    )
+  const form = document.getElementById("form")
+
+  const inputs = form.querySelectorAll(`
+    input[data-field],
+    textarea[data-field],
+    .dropdown-select-trigger[data-field]
+  `)
 
   let row = {}
 

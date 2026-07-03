@@ -2,7 +2,16 @@ export function getFieldValue(el){
 
   if(!el) return ""
 
-  // dropdown custom
+  // dropdown wrapper -> trigger
+  if(
+    el.classList?.contains("dropdown-select")
+  ){
+    el = el.querySelector(
+      ".dropdown-select-trigger"
+    )
+  }
+
+  // dropdown trigger
   if(
     el.classList?.contains(
       "dropdown-select-trigger"
@@ -24,16 +33,25 @@ export function setFieldValue(el,value){
 
   if(!el) return
 
-  // dropdown custom
+  // dropdown wrapper -> trigger
+  if(
+    el.classList?.contains("dropdown-select")
+  ){
+    el = el.querySelector(
+      ".dropdown-select-trigger"
+    )
+  }
+
+  // dropdown trigger
   if(
     el.classList?.contains(
       "dropdown-select-trigger"
     )
   ){
 
-    const v = value ?? ""
+    const v = String(value ?? "")
 
-    el.dataset.value = String(v)
+    el.dataset.value = v
 
     const dropdown =
       el.closest(".dropdown-select")
@@ -47,10 +65,8 @@ export function setFieldValue(el,value){
       el.querySelector("span")
 
     if(span){
-
       span.textContent =
         item?.textContent.trim() || ""
-
     }
 
     dropdown?.classList.toggle(

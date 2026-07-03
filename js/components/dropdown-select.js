@@ -166,16 +166,19 @@ export function bindDropdownSelect(
       trigger.dataset.value =
         value
 
+      const keep = {
+        field: trigger.dataset.field,
+        id: trigger.dataset.id
+      }
+
       Object.keys(trigger.dataset)
       .forEach(k=>{
-
-        if(k !== "value"){
-
-          delete trigger.dataset[k]
-
-        }
-
+        delete trigger.dataset[k]
       })
+
+      trigger.dataset.field = keep.field || ""
+      trigger.dataset.id = keep.id || ""
+      trigger.dataset.value = value
 
       Object.entries(item.dataset)
       .forEach(([k,v])=>{

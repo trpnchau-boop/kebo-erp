@@ -154,14 +154,14 @@ FORM 3 CỘT
 
 #form.form-layout-3col .fields{
 display:grid;
-grid-template-columns:0.9fr 1.1fr 1fr;
+grid-template-columns:0.7fr 1.3fr 1fr;
 column-gap:14px;
 row-gap:8px;
 padding:0px 10px; 
 }
 
 #form.form-layout-3col .field{
-padding:8px 0;
+padding:8px 0 0;
 border-bottom:1px solid #ececec;
 }
 

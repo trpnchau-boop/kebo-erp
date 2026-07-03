@@ -87,27 +87,27 @@ return data
 
 export async function updateRow(table,id,row){
 
-if(
-!noTimestampTables.includes(table)
-){
-row.updated_at =
-new Date().toISOString()
+    if(
+        !noTimestampTables.includes(table)
+    ){
+        row.updated_at =
+        new Date().toISOString()
+    }
+
+    const {data,error} = await db
+        .from(table)
+        .update(row)
+        .eq("id",id)
+        .select()
+
+    if(error){
+        console.error(error)
+        alert(error.message)
+        return
+    }
+
+    return data
 }
-
-const {data,error} = await db
-.from(table)
-.update(row)
-.eq("id",id)
-
-if(error){
-alert(error.message)
-return
-}
-
-return data
-
-}
-
 
 export async function deleteRow(table,id){
 

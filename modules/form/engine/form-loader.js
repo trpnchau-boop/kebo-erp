@@ -30,6 +30,7 @@ export async function loadData(table,id){
   }
 
   const row = await getOne(table,id)
+
   if(!row) return
 
   const form = $id("form")
