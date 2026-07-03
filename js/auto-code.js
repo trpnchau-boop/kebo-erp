@@ -25,21 +25,23 @@ prefix += "-" + ref.prefix
 
 }
 
-
 // lấy danh sách hiện có
-const rows = await getAll(tableName)
+const rows = (await getAll(tableName)).filter(r =>
+  (r.code || "").startsWith(prefix + "-")
+)
 
-const max = rows.reduce((m,r)=>{
+const max = rows.reduce((m, r) => {
 
-const code = r.code || ""
+  const code = r.code || ""
 
-const num = Number(code.replace(/\D/g,"")) || 0
+  const match = code.match(/(\d+)$/)
+  const num = match ? Number(match[1]) : 0
 
-return Math.max(m,num)
+  return Math.max(m, num)
 
-},0)
+}, 0)
 
-const next = String(max + 1).padStart(4,"0")
+const next = String(max + 1).padStart(4, "0")
 
 return `${prefix}-${next}`
 

@@ -21,7 +21,7 @@ FORM PAGE
 ========================= */
 
 .form-page{
-padding:10px;
+padding:10px 0;
 
 border-radius:5px;
 background:#fff;
@@ -76,18 +76,24 @@ gap:0px;
   gap:12px;
 }
 
-.form-page .field.field-inline label{
+.form-page .field.field-inline > label:not(.switch){
   position:static;
   transform:none;
   pointer-events:auto;
 }
 
-.form-page .field.field-inline.has-value label{
+.form-page .field.field-inline.has-value > label:not(.switch){
   opacity:1;
   visibility:visible;
 }
 
-.form-page .field label{
+.form-page .field.field-inline .switch{
+  justify-self:start;
+  align-self:center;
+  margin:0;
+}
+
+.form-page .field > label:not(.switch){
 position:absolute;
 left:0;
 top:50%;
@@ -99,21 +105,22 @@ transition:.15s ease;
 margin:0;
 }
 
-.form-page .field:has(input:focus) label,
-.form-page .field:has(select:focus) label,
-.form-page .field:has(textarea:focus) label{
+.form-page .field:has(input:focus) > label:not(.switch),
+.form-page .field:has(select:focus) > label:not(.switch),
+.form-page .field:has(textarea:focus) > label:not(.switch){
   color:#f97316;
 }
 
-.form-page .field:has(:focus) label{
+.form-page .field:has(:focus) > label:not(.switch){
+  color:#f97316;
+  font-style: italic;
+}
+
+.form-page .field.column-focus > label:not(.switch){
   color:#f97316;
 }
 
-.form-page .field.column-focus label{
-  color:#f97316;
-}
-
-.form-page .field input,
+.form-page .field input:not([type="checkbox"]),
 .form-page .field select,
 .form-page .field textarea{
 width:100%;
@@ -127,7 +134,7 @@ font-size:16px;
 resize:none;
 }
 
-.form-page .field.has-value label{
+.form-page .field.has-value > label:not(.switch){
 opacity:0;
 visibility:hidden;
 }
@@ -139,12 +146,7 @@ appearance:none;
 -moz-appearance:none;
 }
 
-/* checkbox */
-.form-page .field input[type="checkbox"]{
-width:16px;
-height:16px;
-margin-top:4px;
-}
+
 
 /* =========================
 FORM 3 CỘT
@@ -235,4 +237,12 @@ visibility:hidden;
 .form-page .delete{
   justify-self:end;
   margin-right:8px;
+}
+
+.switch input[data-field="catalog_priority"]:checked + .slider{
+    background:#fbcfa1;
+}
+
+.switch input[data-field="catalog_priority"]:checked + .slider::before{
+    background:#fb7818;
 }

@@ -15,8 +15,12 @@ export async function buildInput(key, f){
   CHECKBOX
   ========================= */
   if(f.type === "checkbox"){
-    return `<input type="checkbox" ${attrs}>`
-  }
+    return `
+      <label class="switch">
+        <input type="checkbox" ${attrs}>
+        <span class="slider"></span>
+      </label>`
+    }
 
   /* =========================
   PASSWORD

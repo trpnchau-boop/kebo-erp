@@ -152,7 +152,7 @@ show_catalog:{
 },
 
 catalog_priority:{
-  label:"Ưu tiên Catalog",
+  label:"Ưu tiên",
   showInList:true,
   type:"checkbox"
 },

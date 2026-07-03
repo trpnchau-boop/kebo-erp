@@ -131,6 +131,8 @@ input.dispatchEvent(new Event("change"))
 if(f.autoCode.source){
 
 const sourceInput =
+$q(`.dropdown-select-trigger[data-field="${f.autoCode.source}"]`)
+||
 $q(`[data-field="${f.autoCode.source}"]`)
 
 if(sourceInput && !sourceInput.dataset.autoBind){
