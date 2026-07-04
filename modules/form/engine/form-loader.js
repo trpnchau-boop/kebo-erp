@@ -29,7 +29,40 @@ function $q(s){
 export async function loadData(table,id){
 
   if(!id){
+
+    const form = $id("form")
+    if(form){
+
+     const inputs =
+        form.querySelectorAll("[data-field]")
+
+      inputs.forEach(i=>{
+
+        const field =
+          schema[table]?.fields?.[
+            i.dataset.field
+         ]
+
+        if(
+          field &&
+          field.default !== undefined
+        ){
+
+          setFieldValue(
+            i,
+            field.default
+          )
+
+        }
+
+      })
+
+    }
+
     await initAutoCode(table)
+
+    initSmartLabels(form)
+
     return
   }
 

@@ -78,6 +78,7 @@ dinhluong:{
 label:"Định lượng",
 type:"number",
 required:true,
+default:1,
 showInQuote:true,
 },
 
