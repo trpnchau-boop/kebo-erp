@@ -1,14 +1,18 @@
 import {getOne,getAll} from "../../../js/crud.js"
-import {renderVariants} from "../product/product-variant.js"
-import {renderCombo,initComboUI} from "../product/product-combo.js"
 import {generateAutoCode} from "../../../js/auto-code.js"
 import { schema } from "/js/schema/index.js"
 import {formatInput} from "/js/core/input-format.js"
 import {bindAllMoneyInputs} from "/js/core/input-format.js"
+
+import {renderVariants, initVariantUI} from "../product/product-variant.js"
+import {renderCombo,initComboUI} from "../product/product-combo.js"
+import { initUnitUI } from "../product/product-unit.js"
+
 import {
   getFieldValue,
   setFieldValue
 } from "../core/form-field.js"
+import { initSmartLabels } from "../engine/form-builder.js"
 
 function root(){
   return document.getElementById("sidebar-panel") || document
@@ -96,7 +100,7 @@ await getAll("product_structure",{product_id:Number(productId)})
 await renderCombo(ctx, rows)
 }
 
-async function initAutoCode(table){
+async function initAutoCode(table, row = {}){
 
 const fields = schema[table]?.fields || {}
 
@@ -112,7 +116,7 @@ if(!input) continue
 
 setFieldValue(
   input,
-  await generateAutoCode(table,f,{})
+  await generateAutoCode(table, f, row)
 )
 
 if(
@@ -162,4 +166,86 @@ input.dispatchEvent(new Event("change"))
 
 }
 
+}
+export async function cleanForm(table){
+
+  const form = $id("form")
+  if(!form) return
+
+  const keep = {
+    id_group: getFieldValue(
+      form.querySelector('[data-field="id_group"]')
+    ),
+    type: getFieldValue(
+      form.querySelector('[data-field="type"]')
+    )
+  }
+
+  const inputs =
+    form.querySelectorAll("[data-field]")
+
+  inputs.forEach(i=>{
+
+    if(i.type === "file"){
+
+      i.value = ""
+
+      const preview =
+        form.querySelector(
+          `[data-preview="${i.dataset.field}"]`
+        )
+
+      if(preview){
+        preview.removeAttribute("src")
+        preview.style.display = "none"
+      }
+
+      return
+    }
+
+    if(i.type === "checkbox"){
+
+      setFieldValue(i,false)
+
+    }else{
+
+      setFieldValue(i,"")
+    }
+
+    i.dispatchEvent(new Event("input"))
+    i.dispatchEvent(new Event("change"))
+
+  })
+
+const group =
+  form.querySelector('[data-field="id_group"]')
+
+const type =
+  form.querySelector('[data-field="type"]')
+
+setFieldValue(group, keep.id_group)
+setFieldValue(type, keep.type)
+
+group?.dispatchEvent(new Event("input"))
+group?.dispatchEvent(new Event("change"))
+
+type?.dispatchEvent(new Event("input"))
+type?.dispatchEvent(new Event("change"))
+
+await initAutoCode(table, {
+  id_group: keep.id_group
+})
+
+initSmartLabels(form)
+
+await initVariantUI({})
+await initComboUI({})
+await initUnitUI({})
+
+const nameInput =
+  form.querySelector(
+    '[data-field="name"]'
+  )
+
+nameInput?.focus()
 }

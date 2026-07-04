@@ -72,53 +72,59 @@ box.querySelectorAll(".image-input").forEach(input=>{
 }
 
 }
-export function initSmartLabels(root=document){
+export function initSmartLabels(root = document){
 
-const fields =
-root.querySelectorAll(".field, .editor-field")
+  const fields =
+    root.querySelectorAll(".field, .editor-field")
 
-fields.forEach(field=>{
+  fields.forEach(field=>{
 
-if(field.closest(".company-page")) return
-if(field.dataset.smartBind) return
-field.dataset.smartBind = "1"
+    if(field.closest(".company-page")) return
 
-const input =
-field.querySelector(`
-  input,
-  textarea,
-  .dropdown-select-trigger
-`)
+    const input =
+      field.querySelector(`
+        input,
+        textarea,
+        .dropdown-select-trigger
+      `)
 
-if(!input) return
+    if(!input) return
 
-const sync = ()=>{
+    const sync = ()=>{
 
-  let hasValue = false
+      let hasValue = false
 
-  if(input.type === "checkbox"){
+      if(input.type === "checkbox"){
 
-    hasValue = input.checked
+        hasValue = input.checked
 
-  }else{
+      }else{
 
-    hasValue =
-      String(
-        getFieldValue(input)
-      ).trim() !== ""
-  }
+        hasValue =
+          String(
+            getFieldValue(input)
+          ).trim() !== ""
+      }
 
-  field.classList.toggle(
-    "has-value",
-    hasValue
-  )
-}
+      field.classList.toggle(
+        "has-value",
+        hasValue
+      )
+    }
 
-input.addEventListener("input", sync)
-input.addEventListener("change", sync)
+    // Chỉ bind event 1 lần
+    if(!field.dataset.smartBind){
 
-sync()
+      field.dataset.smartBind = "1"
 
-})
+      input.addEventListener("input", sync)
+      input.addEventListener("change", sync)
+
+    }
+
+    // Luôn cập nhật trạng thái label
+    sync()
+
+  })
 
 }

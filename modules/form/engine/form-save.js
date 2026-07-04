@@ -6,6 +6,9 @@ import {uploadImage} from "/js/upload-image.js"
 import {
   getFieldValue
 } from "../core/form-field.js"
+import {
+  cleanForm
+} from "./form-loader.js"
 
 export async function saveData(ctx){
 
@@ -180,6 +183,7 @@ export async function saveData(ctx){
 
   if(
     table === "data_product" &&
+    !id &&
     !bulk
   ){
 
@@ -187,6 +191,7 @@ export async function saveData(ctx){
       productId,
       row
     )
+    await cleanForm(table)
   }
 
   /* =========================
