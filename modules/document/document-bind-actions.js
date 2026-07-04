@@ -131,8 +131,10 @@ export function bindDocumentActions({
           }  
 
           await documentActions.printDocument({
-            document: result.header,
-            items: result.items
+            id: result.header.id,
+            type: 
+              result.header.document_type ||
+              result.header.type
           })
   
           await finishDocument(state)

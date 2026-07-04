@@ -383,168 +383,419 @@ function renderBlock({
       >
     `
   }
+function getColumnValue(
+  item,
+  config,
+  fallbackKey
+){
 
-  /* =======================================================
-  TABLE
-  ======================================================= */
+  const field =
+    config?.field ||
+    fallbackKey
 
-  if(block.type === "table"){
+  if(
+    !field ||
+    field === "none"
+  ){
+    return ""
+  }
 
-    const columns =
-      block.props?.columns || []
+  return formatValue(
+
+    resolveBindingValue(
+      field,
+      item
+    ),
+
+    field
+
+  )
+
+}
+
+function renderColumnContent({
+
+  layout = "none",
+
+  mainHtml = "",
+
+  detailHtml = ""
+
+}){
+
+  if(layout === "none"){
+
+    return ""
+
+  }
+
+  if(layout === "row"){
 
     return `
-
-      <table
-
-        class="print-table"
-
-        style="     
-          position:absolute;
-
-          left:${block.x}px;
-          top:${block.y}px;
-
-          width:${block.width}px;
-
-          border-collapse:collapse;
-
-          font-size:${
-            block.style?.fontSize || 12
-          }px;
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:2px;
         "
       >
 
-        <tbody>
+        ${mainHtml}
 
-          <tr>
+        ${detailHtml}
 
-            ${
-              columns.map(col=>`
-
-                <th
-                  style="
-                    border:1px solid #000;
-                    padding:4px;
-                    height:${block.props?.rowHeight || 22}px;
-                    text-align:
-                      ${col.align || "left"};
-                    background:${
-                      block.props?.headerBackgroundColor ||
-                      block.style?.headerBackground ||
-                      "#eee"
-                    };
-                  "
-                >
-
-                  ${
-                    col.label ||
-                    cleanColumnKey(
-                      col.key
-                    )
-                  }
-
-                </th>
-
-              `).join("")
-            }
-
-          </tr>
-
-
-          ${
-            items.map((item,index)=>{
-
-              return `
-
-                <tr
-                  style="
-                    height:${block.props?.rowHeight || 22}px;
-                  "                
-                >
-
-                  ${
-                    columns.map(col=>{
-
-                      const cleanKey =
-
-                        cleanColumnKey(
-                          col.key
-                        )
-
-                      let value = ""
-
-                      if(
-                        cleanKey === "stt"
-                      ){
-
-                        value =
-                          index + 1
-
-                      }else{
-
-                        value =
-                          resolveBindingValue(
-                            cleanKey,
-                            item
-                          )
-                        value =
-                          formatValue(
-                            value,
-                            cleanKey
-                          )  
-                      }
-
-                      if(
-                        cleanKey === "qty"
-                      ){
-                        
-                        const qty =
-                          Number(item.qty || 0)
-                          
-                        const tongsoluong =
-                          Number(
-                            item.tongsoluong || 0
-                          )
-
-                      if(
-                        qty === tongsoluong
-                      ){
-                        value = ""
-                      }
-                    }
-
-                      return `
-
-                        <td
-                          style="
-                            border:1px solid #000;
-                            padding:4px;
-                            text-align:
-                              ${col.align || "left"};
-                          "
-                        >
-
-                          ${
-                            value ?? ""
-                          }
-
-                        </td>
-                      `
-                    }).join("")
-                  }
-
-                </tr>
-              `
-            }).join("")
-          }
-
-        </tbody>
-
-      </table>
+      </div>
     `
   }
 
+  if(layout === "column"){
+
+    return `
+      <div
+        style="
+          display:flex;
+          flex-direction:row;
+          align-items:center;
+          gap:6px;
+          flex-wrap:wrap;
+        "
+      >
+
+        ${mainHtml}
+
+        ${detailHtml}
+
+      </div>
+    `
+  }
+
+  return ""
+}
+
+/* =======================================================
+TABLE
+======================================================= */
+
+if(block.type === "table"){
+
+  const columns =
+    block.props?.columns || []
+
+  return `
+
+    <table
+
+      class="print-table"
+
+      style="
+        position:absolute;
+
+        left:${block.x}px;
+        top:${block.y}px;
+
+        width:${block.width}px;
+
+        border-collapse:collapse;
+      "
+
+    >
+
+      <tbody>
+
+        <!-- =========================
+        HEADER
+        ========================== -->
+
+        <tr>
+
+          ${columns.map(column=>{
+
+            const main =
+              column.main || {}
+
+            return `
+
+              <th
+
+                style="
+                  border:1px solid #000;
+
+                  padding:4px;
+
+                  height:${
+                    block.props?.rowHeight || 22
+                  }px;
+
+                  text-align:${main.align || "left"};
+
+                  font-size:${main.fontSize || 12}px;
+
+                  font-weight:${
+                    main.bold ? 700 : 400
+                  };
+
+                  font-style:${
+                    main.italic
+                      ? "italic"
+                      : "normal"
+                  };
+
+                  text-decoration:${
+                    main.underline
+                      ? "underline"
+                      : "none"
+                  };
+
+                  color:${
+                    main.color || "#000"
+                  };
+
+                  background:${
+                    block.props?.headerBackgroundColor ||
+                    "#eeeeee"
+                  };
+
+                "
+
+              >
+
+                ${
+                  column.label ||
+                  cleanColumnKey(column.key)
+                }
+
+              </th>
+
+            `
+
+          }).join("")}
+
+        </tr>
+
+        <!-- =========================
+        DATA
+        ========================== -->
+
+        ${items.map((item,index)=>{
+
+          return `
+
+            <tr>
+
+              ${columns.map(column=>{
+
+                const main =
+                  column.main || {}
+
+                const detail =
+                  column.detail || {}
+
+                const layout =
+                  column.layout || "none"
+
+                /* =====================
+                MAIN
+                ===================== */
+
+                let mainValue = ""
+
+                if(column.key === "stt"){
+
+                  mainValue = index + 1
+
+                }else{
+
+                  mainValue = getColumnValue(
+
+                    item,
+
+                    main,
+
+                    column.key
+
+                  )
+
+                }
+
+                /* =====================
+                DETAIL
+                ===================== */
+
+                const detailValue =
+                  getColumnValue(
+
+                    item,
+
+                    detail,
+
+                    ""
+
+                  )
+
+                /* =====================
+                SPECIAL
+                ===================== */
+
+                if(column.key === "qty"){
+
+                  const qty =
+                    Number(item.qty || 0)
+
+                  const tong =
+                    Number(
+                      item.tongsoluong || 0
+                    )
+
+                  if(qty === tong){
+
+                    mainValue = ""
+
+                  }
+
+                }
+
+                /* =====================
+                MAIN HTML
+                ===================== */
+
+                const mainHtml =
+
+                  mainValue === ""
+
+                  ? ""
+
+                  : `
+
+                    <div
+
+                      style="
+                        text-align:${main.align || "left"};
+
+                        font-size:${main.fontSize || 12}px;
+
+                        font-weight:${
+                          main.bold ? 700 : 400
+                        };
+
+                        font-style:${
+                          main.italic
+                            ? "italic"
+                            : "normal"
+                        };
+
+                        text-decoration:${
+                          main.underline
+                            ? "underline"
+                            : "none"
+                        };
+
+                        color:${
+                          main.color || "#000"
+                        };
+                      "
+
+                    >
+
+                      ${mainValue}
+
+                    </div>
+
+                  `
+
+                /* =====================
+                DETAIL HTML
+                ===================== */
+
+                const detailHtml =
+
+                  detailValue === ""
+
+                  ? ""
+
+                  : `
+
+                    <div
+
+                      style="
+                        text-align:${detail.align || "left"};
+
+                        font-size:${detail.fontSize || 11}px;
+
+                        font-weight:${
+                          detail.bold ? 700 : 400
+                        };
+
+                        font-style:${
+                          detail.italic
+                            ? "italic"
+                            : "normal"
+                        };
+
+                        text-decoration:${
+                          detail.underline
+                            ? "underline"
+                            : "none"
+                        };
+
+                        color:${
+                          detail.color || "#666"
+                        };
+                      "
+
+                    >
+
+                      ${detailValue}
+
+                    </div>
+
+                  `
+
+                /* =====================
+                CELL
+                ===================== */
+
+                return `
+
+                  <td
+
+                    style="
+                      border:1px solid #000;
+
+                      padding:4px;
+
+                      vertical-align:top;
+                    "
+
+                  >
+
+                    ${renderColumnContent({
+
+                      layout,
+
+                      mainHtml,
+
+                      detailHtml
+
+                    })}
+
+                  </td>
+
+                `
+
+              }).join("")}
+
+            </tr>
+
+          `
+
+        }).join("")}
+
+      </tbody>
+
+    </table>
+
+  `
+}
 /* =======================================================
 LINE
 ======================================================= */

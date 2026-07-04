@@ -3,77 +3,21 @@
 import {loadRef}
 from "/js/relation-cache.js"
 
-/* =========================================================
-CACHE
-========================================================= */
-
-let productsCache = null
-let unitsCache = null
-
-/* =========================================================
-LOAD CACHE
-========================================================= */
-
-async function ensureCache(){
-
-  if(
-    productsCache
-    &&
-    unitsCache
-  ){
-    return
-  }
-
-  const [
-
-    products,
-
-    units
-
-  ] = await Promise.all([
-
-    loadRef(
-      "data_product"
-    ),
-
-    loadRef(
-      "product_unit"
-    )
-
-  ])
-
-  productsCache =
-    Array.isArray(products)
-    ? products
-    : []
-
-  unitsCache =
-    Array.isArray(units)
-    ? units
-    : []
-
-}
 
 /* =========================================================
 GET PRODUCT
 ========================================================= */
 
-export async function getProduct(
-  productId
-){
+export async function getProduct(productId){
 
-  await ensureCache()
+  const products =
+    await loadRef("data_product")
 
-  return productsCache.find(
-
+  return products.find(
     p =>
-
       String(p.id)
-
       ===
-
       String(productId)
-
   )
 
 }
@@ -86,13 +30,14 @@ export async function getProductUnits(
   productId
 ){
 
-  await ensureCache()
-
   if(!productId){
     return []
   }
 
-  return unitsCache.filter(
+  const units =
+    await loadRef("product_unit")
+
+  return units.filter(
 
     u =>
 

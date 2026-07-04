@@ -59,6 +59,12 @@ export function bindMoveEngine(root){
     "pointerdown",
     event=>{
 
+      if(
+        event.target.closest("[data-resize-id]")
+      ){
+        return
+      }
+
       const blockEl =
         event.target.closest(
           "[data-block-id]"

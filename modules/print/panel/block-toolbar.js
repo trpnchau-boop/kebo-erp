@@ -104,13 +104,38 @@ function createTableBlock(){
       rowHeight:22,
 
       columns:[
+    {
+        key:"stt",
+        label:"STT",
+        width:60,
 
-        {
-          key:"stt",
-          label:"STT",
-          width:60
+        main:{
+            field:"stt",
+
+            fontSize:12,
+            bold:false,
+            italic:false,
+            underline:false,
+
+            color:"#000",
+
+            align:"center"
         },
-      ],
+
+        detail:{
+            field:"",
+
+            fontSize:11,
+            bold:false,
+            italic:false,
+            underline:false,
+
+            color:"#666",
+
+            align:"left"
+        }
+    }
+],
 
       rows:[
 

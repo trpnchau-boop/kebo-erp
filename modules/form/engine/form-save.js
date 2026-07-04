@@ -200,6 +200,10 @@ export async function saveData(ctx){
 
   markDirty(table)
 
+  if(table === "data_product"){
+    markDirty("product_unit")
+  }
+
   /* =========================
   LIST RELOAD
   ========================= */

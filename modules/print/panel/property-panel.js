@@ -59,6 +59,50 @@ export function renderPropertyPanel(
       ]
       : null  
 
+  if(selectedColumn){
+
+    selectedColumn.main ??= {
+
+      field: selectedColumn.key,
+
+      fontSize:12,
+
+      bold:false,
+
+      italic:false,
+
+      underline:false,
+  
+      color:"#000000",
+
+      align:selectedColumn.align || "left"
+
+    }
+
+    selectedColumn.detail ??= {
+
+      field:"",
+
+      fontSize:11,
+
+      bold:false,
+
+      italic:false,
+
+      underline:false,
+
+      color:"#666666",
+
+      align:"left"
+
+    }
+
+  }
+
+  const isColumnMode =
+    isTable &&
+    selectedColumn    
+
   return `
 
     <div
@@ -311,7 +355,7 @@ export function renderPropertyPanel(
       }
 
 ${
-  isTable
+  isTable && !isColumnMode
 
   ? `
 
@@ -441,10 +485,12 @@ ${
         }"
       >
 
-    </div>
+    </div>    `
 
-          ${
-  selectedColumn
+    : ""
+}
+${
+  isColumnMode
 
   ? `
 
@@ -454,9 +500,11 @@ ${
       Column
     </h4>
 
-    <div
-      class="print-property-group"
-    >
+    <!-- =========================
+    HEADER
+    ========================== -->
+
+    <div class="print-property-group">
 
       <label>
         Header Text
@@ -465,31 +513,166 @@ ${
       <input
         type="text"
         data-column-prop="label"
-        value="${
-          selectedColumn.label || ""
-        }"
+        value="${selectedColumn.label || ""}"
       >
 
     </div>
 
-    <div
-      class="print-property-group"
-    >
+    <div class="print-property-group">
+
+      <label>
+        Layout
+      </label>
+
+      <select
+        data-column-prop="layout"
+      >
+
+        <option
+          value="none"
+          ${
+            (selectedColumn.layout || "none") === "none"
+              ? "selected"
+              : ""
+          }
+        >
+          None
+        </option>
+
+        <option
+          value="row"
+          ${
+            selectedColumn.layout === "row"
+              ? "selected"
+              : ""
+          }
+        >
+          Row
+        </option>
+
+        <option
+          value="column"
+          ${
+            selectedColumn.layout === "column"
+              ? "selected"
+              : ""
+          }
+        >
+          Column
+        </option>
+
+      </select>
+
+    </div>
+
+    <hr>
+
+    <h4>
+      Main Content
+    </h4>
+
+    <div class="print-property-group">
+
+      <label>
+        Print Field
+      </label>
+
+      <input
+        type="text"
+        data-column-main="field"
+        value="${selectedColumn.main.field || ""}"
+      >
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+        Font Size
+      </label>
+
+      <input
+        type="number"
+        data-column-main="fontSize"
+        value="${selectedColumn.main.fontSize}"
+      >
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-main="bold"
+          ${
+            selectedColumn.main.bold
+              ? "checked"
+              : ""
+          }
+        >
+
+        Bold
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-main="italic"
+          ${
+            selectedColumn.main.italic
+              ? "checked"
+              : ""
+          }
+        >
+
+        Italic
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-main="underline"
+          ${
+            selectedColumn.main.underline
+              ? "checked"
+              : ""
+          }
+        >
+
+        Underline
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
 
       <label>
         Align
       </label>
 
       <select
-        data-column-prop="align"
+        data-column-main="align"
       >
 
         <option
           value="left"
           ${
-            (selectedColumn.align || "left")
-            === "left"
-
+            selectedColumn.main.align === "left"
               ? "selected"
               : ""
           }
@@ -500,9 +683,7 @@ ${
         <option
           value="center"
           ${
-            selectedColumn.align
-            === "center"
-
+            selectedColumn.main.align === "center"
               ? "selected"
               : ""
           }
@@ -513,9 +694,7 @@ ${
         <option
           value="right"
           ${
-            selectedColumn.align
-            === "right"
-
+            selectedColumn.main.align === "right"
               ? "selected"
               : ""
           }
@@ -527,13 +706,181 @@ ${
 
     </div>
 
-  `
-  : ""
-}
+    <div class="print-property-group">
+
+      <label>
+        Color
+      </label>
+
+      <input
+        type="color"
+        data-column-main="color"
+        value="${selectedColumn.main.color}"
+      >
+
+    </div>
+
+    <hr>
+
+    <h4>
+      Detail Content
+    </h4>
+
+    <div class="print-property-group">
+
+      <label>
+        Print Field
+      </label>
+
+      <input
+        type="text"
+        data-column-detail="field"
+        value="${selectedColumn.detail.field || ""}"
+      >
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+        Font Size
+      </label>
+
+      <input
+        type="number"
+        data-column-detail="fontSize"
+        value="${selectedColumn.detail.fontSize}"
+      >
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-detail="bold"
+          ${
+            selectedColumn.detail.bold
+              ? "checked"
+              : ""
+          }
+        >
+
+        Bold
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-detail="italic"
+          ${
+            selectedColumn.detail.italic
+              ? "checked"
+              : ""
+          }
+        >
+
+        Italic
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+
+        <input
+          type="checkbox"
+          data-column-detail="underline"
+          ${
+            selectedColumn.detail.underline
+              ? "checked"
+              : ""
+          }
+        >
+
+        Underline
+
+      </label>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+        Align
+      </label>
+
+      <select
+        data-column-detail="align"
+      >
+
+        <option
+          value="left"
+          ${
+            selectedColumn.detail.align === "left"
+              ? "selected"
+              : ""
+          }
+        >
+          Left
+        </option>
+
+        <option
+          value="center"
+          ${
+            selectedColumn.detail.align === "center"
+              ? "selected"
+              : ""
+          }
+        >
+          Center
+        </option>
+
+        <option
+          value="right"
+          ${
+            selectedColumn.detail.align === "right"
+              ? "selected"
+              : ""
+          }
+        >
+          Right
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="print-property-group">
+
+      <label>
+        Color
+      </label>
+
+      <input
+        type="color"
+        data-column-detail="color"
+        value="${selectedColumn.detail.color}"
+      >
+
+    </div>
 
   `
   : ""
 }
+
+
+
       <!-- =====================
       TEXT
       ====================== -->
@@ -746,57 +1093,6 @@ export function bindPropertyPanel(
 
     event=>{
 
-      const columnInput =
-
-  event.target.closest(
-    "[data-column-prop]"
-  )
-
-if(columnInput){
-
-  const state =
-    printStore.getState()
-
-  const block =
-    getSelectedBlock(state)
-
-  if(
-    !block ||
-    block.type !== "table"
-  ){
-    return
-  }
-
-  const column =
-
-    block.props.columns[
-      state.selectedColumnIndex
-    ]
-
-  if(!column){
-    return
-  }
-
-  printStore.setState(()=>{
-
-    column[
-      columnInput.dataset.columnProp
-    ] = columnInput.value
-
-  })
-
-  return
-}
-
-      const input =
-        event.target.closest(
-          "[data-prop]"
-        )
-
-      if(!input){
-        return
-      }
-
       const state =
         printStore.getState()
 
@@ -804,6 +1100,150 @@ if(columnInput){
         getSelectedBlock(state)
 
       if(!block){
+        return
+      }
+
+      /* =====================================
+      COLUMN HEADER
+      ===================================== */
+
+      const columnPropInput =
+        event.target.closest(
+          "[data-column-prop]"
+        )
+
+      if(columnPropInput){
+
+        if(block.type !== "table"){
+          return
+        }
+
+        const column =
+          block.props?.columns?.[
+            state.selectedColumnIndex
+          ]
+
+        if(!column){
+          return
+        }
+
+        const key =
+          columnPropInput.dataset.columnProp
+
+        printStore.setState(()=>{
+
+          column[key] =
+
+            columnPropInput.type === "checkbox"
+
+              ? columnPropInput.checked
+
+              : columnPropInput.value
+
+        })
+
+        return
+      }
+
+      /* =====================================
+      COLUMN MAIN
+      ===================================== */
+
+      const mainInput =
+        event.target.closest(
+          "[data-column-main]"
+        )
+
+      if(mainInput){
+
+        if(block.type !== "table"){
+          return
+        }
+
+        const column =
+          block.props?.columns?.[
+            state.selectedColumnIndex
+          ]
+
+        if(!column){
+          return
+        }
+
+        column.main ??= {}
+
+        const key =
+          mainInput.dataset.columnMain
+
+        printStore.setState(()=>{
+
+          column.main[key] =
+
+            mainInput.type === "checkbox"
+
+              ? mainInput.checked
+
+              : mainInput.value
+
+        })
+
+        return
+      }
+
+      /* =====================================
+COLUMN DETAIL
+===================================== */
+
+const detailInput =
+  event.target.closest(
+    "[data-column-detail]"
+  )
+
+if(detailInput){
+
+  if(block.type !== "table"){
+    return
+  }
+
+  const column =
+    block.props?.columns?.[
+      state.selectedColumnIndex
+    ]
+
+  if(!column){
+    return
+  }
+
+  column.detail ??= {}
+
+  const key =
+    detailInput.dataset.columnDetail
+
+  printStore.setState(()=>{
+
+    column.detail[key] =
+
+      detailInput.type === "checkbox"
+
+        ? detailInput.checked
+
+        : detailInput.value
+
+  })
+
+  return
+
+}
+
+      /* =====================================
+      BLOCK
+      ===================================== */
+
+      const input =
+        event.target.closest(
+          "[data-prop]"
+        )
+
+      if(!input){
         return
       }
 
@@ -887,23 +1327,6 @@ if(columnInput){
           return
         }
 
-        if( input.type === "checkbox"){
-
-          setBlockProps(
-
-            state,
-
-             block.id,
-
-            {
-              [prop]:
-              input.checked
-            }
-          )
-
-          return
-        }
-
         /* =====================
         OTHER PROPS
         ====================== */
@@ -915,15 +1338,31 @@ if(columnInput){
           block.id,
 
           {
+
             [prop]:
 
-              isNaN(value)
-                ? value
-                : Number(value)
-          }
-        )
-      })
-    }
-  )
-}
+              input.type === "checkbox"
 
+                ? input.checked
+
+                : (
+
+                    isNaN(value)
+
+                      ? value
+
+                      : Number(value)
+
+                  )
+
+          }
+
+        )
+
+      })
+
+    }
+
+  )
+
+}

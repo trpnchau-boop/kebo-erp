@@ -1,5 +1,3 @@
-// modules/document/actions/print-document.js
-
 import {
   getAll
 }
@@ -20,41 +18,45 @@ import {
 }
 from "/modules/print/layout/reflow-sections.js"
 
+import {
+  DOCUMENT_TYPES
+}
+from "/modules/document/document-types.js"
+
+import {
+  loadPrintData
+}
+from "/modules/document/print/load-print-data.js"
+
 export async function printDocument({
 
-  document,
-  items = []
+  id,
+  type
 
 }){
 
-  if(!document){
+  if(!id){
 
     alert("Document missing")
+
     return
+
   }
 
-  /* =====================================================
-  DOCUMENT TYPE
-  ====================================================== */
-
-  const type =
+  const typeCode =
     String(
-      document.document_type ||
-      document.type ||
-      "SALE"
+      type || "SALE"
     ).toUpperCase()
 
-
-  /* =====================================================
-  LOAD TEMPLATE
-  ====================================================== */
+  /* =====================================
+  TEMPLATE
+  ===================================== */
 
   const templates =
     await getAll(
       "print_templates",
       {
-        type_code:type
-      }
+        type_code:typeCode}
     )
 
   const template =
@@ -63,35 +65,55 @@ export async function printDocument({
   if(!template){
 
     alert(
-      `Template not found: ${type}`
+      `Template not found: ${typeCode}`
     )
 
     return
+
   }
 
-  /* =====================================================
+  /* =====================================
   COMPANY
-  ====================================================== */
+  ===================================== */
 
   const companies =
-    await getAll("set_company")
+    await getAll(
+      "set_company"
+    )
 
   const company =
     companies?.[0] || {}
 
-  /* =====================================================
-  PRINT DOCUMENT
-  ====================================================== */
+  const schema =
+    DOCUMENT_TYPES[typeCode]
 
-  const printDocument = {
+  if(!schema){
 
-    ...document,
+    alert(
+      `Schema not found: ${typeCode}`
+    )
 
-    company
+  return
+
   }
 
-  const printTemplate =
+  const {
 
+    document,
+
+    items
+
+  } = await loadPrintData({
+
+    id,
+
+    schema,
+
+    company
+
+  })
+
+  const printTemplate =
     structuredClone(
       template
     )
@@ -106,23 +128,19 @@ export async function printDocument({
 
   )
 
-  /* =====================================================
-  HTML
-  ====================================================== */
-
   const html =
     getPrintHtml({
 
       template:printTemplate,
 
-      document:printDocument,
+      document,
 
       items
+
     })
 
-  /* =====================================================
-  PRINT
-  ====================================================== */
+  openPrintWindow(
+    html
+  )
 
-  openPrintWindow(html)
 }

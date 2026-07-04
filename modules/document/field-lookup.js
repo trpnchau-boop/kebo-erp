@@ -59,27 +59,66 @@ function buildDisplayName(
 
 }
 
+function normalizeSearch(text){
+
+  return String(text || "")
+
+    .normalize("NFD")
+
+    .replace(/[\u0300-\u036f]/g,"")
+
+    .replace(/đ/g,"d")
+    .replace(/Đ/g,"D")
+
+    .toLowerCase()
+
+    .replace(/\s+/g," ")
+
+    .trim()
+
+}
+
 function matchSearch({
+
   data,
+
   keyword,
+
   fields = []
+
 }){
 
-  const q =
-    String(keyword || "")
-      .toLowerCase()
+  const tokens =
 
-  return fields.some(key =>
+    normalizeSearch(keyword)
 
-    String(
-      data[key] || ""
+      .split(" ")
+
+      .filter(Boolean)
+
+  if(!tokens.length){
+
+    return true
+
+  }
+
+  return fields.some(key=>{
+
+    const text =
+
+      normalizeSearch(
+
+        data[key]
+
+      )
+
+    return tokens.every(token=>
+
+      text.includes(token)
+
     )
 
-      .toLowerCase()
-
-      .includes(q)
-
-  )
+  })
 
 }
 
@@ -661,6 +700,9 @@ await syncInputs({
                     suggestBox
                   )
 
+                },
+                {
+                  autoSelectFirst:false
                 }
 
               )

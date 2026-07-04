@@ -103,6 +103,8 @@ root.addEventListener(
             || null
         })
 
+        openPropertySidebar()
+
         return
       }
 

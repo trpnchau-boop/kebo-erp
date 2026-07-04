@@ -452,19 +452,56 @@ printStore.setState(state=>{
 
     }else{
 
-      selectedBlock.props.columns
-        .push({
+selectedBlock.props.columns.push({
 
-          key:
-            field.key,
+  key: field.key,
 
-          label:
-            field.label,
+  label: field.label,
 
-          width:
-            field.print?.width ||
-            120
-        })
+  width:
+    field.print?.width || 120,
+
+  layout:"none",  
+
+  align: "left",
+
+  main:{
+
+    field: field.key,
+
+    fontSize:12,
+
+    bold:false,
+
+    italic:false,
+
+    underline:false,
+
+    color:"#000000",
+
+    align:"left"
+
+  },
+
+  detail:{
+
+    field:"",
+
+    fontSize:11,
+
+    bold:false,
+
+    italic:false,
+
+    underline:false,
+
+    color:"#666666",
+
+    align:"left"
+
+  }
+
+})
     }
 
     return

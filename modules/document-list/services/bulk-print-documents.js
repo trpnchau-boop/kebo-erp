@@ -1,17 +1,12 @@
 import {
-  loadDocument
-}
-from "/modules/document/document-load.js"
-
-import {
-  createDocState
-}
-from "/modules/document/document-state.js"
-
-import {
   DOCUMENT_TYPES
 }
 from "/modules/document/document-types.js"
+
+import {
+  loadPrintData
+}
+from "/modules/document/print/load-print-data.js"
 
 import {
   getPrintContent
@@ -35,9 +30,7 @@ export async function printDocument(ctx){
 
   if(!ids.length){
 
-    alert(
-      "Chưa chọn chứng từ"
-    )
+    alert("Chưa chọn chứng từ")
 
     return
 
@@ -59,15 +52,11 @@ export async function printDocument(ctx){
 
   }
 
-  const state =
-    createDocState()
-
   /* =====================================
   TEMPLATE
   ===================================== */
 
   const templates =
-
     await getAll(
       "print_templates",
       {
@@ -106,36 +95,30 @@ export async function printDocument(ctx){
 
   let pages = ""
 
-  /* =====================================
-  LOOP DOCUMENTS
-  ===================================== */
-
   for(const id of ids){
 
-    await loadDocument(
+    const {
+
+      document,
+
+      items
+
+    } = await loadPrintData({
+
       id,
       schema,
-      state
-    )
-
-    const document = {
-
-      ...state.header,
-
       company
 
-    }
+    })
 
     const content =
-
       getPrintContent({
 
         template,
 
         document,
 
-        items:
-          state.items
+        items
 
       })
 
@@ -152,10 +135,6 @@ export async function printDocument(ctx){
     `
 
   }
-
-  /* =====================================
-  HTML
-  ===================================== */
 
   const html = `
 
@@ -187,10 +166,6 @@ export async function printDocument(ctx){
     </html>
 
   `
-
-  /* =====================================
-  PRINT
-  ===================================== */
 
   openPrintWindow(
     html

@@ -37,13 +37,14 @@ export function clearSuggest(box){
 
 /* ========================= */
 
-export function renderSuggest(box, list, onSelect){
+export function renderSuggest(box, list, onSelect, options = {}){
 
   box.innerHTML = ""
 
   box._list = (list || []).slice(0,10)
   box._index = -1   // ❗ không auto chọn
   box._onSelect = onSelect
+  box._autoSelectFirst = options.autoSelectFirst ?? true
 
   box._list.forEach((row)=>{
 
@@ -114,11 +115,16 @@ function bindKeyboard(box){
 
       // 👉 chưa chọn → lấy item đầu
       if(idx === -1){
+
+        if(box._autoSelectFirst === false){    
+          clearSuggest(box)   
+          return
+        }
         idx = 0
       }
 
       const row =
-        box._list[box._index >= 0 ? box._index : 0]
+        box._list[idx]
 
       if(row){
 
