@@ -109,7 +109,9 @@ export async function printDocument({
 
     schema,
 
-    company
+    company,
+
+    template
 
   })
 

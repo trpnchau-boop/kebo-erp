@@ -93,7 +93,10 @@ export const BASE_DOCUMENT = {
         },
         show:{
           form:true
-        }
+        },
+        print:{
+          show:true,
+        }        
       },  
       {
         key:"day",
@@ -153,7 +156,10 @@ export const BASE_DOCUMENT = {
         },
         show:{
           form:true
-        },        
+        },    
+        print:{
+          show:true,
+        }            
       },          
       {
         key:"mst",
@@ -163,6 +169,9 @@ export const BASE_DOCUMENT = {
         persist:false,
         show:{
           form:true
+        },
+        print:{
+          show:true,
         }
       },  
       {
@@ -177,7 +186,10 @@ export const BASE_DOCUMENT = {
         },
         show:{
           form:true
-        }
+        },
+        print:{
+          show:true,
+        }        
       },  
       {
         key:"customer_name",
@@ -234,7 +246,10 @@ export const BASE_DOCUMENT = {
         textField:"order_code",
         show:{
           form:true
-        }
+        },
+        print:{
+          show:true,
+        }        
       },      
      {
         key:"tongtienvon",
@@ -245,7 +260,10 @@ export const BASE_DOCUMENT = {
           form:false,
           totals:false,
           table:false
-        }
+        },
+        print:{
+          show:false,
+        }        
       },
     {
       key:"payment_summary",
@@ -358,7 +376,10 @@ export const BASE_DOCUMENT = {
         show:{
           input:true,
           table:false
-        }
+        },
+        print:{
+          show:true,
+        }        
       },
       {
         key:"id_product",
@@ -431,7 +452,10 @@ export const BASE_DOCUMENT = {
         show:{          
           input:false,
           table:false
-        }
+        },
+        print:{
+          show:true,
+        }        
       },
       
       {
@@ -453,7 +477,10 @@ export const BASE_DOCUMENT = {
         show:{
           input:true,
           table:true
-        }
+        },
+        print:{
+          show:true,
+        }        
       },
 
       {
@@ -469,7 +496,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -488,7 +515,11 @@ export const BASE_DOCUMENT = {
         show:{
           input:true,
           table:true
-        }
+        },
+        print:{
+          show:true,
+          width:100
+        }     
       },
 
       {
@@ -505,8 +536,8 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
-        }        
+          width:100
+        },     
       },
 
       {
@@ -544,7 +575,7 @@ export const BASE_DOCUMENT = {
         }, 
         print:{
           show:true,
-          width:240
+          width:100
         }               
       },
 
@@ -560,7 +591,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -579,7 +610,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -620,7 +651,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -649,7 +680,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -681,7 +712,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       },
 
@@ -700,7 +731,7 @@ export const BASE_DOCUMENT = {
         },
         print:{
           show:true,
-          width:240
+          width:100
         }        
       }
     ]

@@ -65,22 +65,28 @@ a=>String(a.value)===String(value)
               >
             `
             : className.includes("print-filter")
-              ? `
-                <img
-                  src="/icons/menu-dots.svg"
-                  class="dropdown-filter-icon"
-                >
-              `
-              : ""  
+              ? (
+                  !value
+                    ? `
+                      <img
+                        src="/icons/add-user.svg"
+                        class="dropdown-filter-icon"
+                      >
+                    `
+                    : "" 
+                  )
+              : "" 
         }
 
-        <span>
+      <span>
           ${
-            options.find(
-              a => String(a.value) === String(value)
-            )?.label || emptyText
+            value
+              ? options.find(
+                a => String(a.value) === String(value)
+              )?.label
+            : ""
           }
-        </span>
+      </span>
 
       </button>
 
@@ -188,6 +194,31 @@ export function bindDropdownSelect(
       })
       const span =
         trigger.querySelector("span")
+
+      const icon =
+        trigger.querySelector(".dropdown-filter-icon")
+
+      if(dropdown.classList.contains("print-filter")){
+
+        if(value){
+
+          icon?.remove()
+
+        }else if(!icon){
+
+          trigger.insertAdjacentHTML(
+            "afterbegin",
+            `
+              <img
+                src="/icons/add-user.svg"
+                class="dropdown-filter-icon"
+              >
+            `
+          )
+
+        }
+
+      }
 
       if(span){
 

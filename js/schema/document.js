@@ -221,6 +221,16 @@ label: "Đơn giá vốn",
 type: "number"
 },
 
+line: {
+label: "Định lượng",
+type: "number"
+},
+
+tinhchat: {
+label: "Tính chất",
+type: "text",
+},
+
 })
 },
 

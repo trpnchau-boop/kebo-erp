@@ -8,11 +8,17 @@ import {
 }
 from "/modules/document/document-state.js"
 
+import {
+  groupItems
+}
+from "./group-items.js"
+
 export async function loadPrintData({
 
   id,
   schema,
-  company = {}
+  company = {},
+  template
 
 }){
 
@@ -25,6 +31,22 @@ export async function loadPrintData({
     state
   )
 
+  let items = [...state.items]
+
+  if(template?.detail_group && items.length ){
+
+    items = await groupItems(
+
+      items,
+
+      template.detail_group,
+
+      schema
+
+    )
+
+  }
+
   return {
 
     document:{
@@ -35,7 +57,7 @@ export async function loadPrintData({
 
     },
 
-    items:state.items
+    items
 
   }
 

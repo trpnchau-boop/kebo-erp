@@ -107,9 +107,7 @@ label:"Giá vốn",
 showInQuote:true,
 showInList:true,
 permission:{
-
   view:"view_sensitive",
-
 },
 type:"number",
 format:"money"
@@ -157,6 +155,7 @@ catalog_priority:{
   showInList:true,
   type:"checkbox"
 },
+
 
 qty:{
   label:"Số lượng",

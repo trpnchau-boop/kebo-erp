@@ -1,5 +1,8 @@
 .list-page{
-  padding:12px 0 12px 0;
+  padding:0px 0 12px 0;
+  flex:1;
+  min-height:0;
+  overflow:auto;
 }
 
 .list-page table{
@@ -11,7 +14,7 @@ border-radius:5px;
 
 .list-page th{
 position:sticky;
-top:45px;
+top:0px;
 z-index:200;  
 background:#fff;
 }
@@ -146,4 +149,10 @@ background:#eff6ff;
 
 .thumb{
   cursor:pointer;
+}
+
+.print-filter:not(.empty)
+.dropdown-select-trigger
+> span{
+    font-size: 16px;
 }

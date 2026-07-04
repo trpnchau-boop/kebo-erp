@@ -15,6 +15,20 @@ import {
 }
 from "/js/core/table-selection.js"
 
+import { documentItemOptions }
+from "/js/schema/document-item-options.js"
+
+import {
+  renderDropdownSelect,
+  bindDropdownSelect
+}
+from "/js/components/dropdown-select.js"
+
+import {
+  bindDropdownMenus
+}
+from "/js/components/dropdown-menu.js"
+
 /* =========================
 INIT
 ========================= */
@@ -223,6 +237,11 @@ const opt = {
   state.tbody.addEventListener(
     "change",
     e => handleBodyChange(e, state)
+  )
+
+  state.tbody.addEventListener(
+    "change",
+    e => handlePrintTemplateDropdown(e, state)
   )
 
   /* add */
@@ -466,7 +485,8 @@ async function render(state) {
   }
 
   state.tbody.innerHTML = html
-
+  bindDropdownMenus(state.tbody)
+  bindDropdownSelect(state.tbody)
   state.selection.sync()
 }
 
@@ -503,6 +523,37 @@ async function buildRow(row, state) {
         row,
         k
       )
+
+    if(
+        state.table === "print_templates"
+        &&
+        k === "detail_group"
+    ){
+
+        html += `
+<td>
+
+${renderDropdownSelect({
+
+    value: row.detail_group,
+
+    rowId: row.id,
+
+    field: "detail_group",
+
+    options: documentItemOptions,
+
+    className: "print-filter",
+
+    emptyText: " "
+
+})}
+
+</td>
+`
+
+continue
+      }
 
     if (
       state.table === "data_employee" &&
@@ -1091,5 +1142,50 @@ function openImagePreview(src){
   }
 
   document.body.appendChild(div)
+
+}
+async function handlePrintTemplateDropdown(e, state){
+
+  const trigger =
+    e.target.closest(
+      ".dropdown-select-trigger"
+    )
+
+  if(!trigger){
+    return
+  }
+
+  const {
+    id,
+    field,
+    value
+  } = trigger.dataset
+
+  if(!id || !field){
+    return
+  }
+
+  await updateRow(
+
+    state.table,
+
+    id,
+
+    {
+      [field]: value
+    }
+
+  )
+
+  const row =
+    state.rows.find(
+      r => String(r.id) === String(id)
+    )
+
+  if(row){
+
+    row[field] = value
+
+  }
 
 }

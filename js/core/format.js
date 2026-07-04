@@ -1,13 +1,17 @@
 // js/core/format.js
 
 export function formatMoney(n){
+
   if(n === null || n === undefined || n === "") return ""
 
   const num = Number(n)
 
   if(isNaN(num)) return ""
 
-  return num.toLocaleString("vi-VN")
+  return num.toLocaleString("vi-VN",{
+    minimumFractionDigits:0,
+    maximumFractionDigits:0
+  })
 }
 
 export function formatDecimal(n){

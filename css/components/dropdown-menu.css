@@ -17,12 +17,14 @@
   min-width:100px;
   width:max-content;
 
+  max-height: 240px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
   background:#fff;
 
   border:1px solid #e5e7eb;
   border-radius:5px;
-
-  overflow:hidden;
 
   box-shadow:
     0 6px 16px rgba(0,0,0,.08);
