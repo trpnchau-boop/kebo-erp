@@ -6,7 +6,7 @@ import {bindAllMoneyInputs} from "/js/core/input-format.js"
 
 import {renderVariants, initVariantUI} from "../product/product-variant.js"
 import {renderCombo,initComboUI} from "../product/product-combo.js"
-import { initUnitUI } from "../product/product-unit.js"
+//import { initUnitUI } from "../product/product-unit.js"
 
 import {
   getFieldValue,
@@ -211,6 +211,9 @@ export async function cleanForm(table){
     ),
     type: getFieldValue(
       form.querySelector('[data-field="type"]')
+    ),
+    id_warehouse: getFieldValue(
+      form.querySelector('[data-field="id_warehouse"]')
     )
   }
 
@@ -236,13 +239,27 @@ export async function cleanForm(table){
       return
     }
 
+    const field =
+      schema[table]?.fields?.[
+        i.dataset.field
+      ]
+
+    const value =
+      field?.default
+
     if(i.type === "checkbox"){
 
-      setFieldValue(i,false)
+      setFieldValue(
+        i,
+        value ?? false
+      )
 
     }else{
 
-      setFieldValue(i,"")
+      setFieldValue(
+        i,
+        value ?? ""
+      )
     }
 
     i.dispatchEvent(new Event("input"))
@@ -250,35 +267,47 @@ export async function cleanForm(table){
 
   })
 
-const group =
-  form.querySelector('[data-field="id_group"]')
+  const group =
+    form.querySelector('[data-field="id_group"]')
 
-const type =
-  form.querySelector('[data-field="type"]')
+  const type =
+    form.querySelector('[data-field="type"]')
 
-setFieldValue(group, keep.id_group)
-setFieldValue(type, keep.type)
+  const warehouse =
+    form.querySelector(
+      '[data-field="id_warehouse"]'
+    )
 
-group?.dispatchEvent(new Event("input"))
-group?.dispatchEvent(new Event("change"))
-
-type?.dispatchEvent(new Event("input"))
-type?.dispatchEvent(new Event("change"))
-
-await initAutoCode(table, {
-  id_group: keep.id_group
-})
-
-initSmartLabels(form)
-
-await initVariantUI({})
-await initComboUI({})
-await initUnitUI({})
-
-const nameInput =
-  form.querySelector(
-    '[data-field="name"]'
+  setFieldValue(group, keep.id_group)
+  setFieldValue(type, keep.type)
+  setFieldValue(
+    warehouse,
+    keep.id_warehouse
   )
 
-nameInput?.focus()
+  group?.dispatchEvent(new Event("input"))
+  group?.dispatchEvent(new Event("change"))
+
+  type?.dispatchEvent(new Event("input"))
+  type?.dispatchEvent(new Event("change"))
+
+  warehouse?.dispatchEvent(new Event("input"))
+  warehouse?.dispatchEvent(new Event("change"))
+
+  await initAutoCode(table, {
+    id_group: keep.id_group
+  })
+
+  initSmartLabels(form)
+
+  await initVariantUI({})
+  await initComboUI({})
+  //await initUnitUI({})
+
+  const nameInput =
+    form.querySelector(
+      '[data-field="name"]'
+    )
+
+  nameInput?.focus()
 }
