@@ -87,9 +87,13 @@
 }
 
 .print-canvas-wrap{
+
   overflow:auto;
   background:#EFEEF1;
 
+  margin-top: 12px;
+  border-radius: 5px;
+  
   scrollbar-width:none;
   -ms-overflow-style:none;
 }
@@ -325,4 +329,11 @@
   font-weight:500;
 
   color:#6b7280;
+}
+
+.print-type-select > .dropdown-select-trigger {
+  border: 1px solid #000;
+  border-radius: 10px; 
+  height: 28px;
+  padding: 0 15px;
 }
