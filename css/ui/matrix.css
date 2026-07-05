@@ -1,7 +1,5 @@
 .matrix-page{
-    height:calc(100vh - 180px);
     overflow:auto;
-    margin-top: 12px;
     border-radius: 5px;
     background: #fff;
 }

@@ -1,5 +1,5 @@
 .list-page{
-  padding:0px 0 12px 0;
+  border-radius: 5px;
   flex:1;
   min-height:0;
   overflow:auto;

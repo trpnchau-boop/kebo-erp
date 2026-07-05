@@ -79,13 +79,21 @@ a=>String(a.value)===String(value)
         }
 
       <span>
-          ${
-            value
-              ? options.find(
-                a => String(a.value) === String(value)
-              )?.label
-            : ""
-          }
+        ${
+          className.includes("print-filter")
+            ? (
+                value
+                  ? options.find(
+                    a => String(a.value) === String(value)
+                  )?.label
+                : ""
+              )
+            : (
+                options.find(
+                  a => String(a.value) === String(value)
+                )?.label || emptyText
+              )
+        }
       </span>
 
       </button>
