@@ -1,3 +1,6 @@
+import { renderCatalogImage }
+from "./catalog-card.js"
+
 export function renderCatalog(
   groups,
   products,
@@ -282,38 +285,35 @@ function renderCard(
           : ""
       }
 
-    <div
-      class="card-toolbar"
-    >
-      <input
-        type="checkbox"
-        class="product-check"
-        data-id="${p.id}"
-        ${checked ? "checked" : ""}
+      <div
+        class="card-toolbar"
       >
+        <input
+          type="checkbox"
+          class="product-check"
+          data-id="${p.id}"
+          ${checked ? "checked" : ""}
+        >
 
-      <button
-        class="btn-download"
-        data-id="${p.id}"
-        type="button"
-      >
-        <i class="bi bi-download"></i>
-      </button>
+        <button
+          class="btn-download"
+          data-id="${p.id}"
+          type="button"
+        >
+          <i class="bi bi-download"></i>
+        </button>
 
-      <button
-        class="btn-share"
-        data-id="${p.id}"
-        type="button"
-      >
-        <i class="bi bi-share"></i>
-      </button>
+        <button
+          class="btn-share"
+          data-id="${p.id}"
+          type="button"
+        >
+          <i class="bi bi-share"></i>
+        </button>
 
-    </div>
+      </div>
 
-      <img
-        src="${imageUrl}"
-        loading="lazy"
-      >
+      ${renderCatalogImage(imageUrl)}
 
       <div class="name">
         ${p.name || ""}

@@ -182,6 +182,20 @@
     display:block;
 }
 
+.catalog-logo{
+
+  position: absolute;
+
+  right: 12px;
+  top: 0px;
+
+  width: 56px !important;
+
+  pointer-events: none;
+
+  opacity: .9;
+}
+
 .out-stock-badge{
     position:absolute;
 

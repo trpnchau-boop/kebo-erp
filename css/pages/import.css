@@ -6,13 +6,13 @@ IMPORT PAGE
     padding:0 12px ;
     width:100%;
     min-width: 0 !important;
+    overflow: hidden;
 }
 
 #import-preview{
     width:100%;
     min-width:0;
-    height:calc(100vh - 180px);
-    overflow:auto;
+    height:calc(100vh - 10px);
 }
 
 .import-preview-table thead th{
@@ -193,7 +193,7 @@ SIDEBAR MAP
 ========================================================= */
 
 .import-map-panel{
-    margin: -14px 0px;
+    margin: 0px 20px;
 }
 
 .import-map-panel h3{
@@ -335,6 +335,7 @@ SCROLLBAR
 }
 .excel-col{
     font-size:13px;
+    color: #6b7280;
     font-weight:700;
     text-align:center;
 }

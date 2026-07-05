@@ -13,6 +13,9 @@ import{
 }
 from "/js/components/progress-overlay.js"
 
+import { renderCatalogImage }
+from "./catalog-card.js"
+
 export async function exportCatalogJpg(
   products,
   share = false
@@ -123,15 +126,7 @@ async function buildProductImage(
 
   box.innerHTML = `
 
-    <img
-      src="${imageUrl}"
-      crossorigin="anonymous"
-      style="
-        width:100%;
-        height:auto;
-        display:block;
-      "
-    >
+    ${renderCatalogImage(imageUrl)}
 
     <div
       style="

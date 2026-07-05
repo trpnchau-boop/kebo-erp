@@ -327,6 +327,8 @@ window.addEventListener("DOMContentLoaded", async ()=>{
       document.getElementById("content")
     )
 
+    scheduleLogoFlip()
+
     if(!location.hash){
 
       location.hash = "#/catalog"
@@ -357,6 +359,8 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
 
   await initERP(session)
+
+  scheduleLogoFlip()
 
   if(location.hash){
 
@@ -408,3 +412,65 @@ window.addEventListener(
   }
 )
 
+/* =========================
+LOGO FLIP
+========================= */
+
+function scheduleLogoFlip(){
+
+  const logo =
+    document.querySelector(".sidebar-logo-img")
+
+  if(!logo) return
+
+  // 20 ~ 80 giây
+  const delay =
+    20000 + Math.random() * 60000
+
+  setTimeout(()=>{
+
+    // số lần lắc: 1 ~ 3
+    const count =
+      Math.floor(Math.random() * 3) + 1
+
+    playFlip(logo, count)
+
+  }, delay)
+
+}
+
+function playFlip(
+  logo,
+  remain
+){
+
+  logo.classList.remove("flip")
+  void logo.offsetWidth
+  logo.classList.add("flip")
+
+  setTimeout(()=>{
+
+    logo.classList.remove("flip")
+
+    if(remain > 1){
+
+      // nghỉ ngắn rồi lắc tiếp
+      setTimeout(()=>{
+
+        playFlip(
+          logo,
+          remain - 1
+        )
+
+      },300 + Math.random() * 500)
+
+    }else{
+
+      // xong chu kỳ
+      scheduleLogoFlip()
+
+    }
+
+  },800)
+
+}

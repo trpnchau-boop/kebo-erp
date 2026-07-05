@@ -1,3 +1,6 @@
+import { renderCatalogImage }
+from "./catalog-card.js"
+
 export async function exportCatalogPdf(
   products
 ){
@@ -135,15 +138,7 @@ function renderCard(p){
       "
     >
 
-      <img
-        src="${imageUrl}"
-        crossorigin="anonymous"
-        style="
-          width:100%;
-          height:auto;
-          display:block;
-        "
-      >
+      ${renderCatalogImage(imageUrl)}
 
       <div
         style="

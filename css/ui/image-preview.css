@@ -36,3 +36,15 @@
     0 15px 50px rgba(0,0,0,.45);
 
 }
+
+.card-image{
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+

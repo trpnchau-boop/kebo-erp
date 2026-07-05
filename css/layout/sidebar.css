@@ -47,22 +47,76 @@ display:none;
 display:none;
 }
 
+#sidebar.collapsed .sidebar-logo-text{
+
+  display:none;
+
+}
+
 #sidebar.collapsed .sidebar-logo{
 font-size:14px;
 text-align:center;
+justify-content:center;
 font-weight: 800;
-padding: 15px 0px 0px 10px;
+padding: 5px 0 0 15px;
 border:none;
 }
 
 .sidebar-logo{
-font-size:18px;
-font-weight:700;
-padding:9px 19px;
-margin-bottom:10px;
-border-bottom:1px solid rgba(3, 0, 0, 0.973);
+    display: flex;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 2px 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(3, 0, 0, 0.973);
 }
 
+.sidebar-logo-text{
+
+  white-space:nowrap;
+  transition:opacity .2s;
+  margin-top: auto;
+  padding: 5px 0;
+
+}
+
+.sidebar-logo-img{
+
+  width:34px;
+  height:34px;
+
+  object-fit:contain;
+  transform: scale(1.8);
+
+  flex:none;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+
+}
+
+.sidebar-logo-img.flip{
+
+  animation:logoFlip 1s ease-in-out;
+
+}
+
+@keyframes logoFlip{
+
+  0%{
+    transform:scale(1.8) perspective(600px) rotateY(0deg);
+  }
+
+  50%{
+    transform:scale(1.8) perspective(600px) rotateY(90deg);
+  }
+
+  100%{
+    transform:scale(1.8) perspective(600px) rotateY(360deg);
+  
+  }
+
+}
 
 /* =========================
 SIDEBAR PANEL MODE

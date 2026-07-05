@@ -1,4 +1,5 @@
-//export-catalog-share.js
+import { renderCatalogImage }
+from "./catalog-card.js"
 
 export async function buildPdfFile(
   products
@@ -145,15 +146,7 @@ function renderShareCard(p){
       "
     >
 
-      <img
-        src="${imageUrl}"
-        crossorigin="anonymous"
-        style="
-          width:100%;
-          height:auto;
-          display:block;
-        "
-      >
+      ${renderCatalogImage(imageUrl)}
 
       <div
         style="
