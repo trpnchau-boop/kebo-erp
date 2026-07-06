@@ -90,7 +90,8 @@ gap:0px;
 .form-page .field.field-inline .switch{
   justify-self:start;
   align-self:center;
-  margin:0;
+  transform: translateY(6px);
+  transform: translateX(-8px);
 }
 
 .form-page .field > label:not(.switch){
