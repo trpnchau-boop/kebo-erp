@@ -57,6 +57,7 @@ body{
 
 #btn-auth.logout::before{
     background-image:url("/images/logout.webp");
+    transform: scaleX(-1);
 }
 
 #btn-auth:hover{

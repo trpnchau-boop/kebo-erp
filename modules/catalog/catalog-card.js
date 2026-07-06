@@ -1,4 +1,7 @@
-export function renderCatalogImage(imageUrl){
+export function renderCatalogImage(
+  imageUrl,
+  ratio = 0.3
+){
 
   return `
 
@@ -23,14 +26,14 @@ export function renderCatalogImage(imageUrl){
 
       <img
         src="/images/logo.webp"
-        crossorigin="anonymous"
         alt=""
         style="
           position:absolute;
-          right:12px;
-          bottom:12px;
 
-          width:64px;
+          right:2%;
+          bottom:2%;
+
+          width:${ratio * 100}%;
           height:auto;
 
           pointer-events:none;

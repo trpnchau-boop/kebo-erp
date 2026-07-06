@@ -7,6 +7,10 @@
   height:100%;
   gap:2px;
   scrollbar-width:none;
+
+  background: url(/images/logo.webp) left / contain no-repeat;
+  background-size: 46px;
+  background-position-y: -3px;
 }
 
 #tabs-bar::-webkit-scrollbar{

@@ -21,53 +21,60 @@ export function openLoginPopup(){
 
   overlay.hidden = false
 
-  popup.innerHTML = `
+popup.innerHTML = `
 
-    <form
-      id="login-form"
-      class="login-form"
-    >
+  <form
+    id="login-form"
+    class="login-form"
+  >
 
-      <h2>
-        Đăng nhập
-      </h2>
+    <div class="login-brand">
 
-      <input
-        id="login-email"
-        type="email"
-        placeholder="Email"
-        autocomplete="username"
-        required
+      <img
+        src="/images/logo.webp"
+        alt="KEBO ERP"
+        class="login-logo"
       >
 
-      <input
-        id="login-password"
-        type="password"
-        placeholder="Mật khẩu"
-        autocomplete="current-password"
-        required
-      >
-
-      <div class="login-actions">
-
-        <button
-          type="button"
-          id="login-cancel"
-        >
-          Hủy
-        </button>
-
-        <button
-          type="submit"
-        >
-          Đăng nhập
-        </button>
-
+      <div class="login-name">
+        KEBO ERP
       </div>
 
-    </form>
+    </div>
 
-  `
+    <h2>
+      Đăng nhập
+    </h2>
+
+    <input
+      id="login-email"
+      type="email"
+      placeholder="Email"
+      autocomplete="username"
+      required
+    >
+
+    <input
+      id="login-password"
+      type="password"
+      placeholder="Mật khẩu"
+      autocomplete="current-password"
+      required
+    >
+
+    <div class="login-actions">
+
+      <button
+        type="submit"
+        class="login-submit"
+        aria-label="Đăng nhập"  
+      ></button>
+
+    </div>
+
+  </form>
+
+`
 
   bindEvents()
 
@@ -106,18 +113,21 @@ function bindEvents(){
       "login-password"
     )
 
-  document
-    .getElementById(
-      "login-cancel"
-    )
-    .onclick =
-      closeLoginPopup
-
-  overlay.onclick = e=>{
+  form.onclick = e=>{
 
     if(
-      e.target === overlay
+      e.target.closest("input, button")
     ){
+      return
+    }
+
+    closeLoginPopup()
+
+  }
+
+  popup.onclick = e=>{
+
+    if(e.target === popup){
 
       closeLoginPopup()
 

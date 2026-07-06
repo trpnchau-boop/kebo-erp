@@ -3,7 +3,7 @@
 #login-popup {
     width: 380px;
     height: stretch;
-    padding: 260px 24px;
+    padding: 100px 24px;
 }
 
 .tab-host:not([data-page="matrix"]):not([data-tab="list_document_items"]) .list-page tbody tr{

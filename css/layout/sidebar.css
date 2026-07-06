@@ -87,7 +87,7 @@ border:none;
   height:34px;
 
   object-fit:contain;
-  transform: scale(1.8);
+  transform: scale(1.5);
 
   flex:none;
   transform-style: preserve-3d;
@@ -104,15 +104,15 @@ border:none;
 @keyframes logoFlip{
 
   0%{
-    transform:scale(1.8) perspective(600px) rotateY(0deg);
+    transform:scale(1.5) perspective(600px) rotateY(0deg);
   }
 
   50%{
-    transform:scale(1.8) perspective(600px) rotateY(90deg);
+    transform:scale(1.5) perspective(600px) rotateY(90deg);
   }
 
   100%{
-    transform:scale(1.8) perspective(600px) rotateY(360deg);
+    transform:scale(1.5) perspective(600px) rotateY(360deg);
   
   }
 
