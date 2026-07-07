@@ -40,8 +40,7 @@ import { getSession } from "/js/auth.js"
 import {
 
   initCatalogPinch,
-  applyCatalogZoom,
-  zoomDefault
+  applyCatalogZoom
 
 }
 from "./catalog-pinch.js"
