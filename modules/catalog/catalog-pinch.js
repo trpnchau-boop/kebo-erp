@@ -81,6 +81,8 @@ export function zoomDefault(
   cardWidth =
     DEFAULT_WIDTH
 
+  pinch = null  
+
   applyCatalogZoom(root)
 
   saveZoom()
