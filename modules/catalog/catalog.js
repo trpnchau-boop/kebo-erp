@@ -37,6 +37,15 @@ from "/js/components/dropdown-menu.js"
 
 import { getSession } from "/js/auth.js"
 
+import {
+
+  initCatalogPinch,
+
+  applyCatalogZoom
+
+}
+from "./catalog-pinch.js"
+
 let showHot = false
 
 export async function init(
@@ -273,6 +282,8 @@ renderDropdownSelect({
       showHot,
       canViewPrice
     )
+
+    applyCatalogZoom(grid)
 
   }
 
@@ -639,8 +650,8 @@ renderDropdownSelect({
      FIRST LOAD
   ===================== */
 
+  initCatalogPinch(grid)
   applyFilter()
-
   updateSelectionUI()
 
 }
