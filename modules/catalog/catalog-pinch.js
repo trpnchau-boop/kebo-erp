@@ -99,7 +99,7 @@ export function zoomDefault(
 
     card.scrollIntoView({
 
-      behavior:"smooth",
+      behavior:"instant",
 
       block:"center"
 
