@@ -175,7 +175,7 @@ function renderShareCard(p){
           "
         >
           ${Number(
-            p.dongia1 || 0
+            p.dongia3 || 0
           ).toLocaleString()} đ
         </div>
 

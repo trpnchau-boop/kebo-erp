@@ -259,6 +259,7 @@ function renderCard(
           ? "out-stock"
           : ""
       }"
+      data-id="${p.id}"
     >
 
       ${
@@ -323,7 +324,7 @@ function renderCard(
         canViewPrice
           ? `
             <div class="price">
-              ${formatPrice(p.dongia1)}
+              ${formatPrice(p.dongia3)}
             </div>
           `
           : ""

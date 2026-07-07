@@ -50,6 +50,41 @@ function distance(touches){
 
 }
 
+function getTouchCenter(touches){
+
+  return {
+
+    x:
+      (
+        touches[0].clientX +
+        touches[1].clientX
+      ) / 2,
+
+    y:
+      (
+        touches[0].clientY +
+        touches[1].clientY
+      ) / 2
+
+  }
+
+}
+
+function getAnchorCard(x,y){
+
+  return document
+
+    .elementFromPoint(
+      x,
+      y
+    )
+
+    ?.closest(
+      ".catalog-card"
+    )
+
+}
+
 export function applyCatalogZoom(root){
 
   root
@@ -62,6 +97,36 @@ export function applyCatalogZoom(root){
       )
 
     })
+
+}
+
+function keepAnchorPosition(root){
+
+  if(!pinch?.anchorId){
+    return
+  }
+
+  const card =
+    root.querySelector(
+      `.catalog-card[data-id="${pinch.anchorId}"]`
+    )
+
+  if(!card){
+    return
+  }
+
+  const rect =
+    card.getBoundingClientRect()
+
+  const cardCenterY =
+    rect.top +
+    rect.height / 2
+
+  const deltaY =
+    cardCenterY -
+    pinch.centerY
+
+  root.scrollTop += deltaY
 
 }
 
@@ -82,17 +147,39 @@ export function initCatalogPinch(root){
 
       }
 
-      pinch = {
+      const center =
+        getTouchCenter(
+          e.touches
+        )
 
-        distance:
+
+        const anchor =
+          getAnchorCard(
+            center.x,
+            center.y
+          )
+
+        pinch = {
+          distance:
           distance(
             e.touches
           ),
+ 
+          width:
+            cardWidth,
 
-        width:
-          cardWidth
+          centerX:
+            center.x,
 
-      }
+          centerY:
+            center.y,
+
+          anchorId:
+            anchor?.dataset.id,
+  
+          anchorName:
+            anchor?.dataset.name
+        }
 
     },
 
@@ -158,6 +245,10 @@ export function initCatalogPinch(root){
           root
         )
 
+        keepAnchorPosition(
+          root
+        )
+
       })
 
     },
@@ -205,6 +296,20 @@ export function initCatalogPinch(root){
       if(!e.ctrlKey){
         return
       }
+
+      const rect =
+        root.getBoundingClientRect()
+
+      const anchor =
+        getAnchorCard(
+
+          rect.left +
+          rect.width / 2,
+
+          rect.top +
+          rect.height / 2
+
+        )
 
       e.preventDefault()
 

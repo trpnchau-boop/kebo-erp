@@ -155,7 +155,7 @@ async function buildProductImage(
         "
       >
         ${Number(
-          product.dongia1 || 0
+          product.dongia3 || 0
         ).toLocaleString("vi-VN")}
         VNĐ
       </div>

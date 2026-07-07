@@ -93,24 +93,6 @@ MATCH
 
 function matchRule(rule, customer, product){
 
-  console.log("==== MATCH ====")
-
-  console.log("module",
-    rule.module,
-    rule.module === "QUOTE"
-  )
-
-  console.log("customer",
-    rule.customer_type,
-    customer?.customer_type,
-    customer?.id_type
-  )
-
-  console.log("group",
-    rule.product_group,
-    product.id_group
-  )
-
   if(rule.module !== "QUOTE"){
     return false
   }
@@ -120,7 +102,7 @@ function matchRule(rule, customer, product){
     String(rule.customer_type) !==
     String(customer?.customer_type)
   ){
-    console.log("FAIL CUSTOMER")
+
     return false
   }
 
@@ -129,11 +111,10 @@ function matchRule(rule, customer, product){
     String(rule.product_group) !==
     String(product.id_group)
   ){
-    console.log("FAIL GROUP")
+
     return false
   }
 
-  console.log("MATCH OK")
 
   return true
 }
@@ -155,12 +136,7 @@ export function applyQuotePrice(product){
 
   const rule =
     findRule(customer, product)
-  console.log({
-    customer,
-    product,
-    rule
-  })
-  console.log(state.rules)
+
   if(!rule){
 
     product.dongia1 =
