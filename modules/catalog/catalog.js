@@ -40,13 +40,15 @@ import { getSession } from "/js/auth.js"
 import {
 
   initCatalogPinch,
-
-  applyCatalogZoom
+  applyCatalogZoom,
+  zoomDefault
 
 }
 from "./catalog-pinch.js"
 
+
 let showHot = false
+let lastTap = 0
 
 export async function init(
   params,
@@ -581,7 +583,7 @@ renderDropdownSelect({
   ===================== */
 
   grid.addEventListener(
-    "click",
+    "pointerup",
     async e=>{
 
       const downloadBtn =
@@ -641,6 +643,62 @@ renderDropdownSelect({
 
         }
 
+        return
+
+      }
+
+      
+      if(
+
+        window.matchMedia(
+          "(pointer:fine)"
+        ).matches
+
+      ){
+        return
+      }
+
+      if(
+
+        e.target.closest(
+
+          ".product-check,.btn-download,.btn-share"
+
+        )
+
+      ){
+        return
+      }
+
+      const card =
+        e.target.closest(
+          ".catalog-card"
+        )
+
+      if(card){
+
+        const now =
+          Date.now()
+
+        if(
+
+          now-lastTap<300
+
+        ){
+
+          lastTap = 0
+
+          zoomDefault(
+            grid,
+            card.dataset.id
+          )
+
+          return
+
+        }
+
+        lastTap = now
+
       }
 
     }
@@ -651,6 +709,7 @@ renderDropdownSelect({
   ===================== */
 
   initCatalogPinch(grid)
+
   applyFilter()
   updateSelectionUI()
 

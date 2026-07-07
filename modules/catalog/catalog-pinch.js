@@ -50,40 +50,7 @@ function distance(touches){
 
 }
 
-function getTouchCenter(touches){
 
-  return {
-
-    x:
-      (
-        touches[0].clientX +
-        touches[1].clientX
-      ) / 2,
-
-    y:
-      (
-        touches[0].clientY +
-        touches[1].clientY
-      ) / 2
-
-  }
-
-}
-
-function getAnchorCard(x,y){
-
-  return document
-
-    .elementFromPoint(
-      x,
-      y
-    )
-
-    ?.closest(
-      ".catalog-card"
-    )
-
-}
 
 export function applyCatalogZoom(root){
 
@@ -100,33 +67,44 @@ export function applyCatalogZoom(root){
 
 }
 
-function keepAnchorPosition(root){
+export function zoomDefault(
+  root,
+  id
+){
 
-  if(!pinch?.anchorId){
+  if(
+    cardWidth >= DEFAULT_WIDTH
+  ){
     return
   }
 
-  const card =
-    root.querySelector(
-      `.catalog-card[data-id="${pinch.anchorId}"]`
-    )
+  cardWidth =
+    DEFAULT_WIDTH
 
-  if(!card){
-    return
-  }
+  applyCatalogZoom(root)
 
-  const rect =
-    card.getBoundingClientRect()
+  saveZoom()
 
-  const cardCenterY =
-    rect.top +
-    rect.height / 2
+  requestAnimationFrame(()=>{
 
-  const deltaY =
-    cardCenterY -
-    pinch.centerY
+    const card =
+      root.querySelector(
+        `.catalog-card[data-id="${id}"]`
+      )
 
-  root.scrollTop += deltaY
+    if(!card){
+      return
+    }
+
+    card.scrollIntoView({
+
+      behavior:"smooth",
+
+      block:"center"
+
+    })
+
+  })
 
 }
 
@@ -147,38 +125,16 @@ export function initCatalogPinch(root){
 
       }
 
-      const center =
-        getTouchCenter(
-          e.touches
-        )
-
-
-        const anchor =
-          getAnchorCard(
-            center.x,
-            center.y
-          )
-
         pinch = {
+
           distance:
-          distance(
-            e.touches
-          ),
+            distance(
+              e.touches
+            ),
  
-          width:
-            cardWidth,
+            width:
+              cardWidth,
 
-          centerX:
-            center.x,
-
-          centerY:
-            center.y,
-
-          anchorId:
-            anchor?.dataset.id,
-  
-          anchorName:
-            anchor?.dataset.name
         }
 
     },
@@ -245,10 +201,6 @@ export function initCatalogPinch(root){
           root
         )
 
-        keepAnchorPosition(
-          root
-        )
-
       })
 
     },
@@ -296,20 +248,6 @@ export function initCatalogPinch(root){
       if(!e.ctrlKey){
         return
       }
-
-      const rect =
-        root.getBoundingClientRect()
-
-      const anchor =
-        getAnchorCard(
-
-          rect.left +
-          rect.width / 2,
-
-          rect.top +
-          rect.height / 2
-
-        )
 
       e.preventDefault()
 
