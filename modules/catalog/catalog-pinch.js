@@ -50,8 +50,6 @@ function distance(touches){
 
 }
 
-
-
 export function applyCatalogZoom(root){
 
   root
@@ -64,6 +62,50 @@ export function applyCatalogZoom(root){
       )
 
     })
+
+}
+
+function scrollToCard(
+  root,
+  id
+){
+
+  requestAnimationFrame(()=>{
+
+    requestAnimationFrame(()=>{
+
+      const card =
+        root.querySelector(
+          `.catalog-card[data-id="${id}"]`
+        )
+
+      if(!card){
+        return
+      }
+
+      const top =
+
+        card.offsetTop
+
+        -
+
+        root.clientHeight / 2
+
+        +
+
+        card.offsetHeight / 2
+
+      root.scrollTo({
+
+        top,
+
+        behavior:"smooth"
+
+      })
+
+    })
+
+  })
 
 }
 
@@ -81,32 +123,14 @@ export function zoomDefault(
   cardWidth =
     DEFAULT_WIDTH
 
-  pinch = null  
-
   applyCatalogZoom(root)
 
   saveZoom()
 
-  requestAnimationFrame(()=>{
-
-    const card =
-      root.querySelector(
-        `.catalog-card[data-id="${id}"]`
-      )
-
-    if(!card){
-      return
-    }
-
-    card.scrollIntoView({
-
-      behavior:"smooth",
-
-      block:"center"
-
-    })
-
-  })
+  scrollToCard(
+    root,
+    id
+  )
 
 }
 
