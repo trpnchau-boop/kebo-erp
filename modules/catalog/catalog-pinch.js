@@ -134,7 +134,7 @@ export function initCatalogPinch(root){
       const nextWidth =
         clamp(
 
-          pinch.width /
+          pinch.width *
           scale
 
         )
@@ -212,9 +212,9 @@ export function initCatalogPinch(root){
 
         e.deltaY > 0
 
-          ? 8
+          ? -8
 
-          : -8
+          : 8
 
       cardWidth =
         clamp(cardWidth)

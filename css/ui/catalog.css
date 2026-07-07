@@ -70,14 +70,14 @@
 .catalog-card .name{
 
   font-size:14px;
-  padding:12px;
+  padding:6px 12px;
   font-weight:600;
 
 }
 
 .catalog-card .price{
 
-  padding:0 12px 12px;
+  padding:0 12px 6px;
 
   font-size:14px;
   color:#007aff;
@@ -103,7 +103,7 @@
   justify-content:flex-end;
   align-items:center;
   gap:8px;
-  padding:8px 12px;
+  padding:0 12px;
 }
 
 .card-toolbar button{
@@ -155,7 +155,7 @@
 .catalog-card.out-stock::before{
     content:"";
     position:absolute;
-    top: 52px;     /* dưới toolbar */
+    top: 36px;     /* dưới toolbar */
     left:0;
     right:0;
     aspect-ratio:1;
