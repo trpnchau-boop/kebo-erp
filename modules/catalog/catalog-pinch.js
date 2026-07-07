@@ -11,6 +11,7 @@ let cardWidth =
 
 let pinch = null
 let raf = 0
+let ignorePinchUntil = 0
 
 function clamp(v){
 
@@ -81,7 +82,8 @@ export function zoomDefault(
   cardWidth =
     DEFAULT_WIDTH
 
-  pinch = null  
+  ignorePinchUntil =
+    Date.now() + 400
 
   applyCatalogZoom(root)
 
@@ -120,6 +122,13 @@ export function initCatalogPinch(root){
 
     e=>{
 
+      if(
+        Date.now() <
+        ignorePinchUntil
+      ){
+        return
+      }
+
       if(e.touches.length !== 2){
 
         pinch = null
@@ -152,6 +161,13 @@ export function initCatalogPinch(root){
     "touchmove",
 
     e=>{
+
+      if(
+        Date.now() <
+        ignorePinchUntil
+      ){
+        return
+      }
 
       if(
 
