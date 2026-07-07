@@ -358,7 +358,7 @@ const opt = {
 
   /* scroll lazy load */
   const scroller =
-    state.root.closest(".tab-host")
+    state.root.querySelector(".list-page")
 
   scroller?.addEventListener(
     "scroll",
@@ -1013,7 +1013,7 @@ function handleScroll(state){
   }
 
   const scroller =
-    state.root.closest(".tab-host")
+    state.root.querySelector(".list-page")
 
   if(!scroller){
     return
