@@ -18,6 +18,10 @@ export function createTableSelection({
   const selected =
     new Set()
 
+  let dragging = false
+  let dragChecked = false
+  let lastRow = null
+
   function getRows(){
 
     return [
@@ -97,6 +101,66 @@ export function createTableSelection({
     return selected.size
 
   }
+
+function applyRow(row){
+
+  if(!row) return
+
+  if(row===lastRow) return
+
+  lastRow=row
+
+  const id =
+    getRowId(row)
+
+  row.checked =
+    dragChecked
+
+  if(dragChecked){
+
+    selected.add(id)
+
+  }else{
+
+    selected.delete(id)
+
+  }
+
+}
+
+  function findCheckbox(target){
+
+  if(!target) return null
+
+  if(
+    target.matches?.(rowSelector)
+  ){
+    return target
+  }
+
+  return (
+
+    target.closest("tr")?.querySelector(rowSelector)
+
+    ||
+
+    target.closest("td")?.querySelector(rowSelector)
+
+    ||
+
+    target.closest("li")?.querySelector(rowSelector)
+
+    ||
+
+    target.querySelector?.(rowSelector)
+
+    ||
+
+    null
+
+  )
+
+}
 
   function sync(){
 
@@ -234,6 +298,80 @@ export function createTableSelection({
       }
 
       sync()
+
+    }
+
+  )
+
+  tbody.addEventListener(
+
+    "pointerdown",
+
+    e=>{
+
+      const row =
+        findCheckbox(
+          e.target
+        )
+
+      if(!row) return
+
+      dragging = true
+      lastRow = null
+
+      dragChecked =
+        !row.checked
+
+      applyRow(row)
+
+      sync()
+
+      e.preventDefault()
+
+    }
+
+  )
+
+window.addEventListener(
+
+  "pointermove",
+
+  e=>{
+
+    if(!dragging) return
+
+    const target =
+
+      document.elementFromPoint(
+
+        e.clientX,
+
+        e.clientY
+
+      )
+
+    const row =
+
+      findCheckbox(target)
+
+    if(!row) return
+
+    applyRow(row)
+
+    sync()
+
+  }
+
+)  
+
+  window.addEventListener(
+
+    "pointerup",
+
+    ()=>{
+
+      dragging = false
+      lastRow = null
 
     }
 
