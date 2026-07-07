@@ -708,10 +708,7 @@ renderDropdownSelect({
      FIRST LOAD
   ===================== */
 
-  initCatalogPinch(
-    document,
-    grid
-  )
+  initCatalogPinch(grid)
 
   applyFilter()
   updateSelectionUI()

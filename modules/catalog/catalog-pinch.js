@@ -11,7 +11,7 @@ let cardWidth =
 
 let pinch = null
 let raf = 0
-
+let ignorePinchUntil = 0
 
 function clamp(v){
 
@@ -73,11 +73,17 @@ export function zoomDefault(
   id
 ){
 
-  if(cardWidth >= DEFAULT_WIDTH){
+  if(
+    cardWidth >= DEFAULT_WIDTH
+  ){
     return
   }
 
-  cardWidth = DEFAULT_WIDTH
+  cardWidth =
+    DEFAULT_WIDTH
+
+  ignorePinchUntil =
+    Date.now() + 400
 
   applyCatalogZoom(root)
 
@@ -96,7 +102,7 @@ export function zoomDefault(
 
     card.scrollIntoView({
 
-      behavior:"auto",
+      behavior:"smooth",
 
       block:"center"
 
@@ -106,9 +112,9 @@ export function zoomDefault(
 
 }
 
-export function initCatalogPinch(root, zoomRoot){
+export function initCatalogPinch(root){
 
-  applyCatalogZoom(zoomRoot)
+  applyCatalogZoom(root)
 
   root.addEventListener(
 
@@ -116,16 +122,19 @@ export function initCatalogPinch(root, zoomRoot){
 
     e=>{
 
-        if(e.touches.length < 2){
-          return
-        }
+      if(
+        Date.now() <
+        ignorePinchUntil
+      ){
+        return
+      }
 
-        if(e.touches.length > 2){
+      if(e.touches.length !== 2){
 
-          pinch = null
-          return
+        pinch = null
+        return
 
-        }
+      }
 
         pinch = {
 
@@ -153,22 +162,20 @@ export function initCatalogPinch(root, zoomRoot){
 
     e=>{
 
-      if(e.touches.length !== 2){
-
-        pinch = null
+      if(
+        Date.now() <
+        ignorePinchUntil
+      ){
         return
-
       }
 
-      if(!pinch){
+      if(
 
-        pinch = {
+        !pinch ||
 
-          distance: distance(e.touches),
+        e.touches.length !== 2
 
-          width: cardWidth
-
-        }
+      ){
 
         return
 
@@ -208,7 +215,9 @@ export function initCatalogPinch(root, zoomRoot){
         cardWidth =
           nextWidth
 
-        applyCatalogZoom(zoomRoot)
+        applyCatalogZoom(
+          root
+        )
 
       })
 
@@ -224,23 +233,11 @@ export function initCatalogPinch(root, zoomRoot){
 
     "touchend",
 
-    e=>{
+    ()=>{
 
-      if(e.touches.length < 2){
+      pinch = null
 
-        pinch = null
-
-        saveZoom()
-
-      }
-
-      if(raf){
-
-        cancelAnimationFrame(raf)
-
-        raf = 0
-
-      }      
+      saveZoom()
 
     }
 
@@ -250,23 +247,11 @@ export function initCatalogPinch(root, zoomRoot){
 
     "touchcancel",
 
-    e=>{
+    ()=>{
 
-      if(e.touches.length < 2){
+      pinch = null
 
-        pinch = null
-
-        saveZoom()
-
-      }
-
-      if(raf){
-
-        cancelAnimationFrame(raf)
-
-        raf = 0
-
-      }
+      saveZoom()
 
     }
 
@@ -295,7 +280,9 @@ export function initCatalogPinch(root, zoomRoot){
       cardWidth =
         clamp(cardWidth)
 
-      applyCatalogZoom(zoomRoot)
+      applyCatalogZoom(
+        root
+      )
 
       saveZoom()
 
