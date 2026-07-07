@@ -295,6 +295,10 @@ MOBILE
     flex:1;
     min-width:0;
     overflow:hidden;
+
+    background: url(/images/logo.webp) left / contain no-repeat;
+    background-size: 48px;
+    background-position-y: -3px;
   }
 
   #btn-toggle{
