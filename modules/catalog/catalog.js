@@ -583,7 +583,7 @@ renderDropdownSelect({
   ===================== */
 
   grid.addEventListener(
-    "pointerup",
+    "click",
     async e=>{
 
       const downloadBtn =
