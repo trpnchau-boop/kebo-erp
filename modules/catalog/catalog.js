@@ -590,7 +590,7 @@ renderDropdownSelect({
         e.target.closest(
           ".btn-download"
         )
-
+  
       if(downloadBtn){
 
         const id =
@@ -647,59 +647,59 @@ renderDropdownSelect({
 
       }
 
-      
-      if(
-
-        window.matchMedia(
-          "(pointer:fine)"
-        ).matches
-
-      ){
-        return
-      }
-
-      if(
-
-        e.target.closest(
-
-          ".product-check,.btn-download,.btn-share"
-
-        )
-
-      ){
-        return
-      }
-
-      const card =
-        e.target.closest(
-          ".catalog-card"
-        )
-
-      if(card){
-
-        const now =
-          Date.now()
 
         if(
 
-          now-lastTap<300
+          window.matchMedia(
+            "(pointer:fine)"
+          ).matches
 
         ){
-
-          lastTap = 0
-
-          zoomDefault(
-            grid,
-            card.dataset.id
-          )
-
           return
-
         }
 
-        lastTap = now
+        if(
 
-      }
+          e.target.closest(
+
+            ".product-check,.btn-download,.btn-share"
+
+          )
+
+        ){
+          return
+        }
+
+        const card =
+          e.target.closest(
+            ".catalog-card"
+          )
+
+        if(card){
+
+          const now =
+            Date.now()
+
+          if(
+
+            now-lastTap<300
+
+          ){
+
+            lastTap = 0
+
+            zoomDefault(
+              grid,
+              card.dataset.id
+            )
+
+            return
+
+          }
+
+          lastTap = now
+
+        }
 
     }
   )

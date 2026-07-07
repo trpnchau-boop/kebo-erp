@@ -65,50 +65,6 @@ export function applyCatalogZoom(root){
 
 }
 
-function scrollToCard(
-  root,
-  id
-){
-
-  requestAnimationFrame(()=>{
-
-    requestAnimationFrame(()=>{
-
-      const card =
-        root.querySelector(
-          `.catalog-card[data-id="${id}"]`
-        )
-
-      if(!card){
-        return
-      }
-
-      const top =
-
-        card.offsetTop
-
-        -
-
-        root.clientHeight / 2
-
-        +
-
-        card.offsetHeight / 2
-
-      root.scrollTo({
-
-        top,
-
-        behavior:"smooth"
-
-      })
-
-    })
-
-  })
-
-}
-
 export function zoomDefault(
   root,
   id
@@ -127,10 +83,26 @@ export function zoomDefault(
 
   saveZoom()
 
-  scrollToCard(
-    root,
-    id
-  )
+  requestAnimationFrame(()=>{
+
+    const card =
+      root.querySelector(
+        `.catalog-card[data-id="${id}"]`
+      )
+
+    if(!card){
+      return
+    }
+
+    card.scrollIntoView({
+
+      behavior:"smooth",
+
+      block:"center"
+
+    })
+
+  })
 
 }
 
@@ -162,7 +134,6 @@ export function initCatalogPinch(root){
               cardWidth,
 
         }
-
 
     },
 
