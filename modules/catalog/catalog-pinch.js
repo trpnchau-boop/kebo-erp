@@ -73,14 +73,11 @@ export function zoomDefault(
   id
 ){
 
-  if(
-    cardWidth >= DEFAULT_WIDTH
-  ){
+  if(cardWidth >= DEFAULT_WIDTH){
     return
   }
 
-  cardWidth =
-    DEFAULT_WIDTH
+  cardWidth = DEFAULT_WIDTH
 
   applyCatalogZoom(root)
 
@@ -99,7 +96,7 @@ export function zoomDefault(
 
     card.scrollIntoView({
 
-      behavior:"instant",
+      behavior:"auto",
 
       block:"center"
 
@@ -109,9 +106,9 @@ export function zoomDefault(
 
 }
 
-export function initCatalogPinch(root){
+export function initCatalogPinch(root, zoomRoot){
 
-  applyCatalogZoom(root)
+  applyCatalogZoom(zoomRoot)
 
   root.addEventListener(
 
@@ -211,9 +208,7 @@ export function initCatalogPinch(root){
         cardWidth =
           nextWidth
 
-        applyCatalogZoom(
-          root
-        )
+        applyCatalogZoom(zoomRoot)
 
       })
 
@@ -300,9 +295,7 @@ export function initCatalogPinch(root){
       cardWidth =
         clamp(cardWidth)
 
-      applyCatalogZoom(
-        root
-      )
+      applyCatalogZoom(zoomRoot)
 
       saveZoom()
 
