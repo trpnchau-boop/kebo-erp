@@ -183,7 +183,6 @@ export async function saveData(ctx){
 
   if(
     table === "data_product" &&
-    !id &&
     !bulk
   ){
 
@@ -191,7 +190,9 @@ export async function saveData(ctx){
       productId,
       row
     )
-    await cleanForm(table)
+    if(!id){
+      await cleanForm(table)
+    }  
   }
 
   /* =========================
