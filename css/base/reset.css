@@ -1,12 +1,15 @@
 body{
-margin:0;
-font-family:Arial, sans-serif;
-background:#EFEEF1;
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#EFEEF1;
+    touch-action: pan-y;
 }
 html,
 body{
     height:100%;
     overflow:hidden;
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
 }
 *{
     scrollbar-width:none;
