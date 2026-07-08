@@ -1,3 +1,6 @@
+import { insertRow } from "/js/crud.js"
+import { markDirty } from "/js/relation-cache.js"
+
 export function renderDropdownSelect({
 
   value,
@@ -7,7 +10,13 @@ export function renderDropdownSelect({
   className="",
   allowEmpty=true,
   emptyText="Tất cả kho",
+
+  allowAdd = false,
+  addTable = "",
+  addField = "",
+
   dataset={}
+
 
 }){
 
@@ -32,6 +41,10 @@ export function renderDropdownSelect({
         data-id="${rowId || ""}"
         data-field="${field}"
         data-value="${value ?? ""}"
+        data-allow-add="${allowAdd ? 1 : 0}"
+        data-add-table="${addTable}"
+        data-add-field="${addField}"
+
         ${
           Object.entries(dataset)
           .map(([k,v])=>
@@ -99,45 +112,58 @@ a=>String(a.value)===String(value)
       </button>
 
       <div class="dropdown-panel">
+
+          ${allowAdd ? `
+            <input
+              class="dropdown-search"
+              placeholder="Tìm kiếm..."
+            >
+
+            <div class="dropdown-add"></div>
+          ` : ""}
+
+          <div class="dropdown-items">
       
-        ${allowEmpty ? `
-          <button
-            class="dropdown-item"
-            data-value=""
-            type="button"
-          >
-            ${emptyText}
-          </button>
-        ` : ""}
+            ${allowEmpty ? `
+              <button
+                class="dropdown-item"
+                data-value=""
+                type="button"
+              >
+                ${emptyText}
+              </button>
+            ` : ""}
 
-${options.map(a=>`
+            ${options.map(a=>`
 
-  <button
-    class="dropdown-item"
-    data-value="${a.value}"
+              <button
+                class="dropdown-item"
+                data-value="${a.value}"
 
-    ${
-      Object.entries(
-        a.dataset || {}
-      )
-      .map(([k,v])=>
-        `data-${k}="${v}"`
-      )
-      .join(" ")
-    }
+                  ${
+                    Object.entries(
+                      a.dataset || {}
+                    )
+                    .map(([k,v])=>
+                      `data-${k}="${v}"`
+                    )
+                    .join(" ")
+                  }
 
-    type="button"
-  >
+                type="button"
+              >
 
-    ${a.label}
+                ${a.label}
 
-  </button>
+              </button>
 
-`).join("")}
+            `).join("")}
+
+          </div>
+
+          </div> 
 
       </div>
-
-    </div>
   `
 }
 
@@ -152,7 +178,76 @@ export function bindDropdownSelect(
 
   root.addEventListener(
     "click",
-    e=>{
+    async e=>{
+
+      const addBtn =
+  e.target.closest(
+    ".dropdown-add-btn"
+  )
+
+if(addBtn){
+
+  const dropdown =
+    addBtn.closest(
+      ".dropdown-select"
+    )
+
+  const trigger =
+    dropdown.querySelector(
+      ".dropdown-select-trigger"
+    )
+
+  const input =
+    dropdown.querySelector(
+      ".dropdown-search"
+    )
+
+  const value =
+    input.value.trim()
+
+  if(!value) return
+
+  await insertRow(
+
+    trigger.dataset.addTable,
+
+    {
+
+      [trigger.dataset.addField]: value
+
+    }
+
+  )
+
+  markDirty(
+    trigger.dataset.addTable
+  )
+
+
+
+  const items =
+    dropdown.querySelector(
+      ".dropdown-items"
+    )
+
+  items.insertAdjacentHTML(
+    "beforeend",
+    `
+      <button
+        class="dropdown-item"
+        data-value="${value}"
+        type="button"
+      >
+        ${value}
+      </button>
+    `
+  )
+
+  items.lastElementChild.click()
+
+  return
+
+}
 
       const item =
         e.target.closest(
@@ -260,6 +355,73 @@ export function bindDropdownSelect(
     }
   )
 
+  root.addEventListener("input", e => {
+
+  const input = e.target.closest(".dropdown-search")
+  if(!input) return
+
+  const dropdown = input.closest(".dropdown-select")
+
+  const keyword =
+    input.value.trim().toLowerCase()
+
+  let found = false
+  let exact = false
+
+  dropdown
+    .querySelectorAll(".dropdown-item")
+    .forEach(item=>{
+
+      const ok =
+        item.textContent
+        .toLowerCase()
+        .includes(keyword)
+
+      item.hidden = !ok
+
+      if(ok){
+
+  found = true
+
+  if(
+    item.textContent.trim().toLowerCase()
+    ===
+    keyword
+  ){
+
+    exact = true
+
+  }
+
+}
+
+    })
+
+  const add =
+    dropdown.querySelector(".dropdown-add")
+
+  add.innerHTML = ""
+
+  const trigger =
+    dropdown.querySelector(".dropdown-select-trigger")
+
+  if(
+      !exact &&
+      keyword &&
+      trigger.dataset.allowAdd === "1"
+  ){
+
+      add.innerHTML = `
+        <button
+          class="dropdown-add-btn"
+          type="button"
+        >
+          ĐVT "${input.value.trim()}"
+        </button>
+      `
+  }
+
+})
 }
 
 export function getDropdownValue(el){

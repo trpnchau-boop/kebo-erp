@@ -183,7 +183,8 @@ DOCUMENT LIST MOBILE - SALE FINAL
 
   .tab-host:not([data-page="matrix"]) .list-page{
     padding:0;
-    overflow:visible;
+    min-height: 0;
+    overflow: auto;
   }
 
   .tab-host:not([data-page="matrix"]) .list-page > table{

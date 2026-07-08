@@ -93,9 +93,37 @@
 
 .dropdown-menu.open .dropdown-panel{
   display:block;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .dropdown-select .dropdown-panel{
   left:0;
   right:auto;
+}
+
+.dropdown-search{
+
+  width:100%;
+  box-sizing:border-box;
+
+  padding:8px 12px;
+
+  border:none;
+  border-bottom:1px solid #eee;
+
+  outline:none;
+
+  font-size:14px;
+
+}
+
+.dropdown-search:focus{
+
+  outline:none;
+  border:none;
+  border-bottom:1px solid #2563eb;
+
+  box-shadow:none;
+
 }

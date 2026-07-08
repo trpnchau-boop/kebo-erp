@@ -5,7 +5,10 @@ import {saveVariants} from "./product-variant.js"
 
 export async function saveProductStructure(productId,row,bulk){
 
-if(bulk) return
+if(bulk) {
+    await saveUnits(productId)
+    return
+}
 
 await saveVariants(productId,row)
 

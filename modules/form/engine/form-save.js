@@ -130,6 +130,17 @@ export async function saveData(ctx){
         _id,
         row
       )
+
+      if(table === "data_product"){
+
+        await saveProductStructure(
+          _id,
+          row,
+          true
+        )
+
+      }
+
     }
 
     productId = ids[0]

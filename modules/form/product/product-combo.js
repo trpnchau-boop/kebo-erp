@@ -73,7 +73,10 @@ ${renderDropdownSelect({
   rowId: "",
   className: "combo-product",
   allowEmpty: true,
-  emptyText: ""
+  emptyText: "",
+  allowAdd: true,
+  addTable: "set_sp_dvt",
+  addField: "dvt"
 })}
 </div>
 

@@ -104,5 +104,6 @@ combo / variant / unit
 #unit-box .dropdown-select .dropdown-panel{
   left:0;
   right:auto;
-  min-width:100%;
+  min-width: 0;
+  max-width: 100%;
 }

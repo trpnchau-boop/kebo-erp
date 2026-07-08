@@ -71,7 +71,10 @@ showInQuote:true,
 type:"select",
 ref:"set_sp_dvt",
 value:"dvt",
-text:"dvt"
+text:"dvt",
+allowAdd:true,
+addTable:"set_sp_dvt",
+addField:"dvt"
 },
 
 dinhluong:{

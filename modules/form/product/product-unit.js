@@ -51,8 +51,26 @@ const list = document.getElementById("unit-list")
 
 // cache đơn vị
 if(!dvtCache){
-dvtCache = await getAll("set_sp_dvt")
+
+  dvtCache =
+    await getAll("set_sp_dvt")
+
 }
+
+window.addEventListener(
+  "relation-changed",
+  e=>{
+
+    if(
+      e.detail.table === "set_sp_dvt"
+    ){
+
+      dvtCache = null
+
+    }
+
+  }
+)
 
 const options = dvtCache.map(d=>({
   value: d.dvt,
@@ -71,7 +89,10 @@ ${renderDropdownSelect({
   rowId: "",
   className: "unit",
   allowEmpty: true,
-  emptyText: ""
+  emptyText: "",
+  allowAdd: true,
+  addTable: "set_sp_dvt",
+  addField: "dvt"
 })}
 </div>
 

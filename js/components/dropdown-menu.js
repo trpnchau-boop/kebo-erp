@@ -43,9 +43,31 @@ export function bindDropdownMenus(
 
           })
 
-        menu?.classList.toggle(
-          "open"
-        )
+          menu?.classList.toggle(
+            "open"
+          )
+
+        if(menu?.classList.contains("open")){
+
+          const search =
+            menu.querySelector(".dropdown-search")
+
+          if(search){
+
+            search.value = ""
+
+            search.dispatchEvent(
+              new Event("input")
+            )
+
+            setTimeout(
+              ()=>search.focus(),
+              0
+            )
+
+          }
+
+        }
 
         return
       }

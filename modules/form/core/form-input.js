@@ -64,7 +64,11 @@ if(f.type === "select"){
     field:key,
     className:"erp-select",
     allowEmpty:true,
-    emptyText:""
+    emptyText:"",
+
+    allowAdd: f.allowAdd,
+    addTable: f.addTable,
+    addField: f.addField
   })
 }
 /* =========================

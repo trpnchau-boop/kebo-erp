@@ -83,3 +83,41 @@
   left: 12px;
   right: auto;
 }
+
+.dropdown-add{
+  border-bottom:1px solid #f1f5f9;
+}
+
+.dropdown-add-btn{
+
+  display:block;
+
+  width:100%;
+
+  padding:10px 14px;
+
+  border:none;
+  background:#f8fafc;
+
+  text-align:left;
+
+  font-size:13px;
+  font-weight:600;
+
+  color:#2563eb;
+
+  cursor:pointer;
+}
+
+.dropdown-add-btn:hover{
+
+  background:#eff6ff;
+
+}
+.dropdown-add-btn::before{
+  content:"+";
+  display:inline-block;
+  margin-right:8px;
+  font-size:16px;
+  font-weight:700;
+}

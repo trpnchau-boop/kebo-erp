@@ -2,7 +2,7 @@
   display:flex;
   justify-content:space-between;
   align-items:flex-start;
-  margin-bottom:16px;
+  margin-bottom:6px;
 }
 
 .form-head h2{
@@ -24,6 +24,8 @@ FORM PAGE
 padding:10px 0;
 
 border-radius:5px;
+border:1px solid #EFEEF1;
+
 background:#fff;
 }
 
@@ -156,12 +158,12 @@ FORM 3 CỘT
 display:grid;
 grid-template-columns:0.7fr 1.3fr 1fr;
 column-gap:14px;
-row-gap:8px;
+row-gap:18px;
 padding:0px 10px; 
 }
 
 #form.form-layout-3col .field{
-padding: 0 0 10px 0;
+padding: 0;
 border-bottom:1px solid #ececec;
 }
 
