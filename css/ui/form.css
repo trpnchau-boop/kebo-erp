@@ -157,7 +157,7 @@ FORM 3 CỘT
 #form.form-layout-3col .fields{
 display:grid;
 grid-template-columns:0.7fr 1.3fr 1fr;
-column-gap:14px;
+column-gap:10px;
 row-gap:18px;
 padding:0px 10px; 
 }

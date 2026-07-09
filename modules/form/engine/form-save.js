@@ -107,9 +107,21 @@ export async function saveData(ctx){
   VALIDATE
   ========================= */
 
+  const hasUnits =
+  document.querySelectorAll(
+  "#unit-list .unit-row"
+  ).length>0
+
+  const hasVariants =
+  document.querySelectorAll(
+  "#variant-list .variant-row"
+  ).length>0
+
   if(
     bulk &&
-    Object.keys(row).length === 0
+    Object.keys(row).length===0 &&
+    !hasUnits &&
+    !hasVariants
   ){
     alert("Không có dữ liệu để cập nhật")
     return
