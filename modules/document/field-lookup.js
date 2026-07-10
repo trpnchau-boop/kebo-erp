@@ -295,10 +295,14 @@ await syncInputs({
         filtered.map(data=>({
 
           label:
-            buildDisplayName(
-              field.source.display,
-              data
-            ),
+            field.key === "id_product"
+              ? [data.name, data.tinhchat]
+                .filter(Boolean)
+                .join(" ")
+              : buildDisplayName(
+                field.source.display,
+                data
+              ),
 
           data
 

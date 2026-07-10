@@ -182,10 +182,14 @@ export async function syncInputs({
       if(found){
 
         const text =
-          buildDisplayName(
-            field.source.display,
-            found
-          )
+          field.key === "id_product"
+            ? [found.name, found.tinhchat]
+              .filter(Boolean)
+              .join(" ")
+            : buildDisplayName(
+              field.source.display,
+              found
+            )
 
         if(!isActive){
           input.dataset.value =
