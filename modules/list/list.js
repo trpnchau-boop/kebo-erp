@@ -75,8 +75,7 @@ export async function init(params, root){
     tbody:
       root.querySelector("#tbody"),
 
-    visibleRows:100,
-    step:100,
+    visibleRows:Infinity,
 
     sortField:"",
     sortDir:1,
@@ -356,15 +355,6 @@ const opt = {
 
     })
 
-  /* scroll lazy load */
-  const scroller =
-    state.root.querySelector(".list-page")
-
-  scroller?.addEventListener(
-    "scroll",
-    () => handleScroll(state),
-    opt
-  )
 }
 
 /* =========================
@@ -471,11 +461,7 @@ async function render(state) {
     })
   }
 
-  const pageRows =
-    data.slice(
-      0,
-      state.visibleRows
-    )
+  const pageRows = data
 
   let html = ""
 
@@ -914,7 +900,6 @@ function handleSearch(q, state) {
     )
 
   state.searchText = q.trim().toLowerCase()
-  state.visibleRows = 100
 
   render(state)
 }
@@ -999,43 +984,6 @@ async function removeOne(id, state) {
 SCROLL
 ========================= */
 
-function handleScroll(state){
-
-  if(state.root.offsetParent===null){
-    return
-  }
-
-  if(
-    state.visibleRows>=
-    state.filtered.length
-  ){
-    return
-  }
-
-  const scroller =
-    state.root.querySelector(".list-page")
-
-  if(!scroller){
-    return
-  }
-
-  const bottom =
-    scroller.scrollTop +
-    scroller.clientHeight
-
-  const height =
-    scroller.scrollHeight
-
-  if(bottom > height - 200){
-
-    state.visibleRows = Math.min(
-      state.visibleRows + state.step,
-      state.filtered.length
-    )
-
-    render(state)
-  }
-}
 
 
 function stop(e) {

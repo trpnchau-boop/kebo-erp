@@ -397,16 +397,12 @@ export async function loadDocument(
       productMap[p.id] =
 
         [
-
           p.name,
-
           p.tinhchat
-
         ]
 
         .filter(Boolean)
-
-        .join(" - ")
+        .join(" ")
 
     })
 

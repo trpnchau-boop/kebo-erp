@@ -39,19 +39,26 @@ export async function getCatalogData(){
   }
 
   return {
+ 
+    groups: groups.sort((a, b) => {
 
-    groups,
+      const lineA = Number(a.line ?? 999999)
+      const lineB = Number(b.line ?? 999999)
+
+      if (lineA !== lineB) {
+        return lineA - lineB
+      }
+
+      return (a.name || "").localeCompare(b.name || "", "vi")
+    }),
 
     products:
       products
         .filter(p => !p.parent_id)
-        .map(p=>({
+        .map(p => ({
           ...p,
-          qty:
-            stockMap[p.id] || 0
-        }))    
-
+          qty: stockMap[p.id] || 0
+        }))
 
   }
-
 }

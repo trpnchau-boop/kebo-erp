@@ -169,7 +169,7 @@ set_sp_dvt:{
 
 set_sp_group:{
   label:"Nhóm sản phẩm",
-  columns:3,
+  columns:4,
   fields:withSystemFields({
     name:{
       label:"Tên nhóm",
@@ -180,7 +180,11 @@ set_sp_group:{
     prefix:{
       label:"Kí hiệu",
       type:"text"
-    }
+    },
+    line:{
+      label:"Line",
+      type:"number",
+    }    
   })
 },
 

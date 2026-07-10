@@ -47,8 +47,8 @@
 
 /* phần thân hình thang */
 
-.tab::before,
-.tab::after{
+.tab.active::before,
+.tab.active::after{
   content:"";
 
   position:absolute;
@@ -62,7 +62,7 @@
   z-index:-1;
 }
 
-.tab::before{
+.tab.active::before{
   left:-10px;
 
   transform:skewX(-10deg);
@@ -70,7 +70,7 @@
   border-top-left-radius:8px;
 }
 
-.tab::after{
+.tab.active::after{
   right:-10px;
 
   transform:skewX(18deg);
