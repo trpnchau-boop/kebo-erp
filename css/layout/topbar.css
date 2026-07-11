@@ -30,7 +30,7 @@
   outline:none;
 
   height:34px;
-  padding:0 2px;
+  padding:0 5px;
 
   display:flex;
   align-items:center;
@@ -258,7 +258,7 @@ color:#999;
   margin-left:auto;
   background:transparent;
   border:none;
-  color:#6D28D9;
+  color:#142948;
   font-size:18px;
   font-weight:600;
 }

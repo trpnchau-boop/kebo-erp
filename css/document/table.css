@@ -6,7 +6,7 @@
 
     max-height:520px;
 
-    overflow:visible;
+    overflow:auto;
     border-radius:5px;
 
     scrollbar-width:none;     /* Firefox */

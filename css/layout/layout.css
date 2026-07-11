@@ -73,6 +73,7 @@ padding: 0 20px;
     min-height:0;      /* QUAN TRỌNG */
 
     overflow:hidden;
+    margin: 0 0 10px 0;
 }
 
 #catalog-grid{
