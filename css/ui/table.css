@@ -1,9 +1,13 @@
 .list-page{
-  border-radius: 5px;
   flex:1;
   min-height:0;
   height: auto;
   overflow:auto;
+  margin: 0  0 10px 0;
+
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
 }
 
 .list-page table{
@@ -17,7 +21,7 @@ border-radius:5px;
 position:sticky;
 top:0px;
 z-index:200;  
-background:#fff;
+background:#fafafa;
 }
 
 .list-page th,
@@ -26,7 +30,6 @@ background:#fff;
 font-size:16px;
 
 border-bottom:1px solid #ddd;
-border-radius:5px;
 padding:10px 10px;
 
 white-space:nowrap;

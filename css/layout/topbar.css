@@ -1,15 +1,14 @@
 /* ===== TOPBAR ===== */
 
 .topbar{
-  height:48px;
-  background:#EFEEF1;
+  background:#e5e5e0;
   border-bottom:none;
   border-radius:none;
 
   display:flex;
   align-items:center;
   gap:10px;
-  padding: 0 6px 0 35px;
+  padding: 10px 0 0 32px;
 
   position:sticky;
   top:0;
@@ -26,12 +25,12 @@
 .topbar-actions{
 
   border:none;
-  background:transparent;
+  background:none;
   box-shadow:none;
   outline:none;
 
-  height:35px;
-  padding:0 12px;
+  height:34px;
+  padding:0 2px;
 
   display:flex;
   align-items:center;

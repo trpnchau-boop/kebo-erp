@@ -1,7 +1,7 @@
 body{
     margin:0;
     font-family:Arial, sans-serif;
-    background:#EFEEF1;
+    background:none;
     touch-action: pan-y;
 }
 html,
@@ -31,11 +31,12 @@ body{
     
     position:relative;
     width:36px;
-    height:36px;
+    height:10px;
     padding:0;
 
-    border:#EFEEF1;
-    background:transparent;
+    border: #ffffff;
+    background: #f3f1f1;
+    border-radius: 50%;
     cursor:pointer;
 
     display:flex;

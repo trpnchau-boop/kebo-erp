@@ -278,7 +278,7 @@ el.dataset.tab = id
 
 el.innerHTML = `
 <span class="tab-close">
-×
+✕
 </span>
 <span class="tab-title">
 ${title}

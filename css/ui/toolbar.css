@@ -14,16 +14,18 @@
   position:sticky;
   z-index:500;
   top:0;
-  margin-bottom: 12px;
+
   display:flex;
   gap:8px;
   justify-content:flex-end;
 
   background:#fff;
+  border-radius:5px 5px 0 0;
   border: 1px solid #e5e7eb;
-  border-radius:5px;
 
-  padding:12px 24px 6px 24px ;
+  padding: 6px 10px;
+  align-items: center;
+  height: 40px;
 }
 
 .toolbar-filter,
@@ -43,11 +45,12 @@
 .toolbar-action{
 
   border:none;
-  background:transparent;
+  background:#99999929;
+  border-radius: 10px;
   box-shadow:none;
   outline:none;
 
-  height:35px;
+  height: 28px;
   padding:0 12px;
 
   display:flex;

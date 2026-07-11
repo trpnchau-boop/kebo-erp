@@ -59,7 +59,7 @@
 
 <div class="layout">
 
-<div id="sidebar">
+  <div id="sidebar">
 
   <div class="sidebar-logo">
 
@@ -71,7 +71,7 @@
 
     <span class="sidebar-logo-text">KEBO ERP</span>
 
-  </div>
+  </div>    
 
   <div id="sidebar-menu">
 
@@ -207,14 +207,15 @@
 
 <div class="main">
 
+  <div class="topbar-actions">
+    <h1 id="page-title"></h1>
+    <div id="notification-root"></div>
+    <button id="btn-toggle">☰</button>
+    <button id="btn-auth"> Đăng nhập </button>           
+  </div>   
+
   <div class="topbar" id="topbar">
-      <h1 id="page-title"></h1>
-      <div id="tabs-bar"></div>
-      <div class="topbar-actions">
-        <div id="notification-root"></div>
-        <button id="btn-toggle">☰</button>
-        <button id="btn-auth"> Đăng nhập </button>           
-      </div>  
+      <div id="tabs-bar"></div> 
   </div>
 
   <!-- PAGE CONTENT -->
