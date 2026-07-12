@@ -170,6 +170,13 @@ if(table === "set_payroll_item"){
          - Number(b.sort_order || 0)
   })
 
+}else if(table === "set_sp_group"){
+
+  rows.sort((a,b)=>
+    Number(a.line || 0) -
+    Number(b.line || 0)
+  )
+
 }
 
 let html=""

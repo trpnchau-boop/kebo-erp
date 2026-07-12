@@ -1,18 +1,17 @@
 .form-head{
   display:flex;
   justify-content:space-between;
-  align-items:flex-start;
+  align-items:flex-end;
   margin-bottom:6px;
 }
 
 .form-head h2{
   margin:0;
-  padding:0px 20px; 
+  padding:0; 
   line-height:1.1;
   font-size:18px;
   font-weight:600;  
-  white-space:nowrap; 
-  transform:translateY(-8px);   
+  white-space:nowrap;   
 
 }
 
@@ -250,5 +249,5 @@ visibility:hidden;
 }
 
 .form-page input:focus{
-    color:#000 !important;
+    color:#F97316 !important;
 }
