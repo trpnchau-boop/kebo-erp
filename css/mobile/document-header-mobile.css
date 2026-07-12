@@ -12,6 +12,7 @@ Paste ở CUỐI file CSS hiện tại
 
   #document{
     min-width:0;
+    width: 100vw;
   }
 
   #document *{
