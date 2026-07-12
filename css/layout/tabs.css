@@ -8,6 +8,8 @@
   gap:12px;
   scrollbar-width:none;
   margin-top: 0px;
+  overflow: hidden;
+  padding-right: 15px;
 }
 
 #tabs-bar::-webkit-scrollbar{
@@ -46,6 +48,9 @@
   opacity:.9;
 
   background: #ececee;
+  flex: 1 1 80px;
+  min-width: 40px;
+  max-width: 180px;
 }
 
 /* phần thân hình thang */
@@ -85,6 +90,8 @@
 .tab > *{
   position:relative;
   z-index:2;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* ===== ACTIVE ===== */

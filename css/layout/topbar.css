@@ -8,7 +8,7 @@
   display:flex;
   align-items:center;
   gap:10px;
-  padding: 10px 0 0 32px;
+  padding: 10px 25px 0 32px;
 
   position:sticky;
   top:0;
@@ -278,26 +278,11 @@ MOBILE
 @media (max-width: 768px){
 
   .topbar{
-    min-height:12px;
-    height:auto;
-    padding:0px 0px 0px 17px;
-    gap:8px;
-    align-items:center;
-    flex-wrap:nowrap;
+    display: none;
   }
 
   .topbar h1{
     display:none;
-  }
-
-  #tabs-bar{
-    flex:1;
-    min-width:0;
-    overflow:hidden;
-
-    background: url(/images/logo.webp) left / contain no-repeat;
-    background-size: 48px;
-    background-position-y: -3px;
   }
 
   #btn-toggle{

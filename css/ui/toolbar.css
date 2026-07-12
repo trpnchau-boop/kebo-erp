@@ -22,6 +22,7 @@
   background:#fff;
   border-radius:5px 5px 0 0;
   border: 1px solid #e5e7eb;
+  border-top: none;
 
   padding: 6px 10px;
   align-items: center;

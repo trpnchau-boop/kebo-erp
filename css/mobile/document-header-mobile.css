@@ -10,10 +10,6 @@ Paste ở CUỐI file CSS hiện tại
   ROOT / CONTENT
   ======================================================= */
 
-  #content{
-    padding:0 10px 20px !important;
-  }
-
   #document{
     min-width:0;
   }

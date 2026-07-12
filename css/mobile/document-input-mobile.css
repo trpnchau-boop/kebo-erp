@@ -327,3 +327,11 @@ KILL WIDTH DESKTOP TRONG INPUT BAR
   }
 
 }
+
+@media (max-width: 768px){
+
+  .tab-host.active {
+    overflow: auto;
+  }
+  
+}

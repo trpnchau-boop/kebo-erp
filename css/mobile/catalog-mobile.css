@@ -6,6 +6,7 @@
         gap:8px;
         justify-content:initial;
         padding: 12px 12px 6px 12px;
+        height: auto;
     }
 
 }

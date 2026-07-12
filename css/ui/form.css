@@ -248,3 +248,7 @@ visibility:hidden;
 .switch input[data-field="catalog_priority"]:checked + .slider::before{
     background:#fb7818;
 }
+
+.form-page input:focus{
+    color:#000 !important;
+}
