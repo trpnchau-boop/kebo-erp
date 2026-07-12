@@ -9,7 +9,7 @@
   scrollbar-width:none;
   margin-top: 0px;
   overflow: hidden;
-  padding-right: 15px;
+  padding:0 15px;
 }
 
 #tabs-bar::-webkit-scrollbar{

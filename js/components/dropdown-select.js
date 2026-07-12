@@ -416,7 +416,7 @@ if(addBtn){
           class="dropdown-add-btn"
           type="button"
         >
-          ĐVT "${input.value.trim()}"
+          "${input.value.trim()}"
         </button>
       `
   }

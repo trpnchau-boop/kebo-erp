@@ -45,7 +45,8 @@ label:"Nhóm sản phẩm",
 type:"select",
 ref:"set_sp_group",
 value:"id",
-text:"name"
+text:"name",
+allowAdd:true
 },
 
 name:{
