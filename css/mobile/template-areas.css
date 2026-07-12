@@ -27,6 +27,10 @@
         "price total";
 }
 
+.topbar-actions {
+    padding-right: 15px;
+}
+
 }
 
 @media (max-width:768px){

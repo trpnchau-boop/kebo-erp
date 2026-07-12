@@ -15,13 +15,11 @@
     }
 
     .toolbar-filter,
-    .toolbar-actions,
-    .toolbar-export{
-        gap:0px;
+    .toolbar-actions{
+        gap:5px;
     }
 
     .toolbar-filter{
-        gap:0px;
         margin-left: auto;
     }    
 
