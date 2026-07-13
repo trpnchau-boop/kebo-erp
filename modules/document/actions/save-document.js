@@ -319,6 +319,28 @@ export async function saveDocument({
   }
 
   /* =====================================================
+  UPDATE PRODUCT COST
+  ===================================================== */
+
+  if (headerData.type === "IMPORT") {
+
+    const { error } = await db.rpc(
+      "fn_apply_cost_import_simple_day",
+      {
+        p_doc_id: finalDocId
+      }
+    )
+
+    if (error) {
+      console.error(
+        "UPDATE IMPORT COST ERROR",
+        error
+      )
+    }
+
+  }
+
+  /* =====================================================
   AUTO WORKFLOW
   ===================================================== */
 
