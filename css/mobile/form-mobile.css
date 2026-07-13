@@ -1,7 +1,7 @@
 @media (max-width:768px){
 
 .form-page {
-    padding: 10px 5px;
+    padding: 10px 0px;
 }
 
 .form-page .card {
@@ -21,5 +21,6 @@
     column-gap: 8px;
     padding: 10px;
 }
+
 }
 

@@ -20,7 +20,21 @@
 
 }
 
-@media (max-width:768px){
+@media (max-width:768px){  
+
+.tab-host[data-page="payroll"]
+#tbody-income td:nth-child(1){
+
+    display: none;
+
+}  
+
+.tab-host[data-page="payroll"]
+#tbody-deduct td:nth-child(1){
+
+    display: none;
+
+} 
 
 .tab-host[data-page="payroll"]
 #tbody-income td:nth-child(2){
@@ -47,16 +61,13 @@ td .dropdown-select{
 
     display:grid !important;
 
-    grid-template-columns:180px 1fr;
+    grid-template-columns:none;
+    column-gap: 0px;
 
-    column-gap:12px;
-
-    padding:12px;
+    padding:0 0 0 6px;
 
     border:none !important;
     border-radius:5px;
-
-    margin-bottom:12px;
 
 }
 
@@ -81,6 +92,15 @@ td .dropdown-select{
 .tab-host[data-page="payroll"] tbody tr td:nth-child(4){
     grid-column:2;
     grid-row:2;
+}
+
+}
+
+@media (max-width:768px){
+
+#tbody-income,
+#tbody-deduct{
+    display: ruby;
 }
 
 }

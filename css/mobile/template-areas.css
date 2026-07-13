@@ -31,6 +31,10 @@
     padding-right: 15px;
 }
 
+#sidebar-panel {
+    padding-right: 55px;
+}
+
 }
 
 @media (max-width:768px){
