@@ -94,6 +94,18 @@ export function initKeyboard(){
     const el = document.activeElement
     if(!el) return
 
+    /* =====================================================
+       DOC SELECT KEYBOARD
+    ===================================================== */
+    const docSelect =
+      el.closest?.(".doc-select")
+
+    if(docSelect){
+      if(handleDocSelectKey(e, docSelect, el)){
+        return
+      }
+    }    
+
     if(e.key === "ArrowDown"){
 
       if(moveVertical(el,1)){
@@ -116,18 +128,6 @@ export function initKeyboard(){
       }
 
       return
-    }
-
-    /* =====================================================
-       DOC SELECT KEYBOARD
-    ===================================================== */
-    const docSelect =
-      el.closest?.(".doc-select")
-
-    if(docSelect){
-      if(handleDocSelectKey(e, docSelect, el)){
-        return
-      }
     }
 
     if(e.key !== "Enter") return
@@ -240,37 +240,35 @@ function handleDocSelectKey(e, docSelect, current){
     return true
   }
 
-  /* ARROWDOWN */
-  if(e.key === "ArrowDown"){
+/* ARROWDOWN */
+if(e.key === "ArrowDown"){
 
-    e.preventDefault()
-    e.stopPropagation()
-
-    if(!isOpen){
-      openDocSelect(docSelect)
-      ensureDocSelectActive(docSelect)
-      return true
-    }
-
-    moveDocSelectActive(docSelect, 1)
-    return true
+  // menu chưa mở -> không xử lý
+  if(!isOpen){
+    return false
   }
 
-  /* ARROWUP */
-  if(e.key === "ArrowUp"){
+  e.preventDefault()
+  e.stopPropagation()
 
-    e.preventDefault()
-    e.stopPropagation()
+  moveDocSelectActive(docSelect, 1)
+  return true
+}
 
-    if(!isOpen){
-      openDocSelect(docSelect)
-      ensureDocSelectActive(docSelect)
-      return true
-    }
+/* ARROWUP */
+if(e.key === "ArrowUp"){
 
-    moveDocSelectActive(docSelect, -1)
-    return true
+  // menu chưa mở -> không xử lý
+  if(!isOpen){
+    return false
   }
+
+  e.preventDefault()
+  e.stopPropagation()
+
+  moveDocSelectActive(docSelect, -1)
+  return true
+}
 
   /* ESC */
   if(e.key === "Escape" && isOpen){
