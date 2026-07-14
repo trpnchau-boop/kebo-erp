@@ -35,3 +35,15 @@ export function getRowInputs(
   )
 
 }
+
+export function getRowInput(
+  row,
+  key
+){
+
+  return (
+    getRowInputs(row)[key]
+    || null
+  )
+
+}

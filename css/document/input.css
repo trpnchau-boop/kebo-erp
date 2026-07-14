@@ -24,7 +24,7 @@
     border-radius:10px;
 
     overflow:visible; 
-    margin:0 -4px; 
+    margin:0; 
 }
 
 .doc-input-label{
@@ -50,7 +50,7 @@
     flex-direction:column;
     gap:6px;
     position:relative;
-    padding:8px 12px;    
+    padding:8px;    
 }
 
 .doc-input-field{
@@ -80,6 +80,13 @@
     font-size:15px;
     padding:0 10px;
     min-height:20px;
+}
+
+.doc-input-field input:focus,
+.doc-input-field select:focus,
+.doc-input-field textarea:focus{
+  background: #f4f6fb;
+  border-radius: 5px;
 }
 
 .doc-input-field:not(:last-child)::after{

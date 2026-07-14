@@ -1,3 +1,8 @@
+import {
+  getRowInput
+}
+from "/modules/document/document-input-map.js"
+
 let draftNoteReturnKey = ""
 
 function root(){
@@ -88,6 +93,30 @@ export function initKeyboard(){
 
     const el = document.activeElement
     if(!el) return
+
+    if(e.key === "ArrowDown"){
+
+      if(moveVertical(el,1)){
+
+        e.preventDefault()
+        e.stopPropagation()
+
+      }
+
+      return
+    }
+
+    if(e.key === "ArrowUp"){
+
+      if(moveVertical(el,-1)){
+
+        e.preventDefault()
+        e.stopPropagation()
+
+      }
+
+      return
+    }
 
     /* =====================================================
        DOC SELECT KEYBOARD
@@ -708,4 +737,56 @@ function focusDraftNote(){
 
   el.focus()
   el.select?.()
+}
+
+function moveVertical(
+  current,
+  step
+){
+
+  const row =
+    current._row
+
+  if(!row){
+    return false
+  }
+
+  const state =
+    root()._docState
+
+  if(!state){
+    return false
+  }
+
+  const field =
+    current.dataset.key
+
+  const index =
+    state.items.indexOf(row)
+
+  if(index === -1){
+    return false
+  }
+
+  const nextRow =
+    state.items[index + step]
+
+  if(!nextRow){
+    return false
+  }
+
+  const input =
+    getRowInput(
+      nextRow,
+      field
+    )
+
+  if(!input){
+    return false
+  }
+
+  input.focus()
+  input.select?.()
+
+  return true
 }

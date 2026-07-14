@@ -17,6 +17,8 @@ export function renderField({
       state
     )
 
+  input._row = row  
+
   input.dataset.key =
     field.key
 
