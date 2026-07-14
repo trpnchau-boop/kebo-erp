@@ -87,6 +87,15 @@
 .doc-input-field textarea:focus{
   background: #f4f6fb;
   border-radius: 5px;
+  padding: 3px 10px;
+}
+
+.doc-input-field input:hover,
+.doc-input-field select:hover,
+.doc-input-field textarea:hover{
+  background: #f4f6fb;
+  border-radius: 5px;
+  padding: 3px 10px;
 }
 
 .doc-input-field:not(:last-child)::after{
