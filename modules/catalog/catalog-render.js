@@ -321,6 +321,16 @@ function renderCard(
       </div>
 
       ${
+        p.catalogTinhChat
+          ? `
+            <div class="tinhchat">
+              ${p.catalogTinhChat}
+            </div>
+          `
+          : ""
+      }
+
+      ${
         canViewPrice
           ? `
             <div class="price">

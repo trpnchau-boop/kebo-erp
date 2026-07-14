@@ -75,9 +75,19 @@
 
 }
 
+.catalog-card .tinhchat{
+
+  padding: 0 12px;
+
+  font-size:14px;
+
+  color:#2e2e2ef2;
+
+}
+
 .catalog-card .price{
 
-  padding:0 12px 6px;
+  padding: 6px 12px;
 
   font-size:14px;
   color:#007aff;

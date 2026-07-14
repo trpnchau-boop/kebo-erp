@@ -1,4 +1,6 @@
-import { getAll }
+import {
+  getAll
+}
 from "/js/crud.js"
 
 export async function getCatalogData(){
@@ -28,37 +30,116 @@ export async function getCatalogData(){
 
   ])
 
+  /* =====================================================
+  STOCK
+  ===================================================== */
+
   const stockMap = {}
 
   for(const row of stocks){
 
     stockMap[row.id_product] =
+
       (stockMap[row.id_product] || 0)
+
       + Number(row.qty_balance || 0)
 
   }
 
-  return {
- 
-    groups: groups.sort((a, b) => {
+  /* =====================================================
+  CHILDREN MAP
+  ===================================================== */
 
-      const lineA = Number(a.line ?? 999999)
-      const lineB = Number(b.line ?? 999999)
+  const childrenMap = {}
 
-      if (lineA !== lineB) {
-        return lineA - lineB
-      }
+  for(const product of products){
 
-      return (a.name || "").localeCompare(b.name || "", "vi")
-    }),
+    if(!product.parent_id){
+      continue
+    }
 
-    products:
-      products
-        .filter(p => !p.parent_id)
-        .map(p => ({
-          ...p,
-          qty: stockMap[p.id] || 0
-        }))
+    ;(childrenMap[product.parent_id] ??= [])
+
+      .push(product)
 
   }
+
+  /* =====================================================
+  RETURN
+  ===================================================== */
+
+  return {
+
+    groups:
+
+      groups.sort((a,b)=>{
+
+        const lineA =
+          Number(a.line ?? 999999)
+
+        const lineB =
+          Number(b.line ?? 999999)
+
+        if(lineA !== lineB){
+
+          return lineA - lineB
+
+        }
+
+        return (a.name || "")
+
+          .localeCompare(
+            b.name || "",
+            "vi"
+          )
+
+      }),
+
+    products:
+
+      products
+
+        .filter(
+          p => !p.parent_id
+        )
+
+        .map(parent=>{
+
+          const children =
+
+            childrenMap[
+              parent.id
+            ] || []
+
+          const childTinhChat =
+
+            children
+              .map(child => child.tinhchat)
+              .filter(Boolean)
+              .join(" / ")
+              
+          const catalogTinhChat =
+          
+            [
+              parent.tinhchat,
+              childTinhChat
+            ]
+            .filter(Boolean)
+            .join(" / ")
+
+          return {
+            
+            ...parent,
+            
+            catalogTinhChat,
+            
+            qty:
+              stockMap[parent.id] || 0
+
+          }
+
+        })
+
+  }
+
 }
