@@ -37,7 +37,12 @@ export async function saveData(ctx){
 
     if(i.type === "file"){
 
-      const file = i.files?.[0]
+      const imageField =
+        i.closest(".image-field")
+
+      const file = 
+        imageField?._imageFile ||
+        i.files?.[0]
 
       if(file){
 

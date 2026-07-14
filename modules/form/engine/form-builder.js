@@ -3,6 +3,10 @@ import {bindMoneyInput} from "/js/core/input-format.js"
 import {
   getFieldValue
 } from "../core/form-field.js"
+import {
+  bindImageField
+}
+from "../core/form-image.js"
 
 export async function buildForm(fields,target="form",layout="2col"){
 
@@ -51,24 +55,9 @@ initSmartLabels(box)
 box.querySelectorAll('[data-format="money"]')
   .forEach(bindMoneyInput)
 
-box.querySelectorAll(".image-input").forEach(input=>{
-
-  input.addEventListener("change",e=>{
-
-    const file = e.target.files?.[0]
-
-    if(!file) return
-
-    const img = input
-      .closest(".image-field")
-      .querySelector(".image-preview")
-
-    img.src = URL.createObjectURL(file)
-    img.style.display = "block"
-
-  })
-
-})  
+box
+  .querySelectorAll(".image-field")
+  .forEach(bindImageField)
 }
 
 }

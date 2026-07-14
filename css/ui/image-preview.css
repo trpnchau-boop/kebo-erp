@@ -48,3 +48,129 @@
   height: auto;
 }
 
+
+.image-paste:empty::before{
+    content:"Dán ảnh...";
+    color:#999;
+}
+
+.image-preview{
+
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  width:120px !important;
+  height:120px !important;
+
+  object-fit:cover;
+
+  border-radius:8px;
+
+  display:none;
+  z-index:2;
+
+}
+
+.image-paste{
+
+  position:relative;
+
+  z-index:1;
+
+  width:120px;
+  height:120px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:1px dashed #ccc;
+  border-radius:8px;
+
+  cursor:text;
+
+}
+
+.image-field{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  position:relative;
+
+  width:120px;
+  min-height:120px;
+}
+
+.image-remove{
+
+  position:absolute;
+
+  top:4px;
+  right:4px;
+
+  width:20px;
+  height:20px;
+
+  border:none;
+  border-radius:50%;
+
+  background: none;  
+  color:#fff1f0;
+
+  font-size:11px;
+  line-height:22px;
+  font-weight: 600;
+
+  cursor:pointer;
+
+  opacity:0;
+
+  transition:.15s;
+
+
+  z-index:3;
+
+}
+
+.image-preview:hover + .image-remove,
+.image-remove:hover{
+
+    opacity:1;
+
+}
+
+.image-remove:hover{
+
+  color:#e53935;
+
+}
+
+.image-field input[type="file"]{
+  display:none;
+}
+
+.image-field .image-upload-btn{
+  display:inline-flex;
+  align-items:center;
+
+  width:fit-content;
+
+  color:#16a34a !important;
+
+  font-size:13px;
+  font-weight:600;
+
+  cursor:pointer;
+
+  transition:.15s ease;
+}
+
+.image-field .image-upload-btn:hover{
+  color:#15803d !important;
+}
+
+.image-field .image-upload-btn:active{
+  color:#166534 !important;
+}

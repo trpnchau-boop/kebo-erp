@@ -79,6 +79,13 @@ if(f.type === "image"){
   return `
   <div class="image-field">
 
+    <div
+      class="image-paste"
+      tabindex="0"
+      contenteditable="plaintext-only"
+      data-field="${key}">
+    </div>
+
     <img
       class="image-preview"
       data-preview="${key}"
@@ -92,6 +99,12 @@ if(f.type === "image"){
         margin-bottom:8px;
       "
     >
+
+    <button
+      type="button"
+      class="image-remove">
+      ✕
+    </button>
 
     <input
       id="image_${key}"

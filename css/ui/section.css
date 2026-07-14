@@ -94,36 +94,3 @@ background:#fee2e2;
 color:#ff3b30;
 }
 
-.image-field{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.image-field input[type="file"]{
-  display:none;
-}
-
-.image-field .image-upload-btn{
-  display:inline-flex;
-  align-items:center;
-
-  width:fit-content;
-
-  color:#16a34a !important;
-
-  font-size:13px;
-  font-weight:600;
-
-  cursor:pointer;
-
-  transition:.15s ease;
-}
-
-.image-field .image-upload-btn:hover{
-  color:#15803d !important;
-}
-
-.image-field .image-upload-btn:active{
-  color:#166534 !important;
-}
