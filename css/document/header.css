@@ -24,6 +24,7 @@ BOX - Btn ACTIONS
     display:flex;
     align-items:center;
     gap:10px;
+    white-space: nowrap;
 }
 
 .doc-group-wrap{

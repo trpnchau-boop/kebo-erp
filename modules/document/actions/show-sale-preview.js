@@ -109,9 +109,6 @@ export async function showSalePreview(
   const rect =
     button.getBoundingClientRect()
 
-  popup.style.top =
-    `${rect.bottom + 2}px`
-
     popup.style.left =
       `${rect.left}px`
  
@@ -224,7 +221,7 @@ export async function showSalePreview(
           sale-col-money
         "
       >
-        Tổng thanh toán
+        Thanh toán
       </th>
 
       <th
@@ -329,16 +326,10 @@ export async function showSalePreview(
       <td>
 
         <button
-          class="
-            button-secondary
-            button-print-sale
-          "
+          class="icon-btn print button-print-sale"
           data-id="${row.id}"
-        >
-
-          In
-
-        </button>
+          title="In"
+        ></button>
 
       </td>
 

@@ -136,7 +136,7 @@
 }
 
 .doc-select-item.selected{
-  background:#f4f6fb !important;
+  background:#f4f6fb7a !important;
   color:#111827 !important;
   font-weight:600;
 }

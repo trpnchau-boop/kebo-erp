@@ -38,7 +38,7 @@
 
     white-space:nowrap;
     margin-top: -25px;
-    padding:8px 10px; 
+    padding:8px 4px; 
 
     background:#fff;
     position:relative;
@@ -78,24 +78,27 @@
     background:transparent;
     box-shadow:none;
     font-size:15px;
-    padding:0 10px;
+    padding:0 4px;
     min-height:20px;
 }
 
 .doc-input-field input:focus,
 .doc-input-field select:focus,
 .doc-input-field textarea:focus{
-  background: #f4f6fb;
+  background: #f0f5ffe7;
+  box-shadow:-10px 0 0 #f0f5ffe7;
   border-radius: 5px;
-  padding: 3px 10px;
+  padding: 3px 4px;
+
 }
 
 .doc-input-field input:hover,
 .doc-input-field select:hover,
 .doc-input-field textarea:hover{
-  background: #f4f6fb;
+  background: #f0f5ffe7;
+  box-shadow:-10px 0 0 #f0f5ffe7;
   border-radius: 5px;
-  padding: 3px 10px;
+  padding: 3px 4px;
 }
 
 .doc-input-field:not(:last-child)::after{

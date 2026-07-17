@@ -48,7 +48,7 @@
 .doc-table thead th{
     position:sticky;
     top:0;
-    background:#fafafa;
+    background:#f9fafb;
     z-index:2;
 }
 

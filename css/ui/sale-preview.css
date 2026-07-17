@@ -1,27 +1,26 @@
 .sale-preview-popup{
 
-  position:fixed;
+  top: 127px;
+  height: 300px;
 
-  width:360px;
-  max-height:240px;
+  position:fixed;
 
   overflow:auto;
 
   background:#fff;
 
   border:1px solid #e5e7eb;
-  border-radius:12px;
+  border-radius:5px;
 
   box-shadow:
     0 10px 24px rgba(0,0,0,.12);
 
   z-index:9999;
 
-  padding:6px;
+  padding:0;
 
   animation:
     salePreviewIn .12s ease;
-
 }
 
 .sale-preview-table{

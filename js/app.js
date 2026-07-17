@@ -474,3 +474,41 @@ function playFlip(
   },800)
 
 }
+
+/* =========================
+ROW HIGHLIGHT
+========================= */
+
+let activeRow = null;
+
+document.addEventListener("pointerover", e => {
+
+  const row = e.target.closest(
+    "tr,.table-row,[data-row]"
+  );
+
+  if(!row) return;
+
+  if(activeRow && activeRow !== row){
+    activeRow.classList.remove("row-active");
+  }
+
+  activeRow = row;
+  activeRow.classList.add("row-active");
+
+});
+
+document.addEventListener("pointerdown", e => {
+
+  const row = e.target.closest(
+    "tr,.table-row,[data-row]"
+  );
+
+  if(!row) return;
+
+  activeRow?.classList.remove("row-active");
+
+  activeRow = row;
+  activeRow.classList.add("row-active");
+
+});
