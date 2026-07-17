@@ -8,7 +8,7 @@
 
 .doc-input{
     width:100%;
-    padding:0px 16px 0 0px; 
+    padding:0 0 0 10px; 
 }
 
 #document-input{
@@ -17,10 +17,10 @@
     flex-wrap:nowrap;
     gap:0;
 
-    justify-content:center;
+    justify-content:space-between;
 
     background:#fff;
-    border:1px solid #000;
+    border:1px solid #184cab;
     border-radius:10px;
 
     overflow:visible; 
@@ -38,6 +38,8 @@
 
     white-space:nowrap;
     margin-top: -25px;
+    margin-left: 10px;
+
     padding:8px 4px; 
 
     background:#fff;
@@ -56,7 +58,6 @@
 .doc-input-field{
     flex:1 1 0;
     min-width:0;
-    flex:none;
 }
 
 .doc-input-field .doc-select{
@@ -79,6 +80,7 @@
     box-shadow:none;
     font-size:15px;
     padding:0 4px;
+    padding-left: 14px;
     min-height:20px;
 }
 
@@ -86,9 +88,9 @@
 .doc-input-field select:focus,
 .doc-input-field textarea:focus{
   background: #f0f5ffe7;
-  box-shadow:-10px 0 0 #f0f5ffe7;
   border-radius: 5px;
   padding: 3px 4px;
+  padding-left: 14px;
 
 }
 
@@ -96,9 +98,9 @@
 .doc-input-field select:hover,
 .doc-input-field textarea:hover{
   background: #f0f5ffe7;
-  box-shadow:-10px 0 0 #f0f5ffe7;
   border-radius: 5px;
   padding: 3px 4px;
+  padding-left: 14px;
 }
 
 .doc-input-field:not(:last-child)::after{
@@ -117,6 +119,7 @@
 #document-input .doc-add-btn{
     width:20px;
     height:20px;
+    margin-right: 3px !important;
 
     transform:translateY(50%);;
 

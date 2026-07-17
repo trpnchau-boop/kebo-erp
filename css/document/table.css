@@ -8,6 +8,7 @@
 
     overflow:auto;
     border-radius:5px;
+    border: 1px inset;
 
     scrollbar-width:none;     /* Firefox */
     -ms-overflow-style:none;  /* IE/Edge cũ */
@@ -64,7 +65,7 @@
     box-shadow:none;
 
     border-radius:5px;
-    padding:2px 18px 2px 2px;
+    padding:2px 8px 2px 2px;
 
     transition:box-shadow .15s ease;
 }
