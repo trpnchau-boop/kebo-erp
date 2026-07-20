@@ -3,6 +3,11 @@ import {
 }
 from "/js/core/format.js"
 
+import {
+  layoutHiddenRows
+}
+from "/modules/document/print/layout-hidden-rows.js"
+
 function shouldHideBlock(
   block,
   document
@@ -65,13 +70,15 @@ export function renderBlocks({
 
 const renderList =
 
-  blocks.filter(
-    block =>
-      !shouldHideBlock(
-        block,
-        document
-      )
-  )
+  layoutHiddenRows({
+
+    blocks,
+
+    document,
+
+    shouldHideBlock
+
+  })
 
   return renderList
     .map(block=>
@@ -268,7 +275,7 @@ function renderBlock({
           position:absolute;
 
           left:${block.x}px;
-          top:${block.y}px;
+          top:${block.renderY ?? block.y}px;
 
           width:${block.width}px;
 
@@ -329,7 +336,7 @@ function renderBlock({
           position:absolute;
 
           left:${block.x}px;
-          top:${block.y}px;
+          top:${block.renderY ?? block.y}px;
 
           width:${block.width}px;
           height:${block.height}px;
@@ -447,7 +454,7 @@ if(block.type === "table"){
         position:absolute;
 
         //left:${block.x}px;
-        top:${block.y}px;
+        top:${block.renderY ?? block.y}px;
 
         width:${block.width}px;
 
@@ -780,7 +787,7 @@ if(block.type === "line"){
         position:absolute;
 
         left:${block.x}px;
-        top:${block.y}px;
+        top:${block.renderY ?? block.y}px;
 
         width:${block.width}px;
 
