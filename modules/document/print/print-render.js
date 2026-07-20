@@ -73,8 +73,6 @@ const renderList =
       )
   )
 
-  reflowBlocks(renderList)
-
   return renderList
     .map(block=>
       renderBlock({
@@ -85,48 +83,6 @@ const renderList =
       })
     )
     .join("")
-}
-
-function reflowBlocks(
-  blocks = []
-){
-
-  const totalBlocks =
-
-    blocks.filter(
-      block =>
-        [
-          "tongtien",
-          "thue",
-          "chietkhau",
-          "tongthanhtoan"
-        ].includes(
-          block.props?.bind
-        )
-    )
-
-  if(!totalBlocks.length){
-    return
-  }
-
-  totalBlocks.sort(
-    (a,b)=>
-      (a.y || 0) -
-      (b.y || 0)
-  )
-
-  const startY = 0
-
-  totalBlocks.forEach(
-    (block,index)=>{
-
-      block.y =
-        startY +
-        index * 32
-
-    }
-  )
-
 }
 
 /* =========================================================
@@ -474,7 +430,7 @@ function renderColumnContent({
 
 /* =======================================================
 TABLE
-======================================================= */
+========================================================= */
 
 if(block.type === "table"){
 
@@ -490,7 +446,7 @@ if(block.type === "table"){
       style="
         position:absolute;
 
-        left:${block.x}px;
+        //left:${block.x}px;
         top:${block.y}px;
 
         width:${block.width}px;
@@ -523,7 +479,7 @@ if(block.type === "table"){
                   padding:4px;
 
                   height:${
-                    block.props?.rowHeight || 22
+                    block.props?.rowHeight || 24
                   }px;
 
                   text-align:${main.align || "left"};

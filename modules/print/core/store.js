@@ -137,7 +137,7 @@ export const printState = {
 
             props:{
 
-              rowHeight:32,
+              rowHeight:24,
 
               columns:[
 

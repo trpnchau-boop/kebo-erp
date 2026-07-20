@@ -31,9 +31,7 @@ export function renderTableBlock(
 
   const rowHeight =
 
-    block.props?.rowHeight ||
-
-    22
+    block.props?.rowHeight || 24
 
   const headerHeight =
 

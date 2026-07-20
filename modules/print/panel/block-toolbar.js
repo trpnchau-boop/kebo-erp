@@ -101,7 +101,7 @@ function createTableBlock(){
 
     props:{
 
-      rowHeight:22,
+      rowHeight:24,
 
       columns:[
     {

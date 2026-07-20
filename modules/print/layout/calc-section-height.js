@@ -11,27 +11,22 @@ export function calcSectionHeight(
 
     .forEach(block=>{
 
-      let height =
+let height = block.height || 0
 
-        block.height || 0
+if(block.type==="table"){
 
-if(
-  block.type === "table"
-){
+    const rowHeight =
+        block.props?.rowHeight || 24
 
-  const rowHeight =
-    block.props?.rowHeight || 32
+    const extraRows =
+        Math.max(itemsCount-1,0)
 
-  const extraRows =
-    Math.max(
-      itemsCount - 1,
-      0
-    )
-
-  height =
-    block.height +
-    extraRows * rowHeight
+    height =
+        block.height +
+        extraRows*rowHeight
 }
+
+block.renderHeight = height
 
 
       const bottom =
@@ -48,8 +43,8 @@ if(
 
   return Math.max(
 
-    section.minHeight || 120,
+    0,
 
-    maxBottom + 30
+    maxBottom + 10
   )
 }

@@ -1,5 +1,3 @@
-//services/build-print-fields.js//
-
 /* =========================================================
 BUILD PRINT FIELDS
 ========================================================= */
@@ -14,6 +12,35 @@ export function buildPrintFields(
   }
 
   /* =======================================================
+  FLATTEN FORM FIELDS
+  ======================================================= */
+
+  function flattenFields(fields){
+
+    const result = []
+
+    fields.forEach(field=>{
+
+      if(
+        field.type === "group" &&
+        Array.isArray(field.fields)
+      ){
+
+        result.push(
+          ...flattenFields(field.fields)
+        )
+
+        return
+      }
+
+      result.push(field)
+
+    })
+
+    return result
+  }
+
+  /* =======================================================
   FORM FIELDS
   ======================================================= */
 
@@ -23,35 +50,40 @@ export function buildPrintFields(
 
     schema.fields ||
 
-    {}
+    []
 
-const formFields =
+  const flatFields =
 
-  Array.isArray(rawFields)
+    Array.isArray(rawFields)
 
-    ? rawFields.map(field=>({
+      ? flattenFields(rawFields)
 
-        ...field,
+      : Object.entries(rawFields)
 
-        key:
-          `${schemaKey}.${field.key}`,
+          .map(([key,field])=>({
 
-        originalKey:
-          field.key
-      }))
+            ...field,
 
-    : Object.entries(rawFields)
+            key,
 
-        .map(([key,field])=>({
+            originalKey:key
 
-          ...field,
+          }))
 
-          key:
-            `${schemaKey}.${key}`,
+  const formFields =
 
-          originalKey:
-            key
-        }))
+    flatFields.map(field=>({
+
+      ...field,
+
+      key:
+        `${schemaKey}.${field.key}`,
+
+      originalKey:
+        field.originalKey ||
+        field.key
+
+    }))
 
   /* =======================================================
   TABLE COLUMNS
@@ -65,13 +97,11 @@ const formFields =
 
   const tableColumns =
 
-    rawColumns.map(column=>{
+    rawColumns.map(column=>({
 
-      return {
+      ...column
 
-        ...column
-      }
-    })
+    }))
 
   /* =======================================================
   FORM PRINT FIELDS
@@ -83,27 +113,23 @@ const formFields =
 
       .filter(field=>{
 
-        return (
+        return field.print?.show
 
-          field.print?.show
-        )
       })
 
-      .map(field=>{
+      .map(field=>({
 
-        return {
+        ...field,
 
-          ...field,
+        source:"form",
 
-          source:"form",
+        blockType:
 
-          blockType:
+          field.print?.block ||
 
-            field.print?.block ||
+          "text"
 
-            "text"
-        }
-      })
+      }))
 
   /* =======================================================
   TABLE PRINT FIELDS
@@ -120,20 +146,20 @@ const formFields =
           column.showInList ||
 
           column.print?.show
+
         )
+
       })
 
-      .map(column=>{
+      .map(column=>({
 
-        return {
+        ...column,
 
-          ...column,
+        source:"table",
 
-          source:"table",
+        blockType:"table-column"
 
-          blockType:"table-column"
-        }
-      })
+      }))
 
   /* =======================================================
   RETURN
@@ -145,12 +171,12 @@ const formFields =
 
     ...(tablePrintFields.length
       ? [{
-        type:"divider",
-        label:"Chi tiết hàng hóa"
+          type:"divider",
+          label:"Chi tiết hàng hóa"
         }]
-    : []),
+      : []),
 
     ...tablePrintFields
+
   ]
 }
-
