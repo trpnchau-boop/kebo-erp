@@ -17,10 +17,10 @@ export function createSection(
 
     type,
 
-    x:40,
+    x:20,
     y:40,
 
-    width:714,
+    width:764,
 
     minHeight:120,
     height:120,

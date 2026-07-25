@@ -49,7 +49,7 @@ block.renderHeight = height
 
   return Math.max(
 
-    0,
+    80,
 
     maxBottom + 10
   )

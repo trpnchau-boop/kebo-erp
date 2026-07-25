@@ -157,11 +157,11 @@ export function buildPrintLayout(
         name:
           sectionName,
 
-        x:40,
+        x:20,
 
         y:currentY,
 
-        width:714,
+        width:764,
 
         height:sectionHeight,
 
