@@ -59,7 +59,11 @@ export function layoutHiddenRows({
 
     const firstHeight = Math.max(
       ...rows[0][1].map(
-        b => Number(b.height || 0)
+        b => Number(
+          b.renderHeight ??
+          b.height ??
+          0
+        )
       )
     )
 
@@ -105,7 +109,11 @@ export function layoutHiddenRows({
         block=>
 
           Number(
-            block.height || 0
+            block.renderHeight ??
+
+            block.height ??
+
+            0
           )
 
       )

@@ -8,6 +8,11 @@ import {
 }
 from "/modules/document/print/layout-hidden-rows.js"
 
+import {
+  getTableMetrics
+}
+from "/modules/print/layout/get-table-metrics.js"
+
 function shouldHideBlock(
   block,
   document
@@ -444,6 +449,22 @@ if(block.type === "table"){
   const columns =
     block.props?.columns || []
 
+  const {
+
+    headerHeight,
+
+    rowHeight
+
+  } =
+
+  getTableMetrics(
+
+    block,
+
+    items.length
+
+  )  
+
   return `
 
     <table
@@ -485,32 +506,30 @@ if(block.type === "table"){
 
                   padding:4px;
 
-                  height:${
-                    block.props?.rowHeight || 24
-                  }px;
-
                   text-align:${main.align || "left"};
 
-                  font-size:${main.fontSize || 12}px;
+                  font-size:${block.props?.headerFontSize || 14}px;
 
                   font-weight:${
-                    main.bold ? 700 : 400
+                    block.props?.headerBold
+                      ? 700
+                      : 400
                   };
 
                   font-style:${
-                    main.italic
+                    block.props?.headerItalic
                       ? "italic"
                       : "normal"
                   };
 
                   text-decoration:${
-                    main.underline
+                    block.props?.headerUnderline
                       ? "underline"
                       : "none"
                   };
 
                   color:${
-                    main.color || "#000"
+                    block.props?.headerColor || "#000"
                   };
 
                   background:${
@@ -631,33 +650,33 @@ if(block.type === "table"){
 
                     <div
 
-                      style="
-                        text-align:${main.align || "left"};
+  style="
+    height:${rowHeight}px;
 
-                        font-size:${main.fontSize || 12}px;
+    padding:4px;
 
-                        font-weight:${
-                          main.bold ? 700 : 400
-                        };
+    box-sizing:border-box;
 
-                        font-style:${
-                          main.italic
-                            ? "italic"
-                            : "normal"
-                        };
+    display:flex;
 
-                        text-decoration:${
-                          main.underline
-                            ? "underline"
-                            : "none"
-                        };
+    align-items:center;
 
-                        color:${
-                          main.color || "#000"
-                        };
-                      "
+    text-align:${main.align || "left"};
 
-                    >
+    font-size:${main.fontSize || 12}px;
+
+    line-height:1;
+
+    font-weight:${main.bold ? 700 : 400};
+
+    font-style:${main.italic ? "italic" : "normal"};
+
+    text-decoration:${main.underline ? "underline" : "none"};
+
+    color:${main.color || "#000"};
+  "
+
+>
 
                       ${mainValue}
 
@@ -724,7 +743,7 @@ if(block.type === "table"){
                     style="
                       border:1px solid #000;
 
-                      padding:4px;
+                      padding:0px;
 
                       vertical-align:top;
                     "

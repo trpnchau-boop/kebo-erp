@@ -1,4 +1,8 @@
 // layout/layout-blocks.js
+import {
+  getTableMetrics
+}
+from "/modules/print/layout/get-table-metrics.js"
 
 const DEFAULT_GAP = 20
 
@@ -47,25 +51,15 @@ export function layoutBlocks(
   TABLE HEIGHT
   ====================================== */
 
-  const rowHeight =
-
-    table.props?.rowHeight || 24
-
-  const extraRows =
-
-    Math.max(
-      itemsCount - 1,
-      0
-    )
-
   table.renderHeight =
 
-    table.renderHeight ??
+    getTableMetrics(
 
-    (
-      table.height +
-      extraRows * rowHeight
-    )
+      table,
+
+      itemsCount
+
+    ).tableHeight
 
   /* ======================================
   LAYOUT BLOCKS BELOW TABLE

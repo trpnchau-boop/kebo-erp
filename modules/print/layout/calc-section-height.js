@@ -1,3 +1,9 @@
+
+import {
+  getTableMetrics
+}
+from "/modules/print/layout/get-table-metrics.js"
+
 export function calcSectionHeight(
 
   section,
@@ -13,17 +19,17 @@ export function calcSectionHeight(
 
 let height = block.height || 0
 
-if(block.type==="table"){
-
-    const rowHeight =
-        block.props?.rowHeight || 24
-
-    const extraRows =
-        Math.max(itemsCount-1,0)
+if(block.type === "table"){
 
     height =
-        block.height +
-        extraRows*rowHeight
+
+      getTableMetrics(
+
+        block,
+
+        itemsCount
+
+      ).tableHeight
 }
 
 block.renderHeight = height

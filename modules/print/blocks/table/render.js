@@ -1,13 +1,12 @@
+import {
+  getTableMetrics
+}
+from "/modules/print/layout/get-table-metrics.js"
+
 export function renderTableBlock(
   block,
   state
 ){
-
-  const headerBackgroundColor =
-  
-    block.props?.headerBackgroundColor ||
-
-    "#f3f4f6"
 
   const columns =
 
@@ -29,82 +28,21 @@ export function renderTableBlock(
 
       : []
 
-  const rowHeight =
+  const {
 
-    block.props?.rowHeight || 24
+    headerHeight,
 
-  const headerHeight =
-
-    36
-
-  /* =========================================
-  TYPOGRAPHY
-  ========================================== */
-
-const headerFontSize =
-
-  block.props?.headerFontSize ||
-
-  14
-
-const headerFontWeight =
-
-  block.props?.headerBold
-
-    ? "700"
-
-    : "400"
-
-const headerFontStyle =
-
-  block.props?.headerItalic
-
-    ? "italic"
-
-    : "normal"
-
-const headerTextDecoration =
-
-  block.props?.headerUnderline
-
-    ? "underline"
-
-    : "none"
-
-const headerColor =
-
-  block.props?.headerColor ||
-
-  "#000000"
-
-const headerTextStyle = `
-
-  font-size:${headerFontSize}px;
-
-  font-weight:${headerFontWeight};
-
-  font-style:${headerFontStyle};
-
-  text-decoration:${headerTextDecoration};
-
-  color:${headerColor};
-
-`
-
-  /* =========================================
-  AUTO HEIGHT
-  ========================================== */
-
-  const autoHeight =
-
-    headerHeight +
-
-    rows.length *
     rowHeight
 
-  /* =========================================
-  HEADER
-  ========================================== */
+  } =
+
+    getTableMetrics(
+
+      block,
+
+      rows.length
+
+    )
 
   const headerHtml =
 
@@ -112,9 +50,10 @@ const headerTextStyle = `
 
       .map((column,index)=>{
 
-        const selectedColumn =
-          state.selectedIds?.includes(block.id)
-          &&
+        const selected =
+
+          state.selectedIds?.includes(block.id) &&
+
           state.selectedColumnIndex === index
 
         return `
@@ -125,6 +64,7 @@ const headerTextStyle = `
               print-table-cell
               print-table-header
             "
+
             data-column-index="${index}"
 
             style="
@@ -132,36 +72,64 @@ const headerTextStyle = `
 
               width:${column.width}px;
 
-              justify-content:
-                ${
-                  column.align === "right"
+              height:${headerHeight}px;
+
+              display:flex;
+
+              align-items:center;
+
+              justify-content:${
+                column.align==="right"
                   ? "flex-end"
-                  : column.align === "center"
+                  : column.align==="center"
                   ? "center"
                   : "flex-start"
-                };
+              };
 
-              background:
-                
-                ${
-                  selectedColumn
+              padding:4px;
+
+              box-sizing:border-box;
+
+              line-height:1;
+
+              font-size:${block.props?.headerFontSize || 14}px;
+
+              font-weight:${
+                block.props?.headerBold
+                  ? 700
+                  : 400
+              };
+
+              font-style:${
+                block.props?.headerItalic
+                  ? "italic"
+                  : "normal"
+              };
+
+              text-decoration:${
+                block.props?.headerUnderline
+                  ? "underline"
+                  : "none"
+              };
+
+              color:${
+                block.props?.headerColor || "#000"
+              };
+
+              background:${
+                selected
                   ? "#bfdbfe"
-                  : headerBackgroundColor
-                };
-
-              ${headerTextStyle}
+                  : block.props?.headerBackgroundColor || "#f3f4f6"
+              };
             "
+
           >
 
-            ${
-              column.label || ""
-            }
+            ${column.label || ""}
 
             <div
 
-              class="
-                table-column-resize
-              "
+              class="table-column-resize"
 
               data-column-index="${index}"
 
@@ -180,131 +148,102 @@ const headerTextStyle = `
 
                 z-index:100;
               "
+
             ></div>
 
           </div>
 
         `
+
       })
 
       .join("")
-
-  /* =========================================
-  ROWS
-  ========================================== */
 
   const rowsHtml =
 
     rows
 
-      .map(row=>{
+      .map(row=>`
 
-        const cellsHtml =
+        <div class="print-table-row">
 
-          columns
+          ${columns.map((column,index)=>{
 
-            .map((column,index)=>{
+            const selected =
 
-            const selectedColumn =
-              state.selectedIds?.includes(block.id)
-              &&
-              state.selectedColumnIndex === index              
+              state.selectedIds?.includes(block.id) &&
 
-              return `
+              state.selectedColumnIndex === index
 
-                <div
+            return `
 
-                  class="
-                    print-table-cell
-                  "
+              <div
 
-                  style="
-                    width:${column.width}px;
+                class="print-table-cell"
 
-                    height:${rowHeight}px;
+                style="
+                  width:${column.width}px;
 
-                    justify-content:
-                      ${
-                        column.align === "right"
-                        ? "flex-end"
-                        : column.align === "center"
-                        ? "center"
-                        : "flex-start"
-                      };
+                  height:${rowHeight}px;
 
-                    background:  
-                      ${
-                        selectedColumn
-                        ? "#bfdbfe"
-                        : "transparent"
-                      };    
+                  display:flex;
 
-                  "
-                >
+                  align-items:center;
 
-                  ${
-                    row[
-                      column.key
-                    ] || ""
-                  }
+                  justify-content:${
+                    column.align==="right"
+                      ? "flex-end"
+                      : column.align==="center"
+                      ? "center"
+                      : "flex-start"
+                  };
 
-                </div>
+                  padding:4px;
 
-              `
-            })
+                  box-sizing:border-box;
 
-            .join("")
+                  line-height:1;
 
-        return `
+                  background:${
+                    selected
+                      ? "#bfdbfe"
+                      : "transparent"
+                  };
+                "
 
-          <div
-            class="
-              print-table-row
-            "
-          >
+              >
 
-            ${cellsHtml}
+                ${row[column.key] || ""}
 
-          </div>
+              </div>
 
-        `
-      })
+            `
+
+          }).join("")}
+
+        </div>
+
+      `)
 
       .join("")
-
-  /* =========================================
-  RENDER
-  ========================================== */
 
   return `
 
     <div
 
-      class="
-        print-table
-      "
+      class="print-table"
 
       style="
         width:100%;
 
         height:100%;
 
-        overflow:hidden;
-
-        background:white;
+        background:#fff;
       "
+
     >
 
-      <div
-
-        class="
-          print-table-row
-        "
-
-        style="
-          height:${headerHeight}px;
-        "
-      >
+      <div class="print-table-row">
 
         ${headerHtml}
 

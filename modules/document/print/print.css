@@ -49,13 +49,3 @@ body{
 
   width:100%;
 }
-
-.print-table th,
-.print-table td{
-
-  border:1px solid #000;
-
-  padding:4px;
-
-  font-size:12px;
-}
