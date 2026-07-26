@@ -114,35 +114,26 @@ export async function saveData(ctx){
 
   if(table === "data_customer"){
 
-    // lấy tên hiện tại nếu form không sửa
-    let currentName = row.name
+    let current = null
 
-    if(id && !currentName){
+    if(id){
 
-      const current =
+      current =
         await getOne(
           "data_customer",
           id
         )
 
-      currentName = current?.name || ""
-
     }
 
-    // lấy khu vực hiện tại nếu form không sửa
-    let areaId = row.id_khuvuc
+    const currentName =
+      row.name ||
+      current?.name ||
+      ""
 
-    if(id && !areaId){
-
-      const current =
-        await getOne(
-          "data_customer",
-          id
-        )
-
-      areaId = current?.id_khuvuc
-
-    }
+    const areaId =
+      row.id_khuvuc ||
+      current?.id_khuvuc
 
     if(currentName && areaId){
 
@@ -164,7 +155,7 @@ export async function saveData(ctx){
           `${baseName} - ${area.name}`
 
       }
-
+ 
     }
 
   }
