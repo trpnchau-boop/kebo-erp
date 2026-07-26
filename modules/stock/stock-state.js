@@ -14,7 +14,12 @@ export const stockState = {
 
   keyword: "",
   warehouseId: "",
-  status: ""
+  status: "",
+
+  sort: {
+    field: "code",
+    dir: "asc"
+  }
 }
 
 export function resetStockState(){
@@ -33,6 +38,14 @@ export function resetStockState(){
   stockState.keyword = ""
   stockState.warehouseId = ""
   stockState.status = ""
+
+  stockState.sort = {
+
+    field: "code",
+
+    dir: "asc"
+ 
+  }
 
 }
 

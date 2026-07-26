@@ -369,9 +369,26 @@ renderDropdownSelect({
       btnHot.classList.toggle(
         "active",
         showHot
-      )  
+      )
 
       applyFilter()
+
+      if(showHot){
+
+        requestAnimationFrame(()=>{
+
+          document
+            .getElementById("catalog-hot")
+            ?.scrollIntoView({
+
+              behavior:"smooth",
+              block:"start"
+
+            })
+
+        })
+
+      }
 
     }
   )

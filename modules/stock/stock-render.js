@@ -78,6 +78,85 @@ return true
 
 })
 
+const {
+
+  field,
+
+  dir
+
+} = stockState.sort
+
+rows.sort((a,b)=>{
+
+  const pa =
+    stockState.productMap[a.id_product] || {}
+
+  const pb =
+    stockState.productMap[b.id_product] || {}
+
+  const wa =
+    stockState.warehouseMap[a.id_warehouse] || {}
+
+  const wb =
+    stockState.warehouseMap[b.id_warehouse] || {}
+
+  const getValue = (row,p,w)=>{
+
+    switch(field){
+
+      case "code":
+        return p.code || ""
+
+      case "name":
+        return p.name || ""
+
+      case "dvt":
+        return p.dvtGoc || ""
+
+      case "warehouse":
+        return w.name || ""
+
+      case "qty":
+        return Number(row.qty_balance)
+
+      case "cost":
+        return Number(row.avg_cost)
+
+      case "value":
+        return Number(row.stock_value)
+
+      default:
+        return ""
+    }
+
+  }
+
+  let va =
+    getValue(a,pa,wa)
+
+  let vb =
+    getValue(b,pb,wb)
+
+  if(typeof va === "string"){
+
+    va =
+      va.toLowerCase()
+
+    vb =
+      vb.toLowerCase()
+
+  }
+
+  if(va < vb)
+    return dir==="asc" ? -1 : 1
+
+  if(va > vb)
+    return dir==="asc" ? 1 : -1
+
+  return 0
+
+})
+
 const checkMode =
 isCheckMode()
 
@@ -133,6 +212,8 @@ ${p.code || ""}
 </td>
 
 <td>${p.name || ""}</td>
+
+<td>${p.dvtGoc || ""}</td>
 
 <td>${kho.name || ""}</td>
 
@@ -194,6 +275,7 @@ ${formatMoney(r.stock_value)}
 
 toggleTransferToolbar(root)
 bindLedgerButtons(root)
+bindSort(root)
 
 if(checkMode){
 bindCheckInputs(root)
@@ -267,6 +349,53 @@ diff > 0
 : diff < 0
 ? "red"
 : ""
+
+}
+
+})
+
+}
+function bindSort(root){
+
+root
+
+.querySelectorAll(
+
+"thead th[data-sort]"
+
+)
+
+.forEach(th=>{
+
+th.onclick = ()=>{
+
+const field =
+
+th.dataset.sort
+
+const sort =
+
+stockState.sort
+
+if(sort.field===field){
+
+sort.dir =
+
+sort.dir==="asc"
+
+? "desc"
+
+: "asc"
+
+}else{
+
+sort.field = field
+
+sort.dir = "asc"
+
+}
+
+render(root)
 
 }
 

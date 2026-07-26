@@ -34,7 +34,9 @@ if(showHot){
       )
 
     html += `
-      <section class="catalog-group">
+      <section 
+        id="catalog-hot"
+        class="catalog-group">
 
         <h2 class="catalog-group-title">
 

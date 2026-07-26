@@ -165,6 +165,7 @@ export const DOCUMENT_LIST_TYPES = {
       "code",
       "day",
       "id_employee",
+      "note",
     ],
 
     actions:[
@@ -187,6 +188,7 @@ export const DOCUMENT_LIST_TYPES = {
       "code",
       "day",
       "id_employee",
+      "note",
     ],
 
     actions:[

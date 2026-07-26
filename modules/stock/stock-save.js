@@ -229,6 +229,14 @@ export async function saveDocument(
 
     }  
 
+    const state = {
+
+      header: payload,
+
+      items: rows
+
+    }
+
     return await persistDocument({
 
       root: document.body,
@@ -255,13 +263,11 @@ export async function saveDocument(
 
       },
 
-      payload: {
+      state: {
 
-        header:
-          payload,
+        header: payload,
 
-        items:
-          rows
+        items: rows
 
       }
 
