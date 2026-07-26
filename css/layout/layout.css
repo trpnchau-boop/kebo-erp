@@ -74,6 +74,7 @@ padding: 0 20px;
 
     overflow:hidden;
     margin: 0 0 10px 0;
+
 }
 
 #catalog-grid{
@@ -81,6 +82,8 @@ padding: 0 20px;
     min-height:0;
     overflow-y:auto;
     overflow-x:hidden;
+    border: 1px solid #e5e7eb;
+    background: #ffffffbf;
 }
 /* =========================================================
 MOBILE

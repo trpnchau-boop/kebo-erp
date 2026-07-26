@@ -149,6 +149,10 @@
   border-top-right-radius:8px;
 }
 
+.tab:hover{
+    height: 32px;
+}
+
 #page-title{
   display:none;
 }
