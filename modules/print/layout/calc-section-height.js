@@ -7,7 +7,7 @@ from "/modules/print/layout/get-table-metrics.js"
 export function calcSectionHeight(
 
   section,
-  itemsCount = 0
+  items = []
 
 ){
 
@@ -27,7 +27,7 @@ if(block.type === "table"){
 
         block,
 
-        itemsCount
+        items
 
       ).tableHeight
 }

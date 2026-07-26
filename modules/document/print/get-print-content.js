@@ -35,7 +35,7 @@ export function getPrintContent({
 
         calcSectionHeight(
           section,
-          items.length
+          items
         )
 
       const blocks =

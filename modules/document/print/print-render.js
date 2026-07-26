@@ -306,7 +306,7 @@ function renderBlock({
               : "flex-start"
           };
 
-          padding:4px;
+          padding: 0 4px;
 
           box-sizing:border-box;
 
@@ -403,8 +403,10 @@ function renderColumnContent({
       <div
         style="
           display:flex;
-          flex-direction:column;
-          gap:2px;
+          flex-direction:row;
+          align-items:center;
+          gap:0;
+          flex-wrap:wrap;
         "
       >
 
@@ -422,10 +424,8 @@ function renderColumnContent({
       <div
         style="
           display:flex;
-          flex-direction:row;
-          align-items:center;
-          gap:6px;
-          flex-wrap:wrap;
+          flex-direction:column;
+          gap: 0;
         "
       >
 
@@ -483,6 +483,16 @@ if(block.type === "table"){
       "
 
     >
+
+    <colgroup>
+
+      ${columns.map(column=>`
+
+          <col style="width:${column.width}px">
+
+      `).join("")}
+
+    </colgroup>
 
       <tbody>
 
@@ -650,33 +660,40 @@ if(block.type === "table"){
 
                     <div
 
-  style="
-    height:${rowHeight}px;
+                      style="
+                    
+                        min-height:${rowHeight}px;
 
-    padding:4px;
+                        padding:0 4px;
 
-    box-sizing:border-box;
+                        box-sizing:border-box;
 
-    display:flex;
+                        display:flex;
 
-    align-items:center;
+                        align-items:center;
 
-    text-align:${main.align || "left"};
+                        justify-content:${
+                          main.align === "center"
+                            ? "center"
+                            : main.align === "right"
+                            ? "flex-end"
+                            : "flex-start"
+                        };
 
-    font-size:${main.fontSize || 12}px;
+                        font-size:${main.fontSize || 12}px;
 
-    line-height:1;
+                        line-height:1;
 
-    font-weight:${main.bold ? 700 : 400};
+                        font-weight:${main.bold ? 700 : 400};
 
-    font-style:${main.italic ? "italic" : "normal"};
+                        font-style:${main.italic ? "italic" : "normal"};
 
-    text-decoration:${main.underline ? "underline" : "none"};
+                        text-decoration:${main.underline ? "underline" : "none"};
 
-    color:${main.color || "#000"};
-  "
+                        color:${main.color || "#000"};
+                      "
 
->
+                    >
 
                       ${mainValue}
 
@@ -699,9 +716,19 @@ if(block.type === "table"){
                     <div
 
                       style="
-                        text-align:${detail.align || "left"};
+                        display:flex;
+                        justify-content:${
+                          detail.align === "center"
+                            ? "center"
+                            : detail.align === "right"
+                            ? "flex-end"
+                            : "flex-start"
+                        };
 
                         font-size:${detail.fontSize || 11}px;
+
+                        padding: 0 4px;
+                        box-sizing:border-box;
 
                         font-weight:${
                           detail.bold ? 700 : 400
