@@ -12,7 +12,8 @@ label:"Khu vực",
 type:"select",
 ref:"set_kh_khuvuc",
 value:"id",
-text:"name"
+text:"name",
+allowAdd:true,
 },
 
 code:{

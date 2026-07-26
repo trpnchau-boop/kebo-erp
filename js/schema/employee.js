@@ -34,7 +34,8 @@ showInList:true,
 type:"select",
 ref:"roles",
 value:"name",
-text:"name"
+text:"name",
+allowAdd:true,
 },
 
 work:{
