@@ -1,4 +1,4 @@
-import {insertRow, updateRow} from "../../../js/crud.js"
+import {insertRow, updateRow, getOne} from "../../../js/crud.js"
 import {saveProductStructure} from "../product/product-save.js"
 import {markDirty} from "/js/relation-cache.js"
 import {parseMoney} from "/js/core/format.js"
@@ -106,6 +106,67 @@ export async function saveData(ctx){
     }
 
     row[field] = value
+  }
+
+  /* =========================
+  CUSTOM CUSTOMER NAME
+  ========================= */
+
+  if(table === "data_customer"){
+
+    // lấy tên hiện tại nếu form không sửa
+    let currentName = row.name
+
+    if(id && !currentName){
+
+      const current =
+        await getOne(
+          "data_customer",
+          id
+        )
+
+      currentName = current?.name || ""
+
+    }
+
+    // lấy khu vực hiện tại nếu form không sửa
+    let areaId = row.id_khuvuc
+
+    if(id && !areaId){
+
+      const current =
+        await getOne(
+          "data_customer",
+          id
+        )
+
+      areaId = current?.id_khuvuc
+
+    }
+
+    if(currentName && areaId){
+
+      const area =
+        await getOne(
+          "set_kh_khuvuc",
+          areaId
+        )
+
+      if(area?.name){
+
+        const baseName =
+          currentName.replace(
+            /\s*-\s*.*$/,
+            ""
+          )
+
+        row.name =
+          `${baseName} - ${area.name}`
+
+      }
+
+    }
+
   }
 
   /* =========================
