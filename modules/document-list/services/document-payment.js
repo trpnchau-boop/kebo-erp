@@ -30,7 +30,8 @@ export async function paymentDocument(ctx){
 
     .select(`
       id,
-      tongthanhtoan
+      tongthanhtoan,
+      tien_tt
     `)
 
     .in(
@@ -53,9 +54,16 @@ export async function paymentDocument(ctx){
   UPDATE
   ===================================== */
 
+  let hasPaid = false
+  let hasUnpaid = false
+
   for(
     const row of data
   ){
+
+    const isPaid =
+
+      Number(row.tien_tt || 0) > 0
 
     const {
       error:updateError
@@ -67,8 +75,9 @@ export async function paymentDocument(ctx){
 
       .update({
 
-        tien_tt:
-          row.tongthanhtoan
+        tien_tt: isPaid
+          ? 0
+          : row.tongthanhtoan
 
       })
 
@@ -80,6 +89,18 @@ export async function paymentDocument(ctx){
     if(updateError){
 
       console.error(updateError)
+
+      continue
+
+    }
+
+    if(isPaid){
+
+      hasUnpaid = true
+
+    }else{
+
+      hasPaid = true
 
     }
 
@@ -95,8 +116,18 @@ export async function paymentDocument(ctx){
 
   }
 
-  alert(
-    "Đã thanh toán"
-  )
+  if(hasPaid && !hasUnpaid){
+
+    alert("Đã thanh toán")
+
+  }else if(hasUnpaid && !hasPaid){
+
+    alert("Đã hủy thanh toán")
+
+  }else{
+
+    alert("Đã cập nhật thanh toán")
+
+  }
 
 }

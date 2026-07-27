@@ -111,10 +111,10 @@ export function bindRowActions(ctx){
 
         row,
 
+        button: btn,
+
         ids:[
-          Number(
-            btn.dataset.id
-          )
+          Number(btn.dataset.id)
         ]
 
       })

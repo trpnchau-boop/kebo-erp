@@ -33,7 +33,7 @@
   background:#2f2a2a;
   color:#fff;
 
-  z-index:2;
+  z-index:9999;
 }
 
 .search-wrap{

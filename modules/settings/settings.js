@@ -1,5 +1,6 @@
 import {getAll,insertRow,deleteRow,updateRow} from "../../../js/crud.js"
 import { schema } from "/js/schema/index.js"
+import { getSort } from "/js/schema/core.js"
 import {loadRef} from "/js/relation-cache.js"
 import {initSmartLabels} from "../form/engine/form-builder.js"
 import {formatMoney, parseMoney} from "../../../js/core/format.js"
@@ -154,28 +155,35 @@ root._cleanup = () => {
 async function load(){
 
 const rows = await getAll(table)
+const sort = getSort(fields)
 
-if(table === "set_payroll_item"){
+if(sort){
+
+  const [field, config] = sort
 
   rows.sort((a,b)=>{
 
-    const groupA = a.type === "income" ? 0 : 1
-    const groupB = b.type === "income" ? 0 : 1
+    if(config.sort === "number"){
 
-    if(groupA !== groupB){
-      return groupA - groupB
+      return Number(a[field] || 0)
+           - Number(b[field] || 0)
+
     }
 
-    return Number(a.sort_order || 0)
-         - Number(b.sort_order || 0)
+    if(config.sort === "text"){
+
+      return String(a[field] || "")
+        .localeCompare(
+          String(b[field] || ""),
+          "vi",
+          { numeric:true }
+        )
+
+    }
+
+    return 0
+
   })
-
-}else if(table === "set_sp_group"){
-
-  rows.sort((a,b)=>
-    Number(a.line || 0) -
-    Number(b.line || 0)
-  )
 
 }
 

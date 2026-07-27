@@ -155,6 +155,23 @@ export async function init(
     schema
   )
 
+const now = new Date()
+
+const monthStart =
+  `${now.getFullYear()}-${
+    String(now.getMonth() + 1).padStart(2, "0")
+  }-01`
+
+const today =
+  `${now.getFullYear()}-${
+    String(now.getMonth() + 1).padStart(2, "0")
+  }-${
+    String(now.getDate()).padStart(2, "0")
+  }`
+
+root.querySelector("#from-date").value = monthStart
+root.querySelector("#to-date").value = today
+
 createDatepicker(
   root,
   "#from-date",
@@ -194,8 +211,8 @@ createDatepicker(
 
     rows:[],
     search:"",
-    fromDate:"",
-    toDate:"",  
+    fromDate: monthStart,
+    toDate: today,
 
     reload
   }
@@ -212,12 +229,33 @@ const selectedEl =
     "#document-list-selected"
   )
 
+const selectedInfoEl =
+  root.querySelector(
+    "#document-list-selected-info"
+  )
+
+const selectedMoneyEl =
+  root.querySelector(
+    "#document-list-selected-money"
+  )
+
+const summaryTotalMoneyEl =
+  root.querySelector(
+    "#summary-total-money"
+  )
+
+const summaryTotalPaidEl =
+  root.querySelector(
+    "#summary-total-paid"
+  )  
+
 ctx.selection = createTableSelection({
 
   thead,
   tbody,
 
   onChange({
+    ids,
     count,
     total
   }){
@@ -228,6 +266,45 @@ ctx.selection = createTableSelection({
 
     if(selectedEl){
       selectedEl.textContent = count
+    }
+
+    const selectedIds = new Set(ids)
+
+    const selectedRows =
+
+      ctx.rows.filter(
+
+        row => selectedIds.has(String(row.id))
+
+      )
+
+    const selectedMoney =
+
+      selectedRows.reduce(
+
+        (sum,row)=>
+
+          sum + Number(
+            row.tongthanhtoan || 0
+          ),
+
+        0
+
+      )
+
+    if(selectedInfoEl){
+
+      selectedInfoEl.hidden =
+        count === 0
+
+    }
+
+    if(selectedMoneyEl){
+
+      selectedMoneyEl.textContent =
+
+        selectedMoney.toLocaleString("vi-VN")
+
     }
 
   }
@@ -271,6 +348,30 @@ ctx.selection = createTableSelection({
           ctx.toDate || ""     
       })
 
+    const totalMoney =
+
+      ctx.rows.reduce(
+
+        (sum, row)=>
+
+          sum + Number(row.tongthanhtoan || 0),
+
+        0
+
+      )
+
+    const totalPaid =
+
+      ctx.rows.reduce(
+
+        (sum, row)=>
+
+          sum + Number(row.tien_tt || 0),
+
+        0
+
+      ) 
+
     renderRows(
 
       tbody,
@@ -280,7 +381,22 @@ ctx.selection = createTableSelection({
       schema
 
     )
+
+    summaryTotalMoneyEl.textContent =
+
+      totalMoney.toLocaleString("vi-VN")
+
+    summaryTotalPaidEl.textContent =
+
+      totalPaid.toLocaleString("vi-VN")
+
     ctx.selection.sync()
+
+    if(selectedInfoEl){
+
+      selectedInfoEl.hidden = true
+
+    }
 
     /* =====================
     RE-BIND

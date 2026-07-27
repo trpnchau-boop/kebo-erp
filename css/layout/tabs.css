@@ -5,7 +5,7 @@
   align-items:flex-end;
   flex-wrap:nowrap;
   height:100%;
-  gap:12px;
+  gap:15px;
   scrollbar-width:none;
   margin-top: 0px;
   overflow: hidden;
@@ -47,9 +47,9 @@
 
   opacity:.9;
 
-  background: #e7e7e3;
+  background: #92ca93;
   flex: 1 1 80px;
-  min-width: 40px;
+  min-width: 60px;
   max-width: 180px;
 }
 
@@ -62,12 +62,13 @@
   position:absolute;
   top:0;
 
-  width:20px;
+  width:45px;
   height:100%;
 
-  background: #ececed45;
+  background: linear-gradient(rgba(0, 0, 0, .12), rgba(0, 0, 0, .12)) top / 100% 1px no-repeat, #95cd97;
 
   z-index:-1;
+  
 }
 
 .tab::before{

@@ -368,7 +368,7 @@ export const BASE_DOCUMENT = {
         key:"product_code",
         label:"Mã SP",
         type:"text",
-        width:100,
+        width:90,
         placeholder:"Mã SP",
         runtime:true,
         persist:false,

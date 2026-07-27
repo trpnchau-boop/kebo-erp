@@ -41,9 +41,10 @@ SUGGEST
 .suggest-item{
   padding:10px 12px;
   cursor:pointer;
+  border-top:1px solid #f1f5f9 !important;
 }
 
 .suggest-item:hover,
 .suggest-item.active{
-  background:#f3f4f6;
+  background:#fffdf0d0;
 }

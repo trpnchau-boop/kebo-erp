@@ -31,7 +31,8 @@ set_kh_khuvuc:{
   fields:withSystemFields({
     prefix:{
       label:"Mã khu vực",
-      type:"text"
+      type:"text",
+      sort:"text"
     },
     name:{
       label:"Tên khu vực",
@@ -87,7 +88,8 @@ set_kho:{
     },
     kihieu:{
       label:"Kí hiệu",
-      type:"text"
+      type:"text",
+      sort:"text"
     },
   })
 },
@@ -99,6 +101,7 @@ set_ns_rate:{
     steps:{
       label:"",
       type:"text",
+      sort:"text"
     },
     dinhmuc_min:{
       label:"Min",
@@ -145,7 +148,8 @@ set_payroll_item:{
     },    
     sort_order:{
       label:"Line",
-      type:"text"
+      type:"text",
+      sort:"number"
     },     
     note:{
       label:"note",
@@ -162,7 +166,8 @@ set_sp_dvt:{
       label:"Đơn vị",
       type:"text",
       required:true,
-      showInList:true
+      showInList:true,
+      sort:"text"
     }
   })
 },
@@ -184,6 +189,7 @@ set_sp_group:{
     line:{
       label:"Line",
       type:"number",
+      sort:"number"
     }    
   })
 },

@@ -47,9 +47,12 @@ export function bindTableInputs({
     )
       return
 
-    updatePaymentColor(
+    const tr =
       input.closest("tr")
-    )
+
+    updatePaymentColor(tr)
+
+    updatePaymentButton(tr)
 
   }
 )
@@ -550,24 +553,19 @@ function updatePaymentColor(tr){
 
 function updatePaymentButton(tr){
 
-  const tong = Number(
-    String(
-      tr.querySelector(
-        '[data-field="tongthanhtoan"]'
-      ).textContent
-    )
-    .replaceAll(".","")
-    .replaceAll(",","")
-  ) || 0
-
   const paid = Number(
+
     String(
+
       tr.querySelector(
         '[data-field="tien_tt"] input'
       ).value
+
     )
+
     .replaceAll(".","")
     .replaceAll(",","")
+
   ) || 0
 
   const btn =
@@ -581,8 +579,7 @@ function updatePaymentButton(tr){
 
   btn.classList.toggle(
     "payment-green",
-    tong > 0 &&
-    paid === tong
+    paid > 0
   )
 
 }

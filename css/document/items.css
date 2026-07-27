@@ -15,7 +15,7 @@
 
     padding:0 10px;
 
-    background:white;
+    background:#f4f6fb7a;
 
     border:1px solid #dcdcdc;
     border-radius:5px;
@@ -71,7 +71,7 @@
 
     position:absolute;
 
-    top:calc(100% + 4px);
+    top:calc(100% + 2px);
     left:0;
     right:0;
 
@@ -92,7 +92,7 @@
 
 .doc-select-panel{
     min-width:max-content;
-    width:max-content;
+    width:100%;
     right:auto;
 }
 
@@ -104,15 +104,18 @@
     display:block;
 
     width:100%;
+    height: auto !important;
+    padding: 10px 12px;
 
     border:none;
-    border-bottom:1px solid #e5e7eb !important;
+    border-top:1px solid #f1f5f9 !important;
 
     background:#fff;
 
     text-align:left;
 
     font:inherit;
+    font-size: 15px;
     color:inherit;
 
     cursor:pointer;
@@ -127,7 +130,7 @@
 }
 
 .doc-select-item:hover{
-    background:#f8fafc;
+    background:#fffdf0d0;
 }
 
 .doc-select-item.active{

@@ -46,3 +46,10 @@ export const customerField = {
   value:"id",
   text:"name"
 }
+
+export function getSort(fields){
+
+  return Object.entries(fields)
+    .find(([_, field]) => field.sort)
+
+}

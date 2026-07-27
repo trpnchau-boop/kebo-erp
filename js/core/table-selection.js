@@ -309,6 +309,14 @@ function applyRow(row){
 
     e=>{
 
+      if(
+        e.target.closest(
+          "input:not(.row-checkbox), textarea, select"
+        )
+      ){
+        return
+      }
+
       const row =
         findCheckbox(
           e.target

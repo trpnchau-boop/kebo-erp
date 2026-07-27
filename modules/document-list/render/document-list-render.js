@@ -224,9 +224,7 @@ function renderRowActions(
 
   const isPaid =
 
-    Number(row.tongthanhtoan || 0)
-    ===
-    Number(row.tien_tt || 0)
+    Number(row.tien_tt || 0) > 0
 
   if(!schema?.rowActions)
     return ""
