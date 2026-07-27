@@ -4,7 +4,7 @@ import {
 from "/js/core/input-format.js"
 
 import {
-  parseMoney
+  parseMoney, formatMoney
 }
 from "/js/core/format.js"
 
@@ -137,7 +137,7 @@ export function renderReleaseRows(rows = []){
               </div>
 
               <div
-                style=" font-size:12px; color:#6b7280; margin-top:2px;"
+                style=" font-size:14px; color:#6b7280; margin-top:6px;"
               >
                 Tồn kho:
                 ${
@@ -376,9 +376,7 @@ function bindReleaseCalculation(rows = []){
 
         qty * price
 
-      amountInput.value =
-
-        total
+      amountInput.value = formatMoney(total)
 
       item.tongsoluong = qty
 
@@ -409,9 +407,7 @@ function bindReleaseCalculation(rows = []){
             amount / qty
           )
 
-        priceInput.value =
-
-          newPrice
+        priceInput.value = formatMoney(newPrice)
 
         item.dongia =
           newPrice
