@@ -474,12 +474,12 @@ if(block.type === "table"){
       style="
         position:absolute;
 
-        //left:${block.x}px;
         top:${block.renderY ?? block.y}px;
 
         width:${block.width}px;
 
         border-collapse:collapse;
+
       "
 
     >
@@ -664,7 +664,7 @@ if(block.type === "table"){
                     
                         min-height:${rowHeight}px;
 
-                        padding:0 4px;
+                        padding:2px 4px 0;
 
                         box-sizing:border-box;
 
@@ -727,7 +727,7 @@ if(block.type === "table"){
 
                         font-size:${detail.fontSize || 11}px;
 
-                        padding: 0 4px;
+                        padding: 2px 4px;
                         box-sizing:border-box;
 
                         font-weight:${

@@ -95,6 +95,11 @@ export async function init(
       "#btn-share-selected"
     )
 
+  const btnRefresh =
+    root.querySelector(
+      "#btn-refresh"
+    )  
+
   const selectedCount =
     root.querySelector(
       "#catalog-selected-count"
@@ -102,9 +107,11 @@ export async function init(
 
   const {
     groups,
-    products
+    products: initialProducts
   } =
   await getCatalogData()
+
+  let products = initialProducts
 
   const canViewPrice =
     !!(await getSession())
@@ -286,6 +293,60 @@ renderDropdownSelect({
     )
 
     applyCatalogZoom(grid)
+
+  }
+
+  async function refreshCatalog(){
+
+    btnRefresh.disabled = true
+
+    const icon =
+      btnRefresh.querySelector("img")
+
+    icon.style.animation =
+      "spin .8s linear infinite"
+
+    try{
+
+      const data =
+        await getCatalogData()
+
+      products =
+        data.products
+
+      search.value = ""  
+
+      const trigger =
+        groupSelect.querySelector(
+          ".dropdown-select-trigger"
+        )
+
+      trigger.dataset.value = ""
+
+      trigger.querySelector("span").textContent =
+        "Tất cả nhóm"
+
+      groupSelect.classList.add("empty")
+
+      showHot = false
+
+      btnHot.classList.remove(
+        "active"
+      )
+
+      selectedIds.clear()
+
+      updateSelectionUI()
+
+      applyFilter()
+
+    }finally{
+
+      icon.style.animation = ""
+
+      btnRefresh.disabled = false
+
+    }
 
   }
 
@@ -724,6 +785,11 @@ renderDropdownSelect({
   /* =====================
      FIRST LOAD
   ===================== */
+
+  btnRefresh.addEventListener(
+    "click",
+    refreshCatalog
+  )
 
   initCatalogPinch(grid)
 

@@ -102,23 +102,19 @@ function matchSearch({
 
   }
 
-  return fields.some(key=>{
+  const text = normalizeSearch(
 
-    const text =
+    fields
+      .map(key => data[key] || "")
+      .join(" ")
 
-      normalizeSearch(
+  )
 
-        data[key]
+  return tokens.every(token =>
 
-      )
+    text.includes(token)
 
-    return tokens.every(token=>
-
-      text.includes(token)
-
-    )
-
-  })
+  )
 
 }
 

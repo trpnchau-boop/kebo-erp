@@ -78,6 +78,7 @@ function getRowHeight({
 
 }){
 
+
   let height =
     baseRowHeight
 
@@ -114,7 +115,7 @@ function getRowHeight({
 
   }
 
-  const mainLines =
+  const mainLines = 
 
     estimateLines(
 
@@ -242,9 +243,7 @@ function getRowHeight({
         const detailLineHeight =
           Math.ceil(detailFontSize * 1.2)
 
-        cellHeight +=
-          detailLines *
-          detailLineHeight
+        cellHeight += detailLines * detailLineHeight
     }
 
 }
