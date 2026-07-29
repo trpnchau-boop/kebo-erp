@@ -426,6 +426,7 @@ function renderColumnContent({
           display:flex;
           flex-direction:column;
           gap: 0;
+
         "
       >
 
@@ -453,7 +454,7 @@ if(block.type === "table"){
 
     headerHeight,
 
-    rowHeight
+    rowHeight,
 
   } =
 
@@ -461,7 +462,7 @@ if(block.type === "table"){
 
     block,
 
-    items.length
+    items
 
   )  
 
@@ -662,27 +663,17 @@ if(block.type === "table"){
 
                       style="
                     
-                        min-height:${rowHeight}px;
+                        display:block;
 
-                        padding:2px 4px 0;
+                        padding:3px 0 3px 3px;
 
                         box-sizing:border-box;
 
-                        display:flex;
-
-                        align-items:center;
-
-                        justify-content:${
-                          main.align === "center"
-                            ? "center"
-                            : main.align === "right"
-                            ? "flex-end"
-                            : "flex-start"
-                        };
+                        text-align:${main.align || "left"};
 
                         font-size:${main.fontSize || 12}px;
 
-                        line-height:1;
+                        line-height:1.2;
 
                         font-weight:${main.bold ? 700 : 400};
 
@@ -716,39 +707,25 @@ if(block.type === "table"){
                     <div
 
                       style="
-                        display:flex;
-                        justify-content:${
-                          detail.align === "center"
-                            ? "center"
-                            : detail.align === "right"
-                            ? "flex-end"
-                            : "flex-start"
-                        };
+                        display:block;
+
+                        padding:3px 0 3px 3px;
+
+                        box-sizing:border-box;
+
+                        text-align:${detail.align || "left"};
 
                         font-size:${detail.fontSize || 11}px;
 
-                        padding: 2px 4px;
-                        box-sizing:border-box;
+                        line-height:1.2;
 
-                        font-weight:${
-                          detail.bold ? 700 : 400
-                        };
+                        font-weight:${detail.bold ? 700 : 400};
 
-                        font-style:${
-                          detail.italic
-                            ? "italic"
-                            : "normal"
-                        };
+                        font-style:${detail.italic ? "italic" : "normal"};
 
-                        text-decoration:${
-                          detail.underline
-                            ? "underline"
-                            : "none"
-                        };
+                        text-decoration:${detail.underline ? "underline" : "none"};
 
-                        color:${
-                          detail.color || "#666"
-                        };
+                        color:${detail.color || "#666"};
                       "
 
                     >

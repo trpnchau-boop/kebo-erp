@@ -1,6 +1,27 @@
-const canvas = document.createElement("canvas")
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
 
-const ctx = canvas.getContext("2d")
+/* =========================================
+   CONFIG
+========================================= */
+
+const METRICS = {
+
+  widthPadding: 8,        // cột "ảo" rộng thêm
+
+  widthScale: 0.95,       // canvas nhỏ hơn browser bao nhiêu
+
+  wrapRatio: 0.5,        // cho phép tràn trước khi xuống dòng
+
+  cellPadding: 6.05,      // padding dọc
+
+  lineHeight: 1.2,
+
+  defaultFont: "Arial"
+
+}
+
+/* ========================================= */
 
 export function getTableMetrics(
   table,
@@ -12,18 +33,18 @@ export function getTableMetrics(
 
   const rowHeight = Math.max(
     table.props?.rowHeight || 24,
-    headerFontSize + 12
+    headerFontSize
   )
 
   const headerHeight = Math.max(
-    rowHeight + 8,
-    headerFontSize + 18
+    rowHeight,
+    headerFontSize * METRICS.lineHeight +
+    8
   )
 
-  // Builder vẫn truyền rows.length
   if(typeof rows === "number"){
 
-    return {
+    return{
 
       rowHeight,
 
@@ -42,19 +63,20 @@ export function getTableMetrics(
 
   for(const row of rows){
 
-    tableHeight += getRowHeight({
+    tableHeight +=
+      getRowHeight({
 
-      table,
+        table,
 
-      row,
+        row,
 
-      baseRowHeight: rowHeight
+        baseRowHeight: rowHeight
 
-    })
+      })
 
   }
 
-  return {
+  return{
 
     rowHeight,
 
@@ -78,244 +100,271 @@ function getRowHeight({
 
 }){
 
-
   let height =
     baseRowHeight
 
-  const columns =
-    table.props?.columns || []
+  for(const column of
+      table.props?.columns || []){
 
-
-  for(const column of columns){
-
-  let cellHeight =
-    baseRowHeight
-
-  /* ==========================
-     MAIN
-  ========================== */
-
-  const mainField =
-
-    column.main?.field ||
-
-    column.key
-
-  let mainValue =
-    row?.[mainField] ?? ""
-
-  if(column.key === "stt"){
+    if(column.key==="stt"){
+      continue
+    }
 
     height = Math.max(
-        height,
-        baseRowHeight
-    )
 
-    continue
-
-  }
-
-  const mainLines = 
-
-    estimateLines(
-
-      mainValue,
-
-      column.width - 8,
-
-      column.main?.fontSize || 12,
-
-      column.main?.bold ? 700 : 400
-
-    )
-
-  if(mainLines > 1){
-
-    const mainFontSize =
-
-      column.main?.fontSize || 12
-
-    const mainLineHeight =
-
-      Math.ceil(
-        mainFontSize * 1.2
-      )
-
-    cellHeight +=
-
-      (mainLines - 1) *
-
-      mainLineHeight
-
-  }
-
-  /* ==========================
-     DETAIL
-  ========================== */
-
-  const layout =
-  column.layout || "none"
-
-  const detailField =
-    column.detail?.field
-
-  if(
-    layout === "row" &&
-    detailField
-  ){
-
-    const detailValue =
-      row?.[detailField] ?? ""
-
-    const rowText =
-
-      `${mainValue} ${detailValue}`.trim()
-
-    const rowLines =
-
-      estimateLines(
-
-        rowText,
-
-        column.width - 8,
-
-        Math.max(
-
-          column.main?.fontSize || 12,
-
-          column.detail?.fontSize || 11
-
-        ),
-
-        column.main?.bold
-          ? 700
-          : 400
-
-      )
-
-    if(rowLines > 1){
-
-      const lineHeight =
-
-        Math.ceil(
-
-          Math.max(
-
-            column.main?.fontSize || 12,
-
-            column.detail?.fontSize || 11
-
-          ) * 1.2
-
-        )
-
-      cellHeight +=
-
-        (rowLines - 1) *
-
-        lineHeight
-
-    }
-
-  }  
-
-  else if(
-    layout === "column" &&
-    detailField
-  ){
-
-    const detailValue =
-      row?.[detailField] ?? ""
-
-    if(detailValue){
-
-        const detailLines =
-          estimateLines(
-            detailValue,
-            column.width - 8,
-            column.detail?.fontSize || 11,
-            column.detail?.bold ? 700 : 400
-          )
-
-        const detailFontSize =
-          column.detail?.fontSize || 11
-
-        const detailLineHeight =
-          Math.ceil(detailFontSize * 1.2)
-
-        cellHeight += detailLines * detailLineHeight
-    }
-
-}
-
-  height =
-
-    Math.max(
       height,
-      cellHeight
+
+      getCellHeight({
+
+        column,
+
+        row,
+
+        baseRowHeight
+
+      })
+
     )
 
-}
+  }
 
   return height
 
 }
 
+/* ========================================= */
+
+function getCellHeight({
+
+  column,
+
+  row,
+
+  baseRowHeight
+
+}){
+
+  const layout =
+    column.layout || "none"
+
+  const mainField =
+    column.main?.field ||
+    column.key
+
+  const detailField =
+    column.detail?.field
+
+  const mainValue =
+    String(row?.[mainField] ?? "")
+
+  const detailValue =
+    String(row?.[detailField] ?? "")
+
+  const mainFont =
+    column.main?.fontSize || 12
+
+  const detailFont =
+    column.detail?.fontSize || 11
+
+  const width =
+    column.width +
+    METRICS.widthPadding
+
+  let height = 0
+
+  let lines = 0
+
+  const mainLines = estimateLines(
+
+    mainValue,
+
+    width,
+
+    mainFont,
+
+    column.main?.bold
+      ? 700
+      : 400
+
+  )
+
+  lines = mainLines
+
+  height +=
+
+    mainLines *
+
+    Math.ceil(
+
+      mainFont *
+      METRICS.lineHeight
+
+    )
+
+  if(
+
+    layout === "column" &&
+    detailField &&
+    detailValue
+
+  ){
+
+    const detailLines = estimateLines(
+
+      detailValue,
+
+      width,
+
+      detailFont,
+
+      column.detail?.bold
+        ? 700
+        : 400
+
+    )
+
+    lines += detailLines
+
+    height +=
+
+      detailLines *
+
+      Math.ceil(
+
+        detailFont *
+        METRICS.lineHeight
+
+      )
+
+  }
+
+  else if(
+
+    layout === "row" &&
+    detailField &&
+    detailValue
+
+  ){
+
+    const font =
+      Math.max(
+        mainFont,
+        detailFont
+      )
+
+    lines = estimateLines(
+
+      `${mainValue} ${detailValue}`,
+
+      width,
+
+      font,
+
+      column.main?.bold
+        ? 700
+        : 400
+
+    )
+
+    height =
+
+      lines *
+
+      Math.ceil(
+
+        font *
+        METRICS.lineHeight
+
+      )
+
+  }
+
+  const padding = Math.max(
+
+    2,
+
+    METRICS.cellPadding -
+    (lines - 1)
+
+  )
+
+  return Math.max(
+
+    baseRowHeight,
+
+    height + padding
+
+  )
+
+}
+
+/* ========================================= */
+
 function estimateLines(
 
-  text = "",
+  text,
 
-  width = 100,
+  width,
 
-  fontSize = 12,
+  fontSize,
 
-  fontWeight = 400
+  fontWeight
 
 ){
 
   text = String(text)
 
   if(!text){
-
     return 1
-
   }
 
   ctx.font =
 
-    `${fontWeight} ${fontSize}px Arial`
+    `${fontWeight} ${fontSize}px ${METRICS.defaultFont}`
 
-  const words =
+  const wrapWidth =
 
-    text.split(/\s+/)
+    width +
+
+    width *
+    METRICS.wrapRatio
+
+  let current = 0
 
   let lines = 1
 
-  let currentWidth = 0
-
-  for(const word of words){
+  for(const word of text.split(/\s+/)){
 
     const wordWidth =
 
-      ctx.measureText(word + " ").width
+      ctx.measureText(
+
+        word + " "
+
+      ).width
+
+      *
+
+      METRICS.widthScale
 
     if(
 
-      currentWidth + wordWidth >
-
-      width
+      current + wordWidth >
+      wrapWidth
 
     ){
 
       lines++
 
-      currentWidth = wordWidth
+      current =
+        wordWidth
 
     }
 
     else{
 
-      currentWidth += wordWidth
+      current +=
+        wordWidth
 
     }
 
