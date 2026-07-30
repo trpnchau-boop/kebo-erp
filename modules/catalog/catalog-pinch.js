@@ -52,70 +52,6 @@ function distance(touches){
 
 }
 
-function getCardNearPoint(
-  root,
-  x,
-  y
-){
-
-  let best = null
-  let bestDist = Infinity
-
-  root
-    .querySelectorAll(".catalog-card")
-    .forEach(card=>{
-
-      const r =
-        card.getBoundingClientRect()
-
-      const cx =
-        r.left + r.width / 2
-
-      const cy =
-        r.top + r.height / 2
-
-      const d =
-        Math.hypot(
-          cx - x,
-          cy - y
-        )
-
-      if(d < bestDist){
-
-        bestDist = d
-        best = card
-
-      }
-
-    })
-
-  return best
-
-}
-
-function getCardOffset(
-  root,
-  card
-){
-
-  const rr =
-    root.getBoundingClientRect()
-
-  const cr =
-    card.getBoundingClientRect()
-
-  return {
-
-    top:
-      cr.top - rr.top,
-
-    left:
-      cr.left - rr.left
-
-  }
-
-}
-
 export function applyCatalogZoom(root){
 
   root
@@ -225,24 +161,17 @@ if(zoomSnapshot){
 
 }
 
-const card =
+    pinch = {
 
-  getCardNearPoint(
-    root,
-  )
+      distance:
+        distance(
+          e.touches
+        ),
 
-pinch = {
+      width:
+        cardWidth
 
-  distance:
-    distance(e.touches),
-
-  width:
-    cardWidth,
-
-  id:
-    card?.dataset.id,
-
-}
+    }
 
   },
 
@@ -276,15 +205,6 @@ pinch = {
         distance(
           e.touches
         )
-const centerX =
-
-  (e.touches[0].clientX +
-   e.touches[1].clientX) / 2
-
-const centerY =
-
-  (e.touches[0].clientY +
-   e.touches[1].clientY) / 2
 
       const scale =
         now /
@@ -306,58 +226,18 @@ const centerY =
 
       }
 
-raf = requestAnimationFrame(()=>{
+      raf = requestAnimationFrame(()=>{
 
-  raf = 0
+        raf = 0
 
-  const card =
-    pinch?.id
-      ? root.querySelector(
-          `.catalog-card[data-id="${pinch.id}"]`
+        cardWidth =
+          nextWidth
+
+        applyCatalogZoom(
+          root
         )
-      : null
 
-  if(!card){
-
-    cardWidth = nextWidth
-
-    applyCatalogZoom(root)
-
-    return
-
-  }
-
-  const before =
-    getCardOffset(
-      root,
-      card
-    )
-
-  cardWidth =
-    nextWidth
-
-  applyCatalogZoom(root)
-
-  requestAnimationFrame(()=>{
-
-    const after =
-      getCardOffset(
-        root,
-        card
-      )
-
-    root.scrollTop +=
-      after.top -
-      before.top
-
-    root.scrollLeft +=
-      after.left -
-      before.left
-
-  })
-
-})
-
+      })
 
     },
 
