@@ -12,6 +12,9 @@ let cardWidth =
 let pinch = null
 let raf = 0
 
+let zoomSnapshot = null
+let restorePending = false
+
 function clamp(v){
 
   return Math.max(
@@ -76,6 +79,18 @@ export function zoomDefault(
     return
   }
 
+  zoomSnapshot = {
+
+    width: cardWidth,
+
+    scrollTop: root.scrollTop,
+
+    scrollLeft: root.scrollLeft
+
+  }
+
+restorePending = true
+
   cardWidth =
     DEFAULT_WIDTH
 
@@ -123,17 +138,60 @@ export function initCatalogPinch(root){
 
       }
 
-        pinch = {
+        const startPinch = ()=>{
 
-          distance:
-            distance(
-              e.touches
-            ),
- 
-            width:
-              cardWidth,
+  pinch = {
 
-        }
+    distance:
+      distance(
+        e.touches
+      ),
+
+    width:
+      cardWidth
+
+  }
+
+}
+
+if(
+
+  restorePending &&
+  zoomSnapshot
+
+){
+  root.scrollTop = root.scrollTop
+  cardWidth =
+    zoomSnapshot.width
+
+  applyCatalogZoom(root)
+
+  root.scrollTop =
+    zoomSnapshot.scrollTop
+
+  root.scrollLeft =
+    zoomSnapshot.scrollLeft
+
+  pinch = {
+
+    distance:
+      distance(
+        e.touches
+      ),
+
+    width:
+      cardWidth
+
+  }
+
+  zoomSnapshot = null
+  restorePending = false
+
+  return
+
+}
+
+startPinch()
 
     },
 
@@ -213,7 +271,15 @@ export function initCatalogPinch(root){
 
     "touchend",
 
+
     ()=>{
+
+      if(cardWidth !== DEFAULT_WIDTH){
+
+  zoomSnapshot = null
+  restorePending = false
+
+}
 
       pinch = null
 
@@ -228,7 +294,12 @@ export function initCatalogPinch(root){
     "touchcancel",
 
     ()=>{
+  if(cardWidth !== DEFAULT_WIDTH){
 
+    zoomSnapshot = null
+    restorePending = false
+
+  }
       pinch = null
 
       saveZoom()
@@ -248,6 +319,9 @@ export function initCatalogPinch(root){
       }
 
       e.preventDefault()
+
+      zoomSnapshot = null
+      restorePending = false
 
       cardWidth +=
 
