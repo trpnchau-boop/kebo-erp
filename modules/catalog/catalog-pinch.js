@@ -8,9 +8,9 @@ let cardWidth =
   ) || DEFAULT_WIDTH
 
 const BASE_WIDTH = {
-  1: 420,
+  1: 210,
   2: 320,
-  3: 210
+  3: 420
 }
 let layout = 3
 
