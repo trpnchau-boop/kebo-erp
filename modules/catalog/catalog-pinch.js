@@ -12,7 +12,8 @@ let cardWidth =
 let pinch = null
 let raf = 0
 
-let zoomSnapshot = null
+
+let catalogSnapshot = null
 let swipe = null
 
 function clamp(v){
@@ -44,13 +45,13 @@ export function restoreSnapshot(
 
 ){
 
-  if(!zoomSnapshot){
+  if(!catalogSnapshot){
     return false
   }
 
-  const snapshot = zoomSnapshot
+  const snapshot = catalogSnapshot
 
-  zoomSnapshot = null
+  catalogSnapshot = null
 
   cardWidth = snapshot.width
 
@@ -114,7 +115,7 @@ export function applyCatalogZoom(root){
 
 export function saveSnapshot(state){
 
-  zoomSnapshot = {
+  catalogSnapshot = {
 
     ...state,
 
@@ -171,29 +172,23 @@ root.addEventListener(
 
     if(e.touches.length === 1){
 
-      const t = e.touches[0]
+        const t = e.touches[0]
 
-      swipe = {
+        swipe = {
 
-        x: t.clientX,
+            x: t.clientX,
 
-        y: t.clientY
+            y: t.clientY
 
-      }
-
-      pinch = null
-
-      return
+        }
 
     }
 
-    swipe = null
-
     if(e.touches.length !== 2){
 
-      pinch = null
+        pinch = null
 
-      return
+        return
 
     }
 
@@ -304,49 +299,47 @@ root.addEventListener(
   root.addEventListener(
 
     "touchend",
-
-
 e=>{
-
-  if(
-
-    swipe &&
-
-    e.changedTouches.length
-
-  ){
-
-    const t =
-
-      e.changedTouches[0]
-
-    const dx =
-
-      t.clientX - swipe.x
-
-    const dy =
-
-      t.clientY - swipe.y
 
     if(
 
-      Math.abs(dx) > 80 &&
+        swipe &&
 
-      Math.abs(dy) < 40
+        e.changedTouches.length
 
     ){
 
-      options.clearFilter?.()
+        const t =
+            e.changedTouches[0]
+
+        const dx =
+            t.clientX - swipe.x
+
+        const dy =
+            t.clientY - swipe.y
+
+        if(
+
+            dx > 80 &&
+
+            Math.abs(dy) < 40
+
+        ){
+
+            restoreSnapshot(
+  root,
+  options.restore
+)
+
+        }
 
     }
 
-  }
+    swipe = null
 
-  swipe = null
+    pinch = null
 
-  pinch = null
-
-  saveZoom()
+    saveZoom()
 
 }
 
@@ -359,10 +352,10 @@ e=>{
     ()=>{
 
       swipe = null
-
       pinch = null
 
       saveZoom()
+
 
     }
 
@@ -380,7 +373,7 @@ e=>{
 
       e.preventDefault()
 
-      zoomSnapshot = null
+      catalogSnapshot = null
 
       cardWidth +=
 
@@ -406,5 +399,10 @@ e=>{
     }
 
   )
+
+}
+export function hasSnapshot(){
+
+  return !!catalogSnapshot
 
 }

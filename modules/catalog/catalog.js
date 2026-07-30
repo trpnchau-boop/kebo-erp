@@ -43,7 +43,8 @@ import {
   applyCatalogZoom,
   zoomDefault,
   saveSnapshot,
-  restoreSnapshot
+  restoreSnapshot,
+  hasSnapshot 
 
 }
 from "./catalog-pinch.js"
@@ -233,6 +234,44 @@ renderDropdownSelect({
 
   }
 
+  function getCenterCard(){
+
+  const cards = [
+    ...grid.querySelectorAll(".catalog-card")
+  ]
+
+  const center =
+    window.innerHeight / 2
+
+  let best = null
+  let bestDistance = Infinity
+
+  for(const card of cards){
+
+    const rect =
+      card.getBoundingClientRect()
+
+    const y =
+      rect.top + rect.height / 2
+
+    const d =
+      Math.abs(
+        y - center
+      )
+
+    if(d < bestDistance){
+
+      bestDistance = d
+      best = card
+
+    }
+
+  }
+
+  return best
+
+}
+
   function applyFilter(){
 
     const keyword =
@@ -298,29 +337,6 @@ renderDropdownSelect({
 
   }
 
-  function clearFilter(){
-
-  search.value = ""
-
-  const trigger =
-    groupSelect.querySelector(
-      ".dropdown-select-trigger"
-    )
-
-  trigger.dataset.value = ""
-
-  trigger.querySelector("span").textContent =
-    "Tất cả nhóm"
-
-  groupSelect.classList.add("empty")
-
-  showHot = false
-
-  btnHot.classList.remove("active")
-
-  applyFilter()
-
-}
 
   async function refreshCatalog(){
 
@@ -485,9 +501,56 @@ renderDropdownSelect({
   ===================== */
 
   search.addEventListener(
-    "input",
-    applyFilter
-  )
+
+  "input",
+
+  ()=>{
+
+    if(
+
+      !search.value.trim()
+
+    ){
+
+      applyFilter()
+
+      return
+
+    }
+
+if(
+
+  !hasSnapshot()
+
+){
+
+  const card =
+    getCenterCard()
+
+  if(card){
+
+    saveSnapshot({
+
+      id: card.dataset.id,
+
+      keyword: "",
+
+      group:
+        getDropdownValue(groupSelect),
+
+      hot: showHot
+
+    })
+
+  }
+
+}
+
+applyFilter()
+
+  }
+
+)
 
   groupSelect.addEventListener(
     "change",
@@ -830,65 +893,75 @@ renderDropdownSelect({
     refreshCatalog
   )
 
-initCatalogPinch(
+  function restoreCatalog(snapshot){
 
-    grid,
+  search.value =
+    snapshot.keyword || ""
 
-    {
+  const trigger =
+    groupSelect.querySelector(
+      ".dropdown-select-trigger"
+    )
 
-        restore(snapshot){
+  trigger.dataset.value =
+    snapshot.group || ""
 
-    search.value =
-      snapshot.keyword || ""
-
-    const trigger =
-      groupSelect.querySelector(
-        ".dropdown-select-trigger"
-      )
-trigger.dataset.value =
-  snapshot.group || ""
   const option =
-  groups.find(
+    groups.find(
+      g =>
+        String(g.id) ===
+        String(snapshot.group)
+    )
 
-    g=>
+  trigger
+    .querySelector("span")
+    .textContent =
 
-      String(g.id)
+      option
+        ? option.name
+        : "Tất cả nhóm"
 
-      ===
+  groupSelect.classList.toggle(
 
-      String(snapshot.group)
+    "empty",
+
+    snapshot.group === ""
 
   )
-  trigger
-  .querySelector("span")
-  .textContent =
 
-    option
+  showHot =
+    !!snapshot.hot
 
-      ? option.name
-
-      : "Tất cả nhóm"
-
-      groupSelect.classList.toggle(
-  "empty",
-  snapshot.group === ""
-)
-
-showHot =
-  !!snapshot.hot
-
-btnHot.classList.toggle(
+  btnHot.classList.toggle(
 
     "active",
 
     showHot
 
-)
-applyFilter()
-    },
-    clearFilter
+  )
+
+  applyFilter()
+
+}
+
+initCatalogPinch(
+
+  grid,
+
+  {
+
+    restore: restoreCatalog,
+
+    back(){
+
+      restoreSnapshot(
+        grid,
+        restoreCatalog
+      )
 
     }
+
+  }
 
 )
 
