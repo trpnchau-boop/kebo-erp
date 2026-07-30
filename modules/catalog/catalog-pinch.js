@@ -93,6 +93,29 @@ function getCardNearPoint(
 
 }
 
+function getCardOffset(
+  root,
+  card
+){
+
+  const rr =
+    root.getBoundingClientRect()
+
+  const cr =
+    card.getBoundingClientRect()
+
+  return {
+
+    top:
+      cr.top - rr.top,
+
+    left:
+      cr.left - rr.left
+
+  }
+
+}
+
 export function applyCatalogZoom(root){
 
   root
@@ -202,15 +225,11 @@ if(zoomSnapshot){
 
 }
 
-const centerX =
+const card =
 
-  (e.touches[0].clientX +
-   e.touches[1].clientX) / 2
-
-const centerY =
-
-  (e.touches[0].clientY +
-   e.touches[1].clientY) / 2
+  getCardNearPoint(
+    root,
+  )
 
 pinch = {
 
@@ -221,16 +240,7 @@ pinch = {
     cardWidth,
 
   id:
-
-    getCardNearPoint(
-
-      root,
-
-      centerX,
-
-      centerY
-
-    )?.dataset.id
+    card?.dataset.id,
 
 }
 
@@ -296,68 +306,58 @@ const centerY =
 
       }
 
-      raf = requestAnimationFrame(()=>{
+raf = requestAnimationFrame(()=>{
 
-        raf = 0
+  raf = 0
 
-       cardWidth =
-  nextWidth
+  const card =
+    pinch?.id
+      ? root.querySelector(
+          `.catalog-card[data-id="${pinch.id}"]`
+        )
+      : null
 
-applyCatalogZoom(root)
+  if(!card){
 
-const card =
+    cardWidth = nextWidth
 
-  pinch?.id
+    applyCatalogZoom(root)
 
-    ? root.querySelector(
-        `.catalog-card[data-id="${pinch.id}"]`
+    return
+
+  }
+
+  const before =
+    getCardOffset(
+      root,
+      card
+    )
+
+  cardWidth =
+    nextWidth
+
+  applyCatalogZoom(root)
+
+  requestAnimationFrame(()=>{
+
+    const after =
+      getCardOffset(
+        root,
+        card
       )
 
-    : null
+    root.scrollTop +=
+      after.top -
+      before.top
 
-if(card){
+    root.scrollLeft +=
+      after.left -
+      before.left
 
-  const r =
-    card.getBoundingClientRect()
+  })
 
-  const margin = 40
+})
 
-  if(r.top < margin){
-
-    window.scrollBy({
-
-      top:
-        r.top - margin
-
-    })
-
-  }
-
-  else if(
-
-    r.bottom >
-
-    window.innerHeight - margin
-
-  ){
-
-    window.scrollBy({
-
-      top:
-
-        r.bottom -
-
-        window.innerHeight +
-
-        margin
-
-    })
-
-  }
-
-}
-
-      })
 
     },
 
