@@ -41,7 +41,9 @@ import {
 
   initCatalogPinch,
   applyCatalogZoom,
-  zoomDefault
+  zoomDefault,
+  saveSnapshot,
+  restoreSnapshot
 
 }
 from "./catalog-pinch.js"
@@ -767,9 +769,22 @@ renderDropdownSelect({
             lastTap = 0
 
             zoomDefault(
-              grid,
-              card.dataset.id
-            )
+
+    grid,
+
+    {
+
+        id: card.dataset.id,
+
+        keyword: search.value,
+
+        group: getDropdownValue(groupSelect),
+
+        hot: showHot
+
+    }
+
+)
 
             return
 
@@ -791,7 +806,66 @@ renderDropdownSelect({
     refreshCatalog
   )
 
-  initCatalogPinch(grid)
+initCatalogPinch(
+
+    grid,
+
+    {
+
+        restore(snapshot){
+
+    search.value =
+      snapshot.keyword || ""
+
+    const trigger =
+      groupSelect.querySelector(
+        ".dropdown-select-trigger"
+      )
+trigger.dataset.value =
+  snapshot.group || ""
+  const option =
+  groups.find(
+
+    g=>
+
+      String(g.id)
+
+      ===
+
+      String(snapshot.group)
+
+  )
+  trigger
+  .querySelector("span")
+  .textContent =
+
+    option
+
+      ? option.name
+
+      : "Tất cả nhóm"
+
+      groupSelect.classList.toggle(
+  "empty",
+  snapshot.group === ""
+)
+
+showHot =
+  !!snapshot.hot
+
+btnHot.classList.toggle(
+
+    "active",
+
+    showHot
+
+)
+applyFilter()
+    }
+
+    }
+
+)
 
   applyFilter()
   updateSelectionUI()

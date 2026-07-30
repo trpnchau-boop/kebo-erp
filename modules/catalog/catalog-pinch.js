@@ -35,6 +35,50 @@ function saveZoom(){
 
 }
 
+export function restoreSnapshot(
+
+  root,
+
+  callback
+
+){
+
+  if(!zoomSnapshot){
+    return false
+  }
+
+  const snapshot = zoomSnapshot
+
+  zoomSnapshot = null
+
+  cardWidth = snapshot.width
+
+  applyCatalogZoom(root)
+
+  saveZoom()
+
+  callback?.(snapshot)
+
+  requestAnimationFrame(()=>{
+
+    root
+      .querySelector(
+        `.catalog-card[data-id="${snapshot.id}"]`
+      )
+      ?.scrollIntoView({
+
+        behavior:"smooth",
+
+        block:"center"
+
+      })
+
+  })
+
+  return true
+
+}
+
 function distance(touches){
 
   const dx =
@@ -67,22 +111,28 @@ export function applyCatalogZoom(root){
 
 }
 
+export function saveSnapshot(state){
+
+  zoomSnapshot = {
+
+    ...state,
+
+    width: cardWidth
+
+  }
+
+}
+
 export function zoomDefault(
-  root,
-  id
+    root,
+    snapshot
 ){
 
   if(cardWidth >= DEFAULT_WIDTH){
     return
   }
 
-  zoomSnapshot = {
-
-    width: cardWidth,
-
-    id
-
-  }
+  saveSnapshot(snapshot)
 
   cardWidth = DEFAULT_WIDTH
 
@@ -94,7 +144,7 @@ export function zoomDefault(
 
     root
       .querySelector(
-        `.catalog-card[data-id="${id}"]`
+        `.catalog-card[data-id="${snapshot.id}"]`
       )
       ?.scrollIntoView({
 
@@ -108,7 +158,7 @@ export function zoomDefault(
 
 }
 
-export function initCatalogPinch(root){
+export function initCatalogPinch(root, options = {}){
 
   applyCatalogZoom(root)
 
@@ -125,35 +175,17 @@ root.addEventListener(
 
     }
 
-if(zoomSnapshot){
+if(
 
-  cardWidth =
-    zoomSnapshot.width
+  restoreSnapshot(
 
-  applyCatalogZoom(root)
+    root,
 
-  saveZoom()
+    options.restore
 
-  const id =
-    zoomSnapshot.id
+  )
 
-  zoomSnapshot = null
-
-  requestAnimationFrame(()=>{
-
-    root
-      .querySelector(
-        `.catalog-card[data-id="${id}"]`
-      )
-      ?.scrollIntoView({
-
-        behavior:"smooth",
-
-        block:"center"
-
-      })
-
-  })
+){
 
   pinch = null
 
