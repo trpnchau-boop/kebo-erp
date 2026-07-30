@@ -117,6 +117,7 @@ if(showHot){
 
     html += `
       <section
+        id="catalog-group-${group.id}"
         class="catalog-group"
       >
 
@@ -183,6 +184,7 @@ if(showHot){
 
     html += `
       <section
+        id="catalog-group-nogroup"
         class="catalog-group"
       >
 

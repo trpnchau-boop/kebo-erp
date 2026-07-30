@@ -12,7 +12,6 @@ let cardWidth =
 let pinch = null
 let raf = 0
 
-
 let catalogSnapshot = null
 let swipe = null
 
@@ -37,29 +36,46 @@ function saveZoom(){
 
 }
 
+export function saveSnapshot(state){
+
+  catalogSnapshot = {
+
+    id: state.id,
+
+    width: cardWidth
+
+  }
+
+}
+
+export function hasSnapshot(){
+
+  return !!catalogSnapshot
+
+}
+
 export function restoreSnapshot(
-
   root,
-
   callback
-
 ){
 
   if(!catalogSnapshot){
     return false
   }
 
-  const snapshot = catalogSnapshot
+  const snapshot =
+    catalogSnapshot
 
   catalogSnapshot = null
 
-  cardWidth = snapshot.width
+  cardWidth =
+    snapshot.width
 
   applyCatalogZoom(root)
 
   saveZoom()
 
-  callback?.(snapshot)
+  callback?.()
 
   requestAnimationFrame(()=>{
 
@@ -101,7 +117,9 @@ function distance(touches){
 export function applyCatalogZoom(root){
 
   root
-    .querySelectorAll(".catalog-grid")
+    .querySelectorAll(
+      ".catalog-grid"
+    )
     .forEach(grid=>{
 
       grid.style.setProperty(
@@ -113,21 +131,9 @@ export function applyCatalogZoom(root){
 
 }
 
-export function saveSnapshot(state){
-
-  catalogSnapshot = {
-
-    ...state,
-
-    width: cardWidth
-
-  }
-
-}
-
 export function zoomDefault(
-    root,
-    snapshot
+  root,
+  snapshot
 ){
 
   if(cardWidth >= DEFAULT_WIDTH){
@@ -136,7 +142,8 @@ export function zoomDefault(
 
   saveSnapshot(snapshot)
 
-  cardWidth = DEFAULT_WIDTH
+  cardWidth =
+    DEFAULT_WIDTH
 
   applyCatalogZoom(root)
 
@@ -160,75 +167,79 @@ export function zoomDefault(
 
 }
 
-export function initCatalogPinch(root, options = {}){
+export function initCatalogPinch(
+  root,
+  options={}
+){
 
   applyCatalogZoom(root)
 
-root.addEventListener(
+  root.addEventListener(
 
-  "touchstart",
+    "touchstart",
 
-  e=>{
+    e=>{
 
-    if(e.touches.length === 1){
+      if(e.touches.length===1){
 
-        const t = e.touches[0]
+        const t =
+          e.touches[0]
 
         swipe = {
 
-            x: t.clientX,
+          x:t.clientX,
 
-            y: t.clientY
+          y:t.clientY
 
         }
 
-    }
+      }
 
-    if(e.touches.length !== 2){
+      if(e.touches.length!==2){
 
-        pinch = null
+        pinch=null
 
         return
 
+      }
+
+      if(
+
+        restoreSnapshot(
+
+          root,
+
+          options.restore
+
+        )
+
+      ){
+
+        pinch=null
+
+        return
+
+      }
+
+      pinch={
+
+        distance:
+          distance(e.touches),
+
+        width:
+          cardWidth
+
+      }
+
+    },
+
+    {
+
+      passive:true
+
     }
 
-    if(
-
-      restoreSnapshot(
-
-        root,
-
-        options.restore
-
-      )
-
-    ){
-
-      pinch = null
-
-      return
-
-    }
-
-    pinch = {
-
-      distance:
-        distance(e.touches),
-
-      width:
-        cardWidth
-
-    }
-
-  },
-
-  {
-
-    passive:true
-
-  }
-
-)
+  )
 
   root.addEventListener(
 
@@ -240,7 +251,7 @@ root.addEventListener(
 
         !pinch ||
 
-        e.touches.length !== 2
+        e.touches.length!==2
 
       ){
 
@@ -250,20 +261,19 @@ root.addEventListener(
 
       e.preventDefault()
 
-      const now =
-        distance(
-          e.touches
-        )
-
       const scale =
-        now /
+
+        distance(e.touches)
+
+        /
+
         pinch.distance
 
       const nextWidth =
+
         clamp(
 
-          pinch.width *
-          scale
+          pinch.width*scale
 
         )
 
@@ -275,23 +285,22 @@ root.addEventListener(
 
       }
 
-      raf = requestAnimationFrame(()=>{
+      raf=requestAnimationFrame(()=>{
 
-        raf = 0
+        raf=0
 
-        cardWidth =
-          nextWidth
+        cardWidth=nextWidth
 
-        applyCatalogZoom(
-          root
-        )
+        applyCatalogZoom(root)
 
       })
 
     },
 
     {
+
       passive:false
+
     }
 
   )
@@ -299,49 +308,53 @@ root.addEventListener(
   root.addEventListener(
 
     "touchend",
-e=>{
 
-    if(
+    e=>{
+
+      if(
 
         swipe &&
 
         e.changedTouches.length
 
-    ){
+      ){
 
         const t =
-            e.changedTouches[0]
+          e.changedTouches[0]
 
         const dx =
-            t.clientX - swipe.x
+          t.clientX-swipe.x
 
         const dy =
-            t.clientY - swipe.y
+          t.clientY-swipe.y
 
         if(
 
-            dx > 80 &&
+          dx>80 &&
 
-            Math.abs(dy) < 40
+          Math.abs(dy)<40
 
         ){
 
-            restoreSnapshot(
-  root,
-  options.restore
-)
+          restoreSnapshot(
+
+            root,
+
+            options.restore
+
+          )
 
         }
 
+      }
+
+      swipe=null
+
+      pinch=null
+
+      saveZoom()
+
     }
-
-    swipe = null
-
-    pinch = null
-
-    saveZoom()
-
-}
 
   )
 
@@ -351,11 +364,11 @@ e=>{
 
     ()=>{
 
-      swipe = null
-      pinch = null
+      swipe=null
+
+      pinch=null
 
       saveZoom()
-
 
     }
 
@@ -373,36 +386,32 @@ e=>{
 
       e.preventDefault()
 
-      catalogSnapshot = null
+      catalogSnapshot=null
 
       cardWidth +=
 
-        e.deltaY > 0
+        e.deltaY>0
 
-          ? -8
+          ?-8
 
-          : 8
+          :8
 
-      cardWidth =
+      cardWidth=
+
         clamp(cardWidth)
 
-      applyCatalogZoom(
-        root
-      )
+      applyCatalogZoom(root)
 
       saveZoom()
 
     },
 
     {
+
       passive:false
+
     }
 
   )
-
-}
-export function hasSnapshot(){
-
-  return !!catalogSnapshot
 
 }

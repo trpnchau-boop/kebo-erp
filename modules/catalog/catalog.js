@@ -272,70 +272,51 @@ renderDropdownSelect({
 
 }
 
-  function applyFilter(){
+function applyFilter(){
 
-    const keyword =
-      search.value
-        .trim()
-        .toLowerCase()
+  const keyword =
+    search.value
+      .trim()
+      .toLowerCase()
 
-    const groupId =
-      getDropdownValue(
-        groupSelect
+  const filtered =
+
+    products.filter(p=>{
+
+      return (
+
+        !keyword
+
+        ||
+
+        (p.name || "")
+          .toLowerCase()
+          .includes(keyword)
+
+        ||
+
+        (p.code || "")
+          .toLowerCase()
+          .includes(keyword)
+
       )
 
-    const filtered =
-      products.filter(p=>{
+    })
 
-        const matchKeyword =
+  renderCatalog(
 
-          !keyword
+    groups,
+    filtered,
+    grid,
+    selectedIds,
+    showHot,
+    canViewPrice
 
-          ||
+  )
 
-          (p.name || "")
-            .toLowerCase()
-            .includes(keyword)
+  applyCatalogZoom(grid)
 
-          ||
-
-          (p.code || "")
-            .toLowerCase()
-            .includes(keyword)
-
-        const matchGroup =
-
-          !groupId
-
-          ||
-
-          Number(
-            p.id_group
-          ) === Number(
-            groupId
-          )
-
-        return (
-          matchKeyword
-          &&
-          matchGroup
-        )
-
-      })
-
-
-    renderCatalog(
-      groups,
-      filtered,
-      grid,
-      selectedIds,
-      showHot,
-      canViewPrice
-    )
-
-    applyCatalogZoom(grid)
-
-  }
+}
 
 
   async function refreshCatalog(){
@@ -552,16 +533,43 @@ applyFilter()
 
 )
 
-  groupSelect.addEventListener(
-    "change",
-    ()=>{
-      showHot = false
-      btnHot.classList.remove(
-        "active"
-      )  
-      applyFilter()
-     }  
-  )
+groupSelect.addEventListener(
+  "change",
+  ()=>{
+
+    showHot = false
+
+    btnHot.classList.remove(
+      "active"
+    )
+
+    applyFilter()
+
+    const groupId =
+      getDropdownValue(groupSelect)
+
+    if(!groupId){
+      return
+    }
+
+    requestAnimationFrame(()=>{
+
+      document
+        .getElementById(
+          `catalog-group-${groupId}`
+        )
+        ?.scrollIntoView({
+
+          behavior:"smooth",
+
+          block:"start"
+
+        })
+
+    })
+
+  }
+)
 
   /* =====================
      CHECK ALL
@@ -893,52 +901,9 @@ applyFilter()
     refreshCatalog
   )
 
-  function restoreCatalog(snapshot){
+function restoreCatalog(){
 
-  search.value =
-    snapshot.keyword || ""
-
-  const trigger =
-    groupSelect.querySelector(
-      ".dropdown-select-trigger"
-    )
-
-  trigger.dataset.value =
-    snapshot.group || ""
-
-  const option =
-    groups.find(
-      g =>
-        String(g.id) ===
-        String(snapshot.group)
-    )
-
-  trigger
-    .querySelector("span")
-    .textContent =
-
-      option
-        ? option.name
-        : "Tất cả nhóm"
-
-  groupSelect.classList.toggle(
-
-    "empty",
-
-    snapshot.group === ""
-
-  )
-
-  showHot =
-    !!snapshot.hot
-
-  btnHot.classList.toggle(
-
-    "active",
-
-    showHot
-
-  )
+  search.value = ""
 
   applyFilter()
 
