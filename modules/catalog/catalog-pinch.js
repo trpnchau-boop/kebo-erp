@@ -13,7 +13,6 @@ let pinch = null
 let raf = 0
 
 let zoomSnapshot = null
-let restorePending = false
 
 function clamp(v){
 
@@ -73,9 +72,7 @@ export function zoomDefault(
   id
 ){
 
-  if(
-    cardWidth >= DEFAULT_WIDTH
-  ){
+  if(cardWidth >= DEFAULT_WIDTH){
     return
   }
 
@@ -83,16 +80,11 @@ export function zoomDefault(
 
     width: cardWidth,
 
-    scrollTop: root.scrollTop,
-
-    scrollLeft: root.scrollLeft
+    id
 
   }
 
-restorePending = true
-
-  cardWidth =
-    DEFAULT_WIDTH
+  cardWidth = DEFAULT_WIDTH
 
   applyCatalogZoom(root)
 
@@ -100,22 +92,17 @@ restorePending = true
 
   requestAnimationFrame(()=>{
 
-    const card =
-      root.querySelector(
+    root
+      .querySelector(
         `.catalog-card[data-id="${id}"]`
       )
+      ?.scrollIntoView({
 
-    if(!card){
-      return
-    }
+        behavior:"smooth",
 
-    card.scrollIntoView({
+        block:"center"
 
-      behavior:"smooth",
-
-      block:"center"
-
-    })
+      })
 
   })
 
@@ -125,81 +112,74 @@ export function initCatalogPinch(root){
 
   applyCatalogZoom(root)
 
-  root.addEventListener(
+root.addEventListener(
 
-    "touchstart",
+  "touchstart",
 
-    e=>{
+  e=>{
 
-      if(e.touches.length !== 2){
+    if(e.touches.length !== 2){
 
-        pinch = null
-        return
+      pinch = null
+      return
 
-      }
+    }
 
-        const startPinch = ()=>{
+if(zoomSnapshot){
 
-  pinch = {
-
-    distance:
-      distance(
-        e.touches
-      ),
-
-    width:
-      cardWidth
-
-  }
-
-}
-
-if(
-
-  restorePending &&
-  zoomSnapshot
-
-){
-  root.scrollTop = root.scrollTop
   cardWidth =
     zoomSnapshot.width
 
   applyCatalogZoom(root)
 
-  root.scrollTop =
-    zoomSnapshot.scrollTop
+  saveZoom()
 
-  root.scrollLeft =
-    zoomSnapshot.scrollLeft
-
-  pinch = {
-
-    distance:
-      distance(
-        e.touches
-      ),
-
-    width:
-      cardWidth
-
-  }
+  const id =
+    zoomSnapshot.id
 
   zoomSnapshot = null
-  restorePending = false
+
+  requestAnimationFrame(()=>{
+
+    root
+      .querySelector(
+        `.catalog-card[data-id="${id}"]`
+      )
+      ?.scrollIntoView({
+
+        behavior:"smooth",
+
+        block:"center"
+
+      })
+
+  })
+
+  pinch = null
 
   return
 
 }
 
-startPinch()
+    pinch = {
 
-    },
+      distance:
+        distance(
+          e.touches
+        ),
 
-    {
-      passive:true
+      width:
+        cardWidth
+
     }
 
-  )
+  },
+
+  {
+    passive:true
+  }
+
+)
 
   root.addEventListener(
 
@@ -274,13 +254,6 @@ startPinch()
 
     ()=>{
 
-      if(cardWidth !== DEFAULT_WIDTH){
-
-  zoomSnapshot = null
-  restorePending = false
-
-}
-
       pinch = null
 
       saveZoom()
@@ -294,12 +267,7 @@ startPinch()
     "touchcancel",
 
     ()=>{
-  if(cardWidth !== DEFAULT_WIDTH){
 
-    zoomSnapshot = null
-    restorePending = false
-
-  }
       pinch = null
 
       saveZoom()
@@ -321,7 +289,6 @@ startPinch()
       e.preventDefault()
 
       zoomSnapshot = null
-      restorePending = false
 
       cardWidth +=
 
