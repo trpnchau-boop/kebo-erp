@@ -13,6 +13,7 @@ let pinch = null
 let raf = 0
 
 let zoomSnapshot = null
+let swipe = null
 
 function clamp(v){
 
@@ -168,37 +169,56 @@ root.addEventListener(
 
   e=>{
 
-    if(e.touches.length !== 2){
+    if(e.touches.length === 1){
+
+      const t = e.touches[0]
+
+      swipe = {
+
+        x: t.clientX,
+
+        y: t.clientY
+
+      }
 
       pinch = null
+
       return
 
     }
 
-if(
+    swipe = null
 
-  restoreSnapshot(
+    if(e.touches.length !== 2){
 
-    root,
+      pinch = null
 
-    options.restore
+      return
 
-  )
+    }
 
-){
+    if(
 
-  pinch = null
+      restoreSnapshot(
 
-  return
+        root,
 
-}
+        options.restore
+
+      )
+
+    ){
+
+      pinch = null
+
+      return
+
+    }
 
     pinch = {
 
       distance:
-        distance(
-          e.touches
-        ),
+        distance(e.touches),
 
       width:
         cardWidth
@@ -208,7 +228,9 @@ if(
   },
 
   {
+
     passive:true
+
   }
 
 )
@@ -284,13 +306,49 @@ if(
     "touchend",
 
 
-    ()=>{
+e=>{
 
-      pinch = null
+  if(
 
-      saveZoom()
+    swipe &&
+
+    e.changedTouches.length
+
+  ){
+
+    const t =
+
+      e.changedTouches[0]
+
+    const dx =
+
+      t.clientX - swipe.x
+
+    const dy =
+
+      t.clientY - swipe.y
+
+    if(
+
+      Math.abs(dx) > 80 &&
+
+      Math.abs(dy) < 40
+
+    ){
+
+      options.clearFilter?.()
 
     }
+
+  }
+
+  swipe = null
+
+  pinch = null
+
+  saveZoom()
+
+}
 
   )
 
@@ -299,6 +357,8 @@ if(
     "touchcancel",
 
     ()=>{
+
+      swipe = null
 
       pinch = null
 

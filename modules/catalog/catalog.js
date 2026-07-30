@@ -298,6 +298,30 @@ renderDropdownSelect({
 
   }
 
+  function clearFilter(){
+
+  search.value = ""
+
+  const trigger =
+    groupSelect.querySelector(
+      ".dropdown-select-trigger"
+    )
+
+  trigger.dataset.value = ""
+
+  trigger.querySelector("span").textContent =
+    "Tất cả nhóm"
+
+  groupSelect.classList.add("empty")
+
+  showHot = false
+
+  btnHot.classList.remove("active")
+
+  applyFilter()
+
+}
+
   async function refreshCatalog(){
 
     btnRefresh.disabled = true
@@ -861,7 +885,8 @@ btnHot.classList.toggle(
 
 )
 applyFilter()
-    }
+    },
+    clearFilter
 
     }
 
