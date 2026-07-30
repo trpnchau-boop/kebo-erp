@@ -2,7 +2,8 @@ import {closeSidebarPanel} from "./sidebar-panel.js"
 
 import {
   openTab,
-  activateTab
+  activateTab,
+  refreshActiveTab
 } from "./tabs.js"
 
 import { getSession, logout } from "./auth.js"
@@ -317,6 +318,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     document.getElementById("sidebar").hidden = true
 
     document.getElementById("btn-toggle").hidden = true
+    document.getElementById("btn-refresh").hidden = true
 
     document.getElementById("page-title").textContent =
       "KEBO Catalog"
@@ -345,6 +347,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
   document.getElementById("sidebar").hidden = false
 
   document.getElementById("btn-toggle").hidden = false
+  document.getElementById("btn-refresh").hidden = false
 
   btnAuth.textContent = "";
   btnAuth.classList.add("logout");
@@ -512,3 +515,40 @@ document.addEventListener("pointerdown", e => {
   activeRow.classList.add("row-active");
 
 });
+
+const btnRefresh =
+  document.getElementById("btn-refresh")
+
+btnRefresh?.addEventListener("click", async ()=>{
+
+  if(btnRefresh.classList.contains("loading")){
+    return
+  }
+
+  btnRefresh.classList.add("loading")
+
+  const start = performance.now()
+
+  try{
+
+    await refreshActiveTab()
+
+  }catch(err){
+
+    console.error(err)
+
+  }finally{
+
+    const elapsed = performance.now() - start
+
+    const remain = Math.max(0, 350 - elapsed)
+
+    setTimeout(()=>{
+
+      btnRefresh.classList.remove("loading")
+
+    }, remain)
+
+  }
+
+})

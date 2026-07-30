@@ -82,25 +82,39 @@ saveTabs()
 REFRESH TAB
 ========================= */
 
-async function refreshTab(tab){
+export async function refreshActiveTab() {
 
-tab.host.innerHTML = ""  
+  const tab = tabs[activeTabId]
 
-const {loadPage} =
-await import("./router.js")
+  if (!tab) return
 
-await loadPage(
-tab.page,
-{
-...tab.params,
-state: tab.state
-},
-tab.host
-)
+  tab.loaded = false
+  tab.host.scrollTop = 0
 
-tab.loaded = true
+  await refreshTab(tab)
 
 }
+
+async function refreshTab(tab){
+
+  tab.host.innerHTML = ""
+
+  const { loadPage } =
+    await import("./router.js")
+
+  await loadPage(
+    tab.page,
+    {
+      ...tab.params,
+      state: tab.state
+    },
+    tab.host
+  )
+
+  tab.loaded = true
+
+}
+
 
 /* =========================
 CLOSE

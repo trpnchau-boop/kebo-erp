@@ -133,10 +133,23 @@ LOAD
 async function load(){
 
 rows = await getAll("document_items")
+console.log(
+  "rows",
+  rows.length
+)
 
+console.log(
+  rows.at(rows.length - 1)
+)
+
+console.log(
+  rows.slice(-10)
+)
 const docs =
 await getAll("document")
-
+console.log(
+  docs.at(docs.length - 1)
+)
 const customers =
 await getAll("data_customer")
 

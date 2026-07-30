@@ -1,35 +1,57 @@
 import {db} from "./supabase.js"
 
-export async function getAll(table,where={}){
+export async function getAll(table, where = {}) {
 
-let q = db
-.from(table)
-.select("*")
+  const PAGE_SIZE = 1000
 
-for(const key in where){
-q = q.eq(key, where[key])
-}
+  let all = []
+  let from = 0
 
-const noIdTables = [
-"role_permissions"
-]
+  while (true) {
 
-if(
-!table.startsWith("vw_")
-&&
-!noIdTables.includes(table)
-){
-q = q.order("id",{ascending:true})
-}
+    let q = db
+      .from(table)
+      .select("*")
+      .range(
+        from,
+        from + PAGE_SIZE - 1
+      )
 
-const {data,error} = await q
+    for (const key in where) {
+      q = q.eq(key, where[key])
+    }
 
-if(error){
-alert(error.message)
-return []
-}
+    const noIdTables = [
+      "role_permissions"
+    ]
 
-return data || []
+    if (
+      !table.startsWith("vw_") &&
+      !noIdTables.includes(table)
+    ) {
+      q = q.order("id", {
+        ascending: false
+      })
+    }
+
+    const { data, error } = await q
+
+    if (error) {
+      alert(error.message)
+      return []
+    }
+
+    all.push(...data)
+
+    if (data.length < PAGE_SIZE) {
+      break
+    }
+
+    from += PAGE_SIZE
+
+  }
+
+  return all
 
 }
 
