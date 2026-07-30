@@ -1,113 +1,30 @@
 const STORAGE_KEY = "catalog-card-width"
 
 const DEFAULT_WIDTH = 210
+const MIN_WIDTH = 98
+const MAX_WIDTH = 320
 
 let cardWidth =
   Number(
     localStorage.getItem(STORAGE_KEY)
   ) || DEFAULT_WIDTH
 
-const BASE_WIDTH = {
-  1: 210,
-  2: 320,
-  3: 420
-}
-let layout = 3
-
-detectLayout()
-
 let pinch = null
 let raf = 0
 
 let zoomSnapshot = null
 
-function getZoom(){
+function clamp(v){
 
-    return cardWidth / BASE_WIDTH[layout]
-
-}
-
-function setZoom(z){
-
-    z = Math.max(
-        1,
-        Math.min(2,z)
+  return Math.max(
+    MIN_WIDTH,
+    Math.min(
+      MAX_WIDTH,
+      v
     )
-
-    cardWidth =
-        BASE_WIDTH[layout] * z
-
-}
-
-function normalizeZoom(
-  zoom,
-  layout
-){
-
-  while(
-    zoom > 2 &&
-    layout > 1
-  ){
-
-    const width =
-      BASE_WIDTH[layout] * zoom
-
-    layout--
-
-    zoom =
-      width /
-      BASE_WIDTH[layout]
-
-  }
-
-  while(
-    zoom < 1 &&
-    layout < 3
-  ){
-
-    const width =
-      BASE_WIDTH[layout] * zoom
-
-    layout++
-
-    zoom =
-      width /
-      BASE_WIDTH[layout]
-
-  }
-
-  return {
-    zoom,
-    layout
-  }
-
-}
-
-function changeZoom(
-  root,
-  zoom,
-  baseLayout = layout
-){
-
-  const result =
-    normalizeZoom(
-      zoom,
-      baseLayout
-    )
-
-  layout =
-    result.layout
-
-  setZoom(
-    result.zoom
-  )
-
-  applyCatalogZoom(
-    root
   )
 
 }
-
 
 function saveZoom(){
 
@@ -251,11 +168,9 @@ if(zoomSnapshot){
           e.touches
         ),
 
-      zoom:
-        getZoom(),
+      width:
+        cardWidth
 
-      layout  
- 
     }
 
   },
@@ -295,10 +210,13 @@ if(zoomSnapshot){
         now /
         pinch.distance
 
-      let nextZoom =
-        pinch.zoom *
-        scale
+      const nextWidth =
+        clamp(
 
+          pinch.width *
+          scale
+
+        )
 
       if(raf){
 
@@ -312,11 +230,12 @@ if(zoomSnapshot){
 
         raf = 0
 
-        changeZoom(
-  root,
-  nextZoom,
-  pinch.layout
-)
+        cardWidth =
+          nextWidth
+
+        applyCatalogZoom(
+          root
+        )
 
       })
 
@@ -371,17 +290,22 @@ if(zoomSnapshot){
 
       zoomSnapshot = null
 
-      const delta =
-  e.deltaY > 0
-    ? -0.08
-    : 0.08
+      cardWidth +=
 
-changeZoom(
-  root,
-  getZoom() + delta
-)
+        e.deltaY > 0
 
-saveZoom()
+          ? -8
+
+          : 8
+
+      cardWidth =
+        clamp(cardWidth)
+
+      applyCatalogZoom(
+        root
+      )
+
+      saveZoom()
 
     },
 
@@ -390,27 +314,5 @@ saveZoom()
     }
 
   )
-
-}
-
-function detectLayout(){
-
-  if(cardWidth >= BASE_WIDTH[1]){
-
-    layout = 1
-
-  }
-
-  else if(cardWidth >= BASE_WIDTH[2]){
-
-    layout = 2
-
-  }
-
-  else{
-
-    layout = 3
-
-  }
 
 }
