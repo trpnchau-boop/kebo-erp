@@ -276,24 +276,6 @@ const centerY =
   (e.touches[0].clientY +
    e.touches[1].clientY) / 2
 
-const card =
-
-  getCardNearPoint(
-
-    root,
-
-    centerX,
-
-    centerY
-
-  )
-
-if(card){
-
-  pinch.id =
-    card.dataset.id
-
-}
       const scale =
         now /
         pinch.distance
@@ -323,17 +305,55 @@ if(card){
 
 applyCatalogZoom(root)
 
-if(pinch?.id){
+const card =
 
-  root
-    .querySelector(
-      `.catalog-card[data-id="${pinch.id}"]`
-    )
-    ?.scrollIntoView({
+  pinch?.id
 
-      block:"center"
+    ? root.querySelector(
+        `.catalog-card[data-id="${pinch.id}"]`
+      )
+
+    : null
+
+if(card){
+
+  const r =
+    card.getBoundingClientRect()
+
+  const margin = 40
+
+  if(r.top < margin){
+
+    window.scrollBy({
+
+      top:
+        r.top - margin
 
     })
+
+  }
+
+  else if(
+
+    r.bottom >
+
+    window.innerHeight - margin
+
+  ){
+
+    window.scrollBy({
+
+      top:
+
+        r.bottom -
+
+        window.innerHeight +
+
+        margin
+
+    })
+
+  }
 
 }
 
