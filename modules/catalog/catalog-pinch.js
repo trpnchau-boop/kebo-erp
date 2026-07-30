@@ -52,6 +52,47 @@ function distance(touches){
 
 }
 
+function getCardNearPoint(
+  root,
+  x,
+  y
+){
+
+  let best = null
+  let bestDist = Infinity
+
+  root
+    .querySelectorAll(".catalog-card")
+    .forEach(card=>{
+
+      const r =
+        card.getBoundingClientRect()
+
+      const cx =
+        r.left + r.width / 2
+
+      const cy =
+        r.top + r.height / 2
+
+      const d =
+        Math.hypot(
+          cx - x,
+          cy - y
+        )
+
+      if(d < bestDist){
+
+        bestDist = d
+        best = card
+
+      }
+
+    })
+
+  return best
+
+}
+
 export function applyCatalogZoom(root){
 
   root
@@ -161,17 +202,37 @@ if(zoomSnapshot){
 
 }
 
-    pinch = {
+const centerX =
 
-      distance:
-        distance(
-          e.touches
-        ),
+  (e.touches[0].clientX +
+   e.touches[1].clientX) / 2
 
-      width:
-        cardWidth
+const centerY =
 
-    }
+  (e.touches[0].clientY +
+   e.touches[1].clientY) / 2
+
+pinch = {
+
+  distance:
+    distance(e.touches),
+
+  width:
+    cardWidth,
+
+  id:
+
+    getCardNearPoint(
+
+      root,
+
+      centerX,
+
+      centerY
+
+    )?.dataset.id
+
+}
 
   },
 
@@ -205,7 +266,34 @@ if(zoomSnapshot){
         distance(
           e.touches
         )
+const centerX =
 
+  (e.touches[0].clientX +
+   e.touches[1].clientX) / 2
+
+const centerY =
+
+  (e.touches[0].clientY +
+   e.touches[1].clientY) / 2
+
+const card =
+
+  getCardNearPoint(
+
+    root,
+
+    centerX,
+
+    centerY
+
+  )
+
+if(card){
+
+  pinch.id =
+    card.dataset.id
+
+}
       const scale =
         now /
         pinch.distance
@@ -230,12 +318,24 @@ if(zoomSnapshot){
 
         raf = 0
 
-        cardWidth =
-          nextWidth
+       cardWidth =
+  nextWidth
 
-        applyCatalogZoom(
-          root
-        )
+applyCatalogZoom(root)
+
+if(pinch?.id){
+
+  root
+    .querySelector(
+      `.catalog-card[data-id="${pinch.id}"]`
+    )
+    ?.scrollIntoView({
+
+      block:"center"
+
+    })
+
+}
 
       })
 
