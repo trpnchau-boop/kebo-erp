@@ -318,7 +318,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     document.getElementById("sidebar").hidden = true
 
     document.getElementById("btn-toggle").hidden = true
-    document.getElementById("btn-refresh").hidden = true
+
 
     document.getElementById("page-title").textContent =
       "KEBO Catalog"
@@ -347,7 +347,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
   document.getElementById("sidebar").hidden = false
 
   document.getElementById("btn-toggle").hidden = false
-  document.getElementById("btn-refresh").hidden = true
+
 
   btnAuth.textContent = "";
   btnAuth.classList.add("logout");

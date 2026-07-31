@@ -13,7 +13,7 @@ const METRICS = {
 
   wrapRatio: 0.5,        // cho phép tràn trước khi xuống dòng
 
-  cellPadding: 6.05,      // padding dọc
+  cellPadding: 6.0,      // padding dọc
 
   lineHeight: 1.2,
 
