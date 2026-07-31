@@ -69,69 +69,63 @@ export async function saveCheck(root){
 
   const items = []
 
-  root
-  .querySelectorAll("#stock-body tr")
-  .forEach(tr=>{
+ for(const key in stockState.checkCache){
 
-    const input =
-    tr.querySelector(".count-input")
+  const real =
+  Number(stockState.checkCache[key])
 
-    if(!input) return
+  const [
+    productId,
+    warehouseId
+  ] = key.split("_").map(Number)
 
-    const real =
-    Number(input.value || 0)
+  const s =
+  getStockRow(
+    productId,
+    warehouseId
+  )
 
-    const sys =
-    Number(input.dataset.system || 0)
+  if(!s) continue
 
-    const diff =
-    real - sys
+  const sys =
+  Number(s.qty_balance || 0)
 
-    if(diff === 0) return
+  const diff =
+  real - sys
 
-    const productId =
-    Number(input.dataset.product)
+  if(diff === 0) continue
 
-    const warehouseId =
-    Number(input.dataset.warehouse)
+  const p =
+  getProduct(productId)
 
-    const p =
-    getProduct(productId)
+  const cost =
+  Number(s.avg_cost || 0)
 
-    const s =
-    getStockRow(
-      productId,
-      warehouseId
-    )
+  items.push({
 
-    const cost =
-    Number(s.avg_cost || 0)
+    id_product: productId,
+    parent_id: p.parent_id || null,
+    line: p.dinhluong || 0,
+    id_warehouse: warehouseId,
 
-    items.push({
+    qty: diff,
+    tongsoluong: diff,
 
-      id_product: productId,
-      parent_id: p.parent_id || null,
-      line: p.dinhluong || 0,
-      id_warehouse: warehouseId,
+    name: p.name || "",
+    dvtGoc: p.dvtGoc || "",
+    id_unit: p.id_unit || null,
 
-      qty: diff,
-      tongsoluong: diff,
+    dongiavon: cost,
+    tienvon: diff * cost,
 
-      name: p.name || "",
-      dvtGoc: p.dvtGoc || "",
-      id_unit: p.id_unit || null,
-
-      dongiavon: cost,
-      tienvon: diff * cost,
-
-      note:
+    note:
       diff > 0
       ? "Kiểm kê tăng"
       : "Kiểm kê giảm"
 
-    })
-
   })
+
+ }
 
   if(!items.length){
     alert("Không có chênh lệch")
@@ -151,10 +145,12 @@ export async function saveCheck(root){
 
   alert("Đã lưu kiểm kê")
 
+  stockState.checkCache = {}
+
   stockState.checkMode = false
+  stockState.onlyChanged = false
 
   await loadStock(root)
 
-  render(root)
 
 }

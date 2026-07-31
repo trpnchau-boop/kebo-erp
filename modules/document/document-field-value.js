@@ -128,21 +128,24 @@ export function getFieldValue(
   MONEY / NUMBER
   ========================= */
 
-  if(
-    field.type === "money"
-    ||
-    field.type === "number"
-  ){
+  if(field.type === "number"){
 
     return Number(
-
-      String(
-        input.value ?? ""
-      )
-        .replaceAll(".","")
-        .replaceAll(",","")
-
+        String(input.value)
+            .trim()
+            .replace(",", ".")
     ) || 0
+
+  }
+
+  if(field.type==="money"){
+
+    return Number(
+        String(input.value)
+            .replaceAll(".","")
+            .replace(",",".")
+    ) || 0
+
   }
 
   /* =========================

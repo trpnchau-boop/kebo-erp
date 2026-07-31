@@ -441,6 +441,11 @@ return input
 
   }
 
+  if (field.type === "number") {
+    input.step = "1"
+    input.inputMode = "decimal"
+  }
+
   /* =====================================================
   INPUT VALUE
   ===================================================== */

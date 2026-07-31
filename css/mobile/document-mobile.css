@@ -6,6 +6,11 @@ tr.className = `doc-row doc-row-${docType.toLowerCase()}`
 
 @media (max-width: 768px){
 
+  .list-summary {
+    gap: 12px;
+    padding: 0 10px;
+  }
+
   /* =======================================================
   1. TABLE WRAP / TABLE / TBODY
   ======================================================= */
@@ -553,4 +558,6 @@ MOBILE NHỎ
     min-width:28px !important;
     min-height:28px !important;
   }
+
+
 }

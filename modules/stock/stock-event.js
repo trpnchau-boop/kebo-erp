@@ -1,5 +1,4 @@
 import {render} from "./stock-render.js"
-import {loadStock} from "./stock-load.js"
 
 import {
 toggleCheckMode,
@@ -33,28 +32,6 @@ export function bindEvents(root){
   ?.addEventListener(
     "change",
     ()=>render(root)
-  )
-
-  $(root,"btn-refresh")
-  ?.addEventListener(
-    "click",
-    async e=>{
-
-      const btn = e.currentTarget
-
-      btn.classList.add("loading")
-
-      try{
-
-        await loadStock(root)
-
-      }finally{
-
-        btn.classList.remove("loading")
-
-      }
-  
-    }
   )
 
   $(root,"btn-mode")

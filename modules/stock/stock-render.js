@@ -40,6 +40,12 @@ getDropdownValue(
   $(root,"filter-status")
 )
 
+const checkMode =
+isCheckMode()
+
+const transferMode =
+stockState.transferMode
+
 let rows = [...stockState.rows]
 
 rows = rows.filter(r=>{
@@ -78,6 +84,21 @@ return true
 
 })
 
+if(stockState.onlyChanged){
+
+  rows = rows.filter(r=>{
+
+    const key =
+    `${r.id_product}_${r.id_warehouse}`
+
+    return checkMode
+      ? key in stockState.checkCache
+      : key in stockState.transferCache
+
+  })
+
+}
+
 const {
 
   field,
@@ -112,6 +133,9 @@ rows.sort((a,b)=>{
 
       case "dvt":
         return p.dvtGoc || ""
+
+      case "tinh_chat":
+        return p.tinhchat || ""   
 
       case "warehouse":
         return w.name || ""
@@ -157,16 +181,14 @@ rows.sort((a,b)=>{
 
 })
 
-const checkMode =
-isCheckMode()
-
-const transferMode =
-stockState.transferMode
-
 const colspan =
-transferMode || checkMode
-? 10
-: 8
+  checkMode
+    ? 10
+    : transferMode
+      ? 9
+      : 8
+
+updateChangedChip(root)   
 
 if(!rows.length){
 
@@ -202,6 +224,25 @@ qty < 0
 ? "color:#6b7280"
 : ""
 
+const key =
+`${r.id_product}_${r.id_warehouse}`
+
+const checkValue =
+stockState.checkCache[key] ?? qty
+
+const transferValue =
+stockState.transferCache[key] ?? 0
+
+const diff =
+checkValue - qty
+
+const diffColor =
+diff > 0
+? "green"
+: diff < 0
+? "red"
+: ""
+
 return `
 <tr>
 
@@ -212,6 +253,8 @@ ${p.code || ""}
 </td>
 
 <td>${p.name || ""}</td>
+
+<td>${p.tinhchat || ""}</td>
 
 <td>${p.dvtGoc || ""}</td>
 
@@ -228,15 +271,17 @@ checkMode
 <input
 type="number"
 class="table-input count-input"
-value="${qty}"
+value="${checkValue}"
 data-system="${qty}"
 data-product="${r.id_product}"
 data-warehouse="${r.id_warehouse}"
 >
 </td>
 
-<td class="check-col diff-cell">
-0
+<td
+class="check-col diff-cell"
+style="color:${diffColor}">
+${formatDecimal(diff)}
 </td>
 `
 : ""
@@ -250,7 +295,7 @@ transferMode
 type="number"
 min="0"
 max="${qty > 0 ? qty : 0}"
-value="0"
+value="${transferValue}"
 class="table-input transfer-qty"
 data-product="${r.id_product}"
 data-warehouse="${r.id_warehouse}"
@@ -276,9 +321,14 @@ ${formatMoney(r.stock_value)}
 toggleTransferToolbar(root)
 bindLedgerButtons(root)
 bindSort(root)
+bindChangedChip(root)
 
 if(checkMode){
-bindCheckInputs(root)
+  bindCheckInputs(root)
+}
+
+if(transferMode){
+  bindTransferInputs(root)
 }
 
 }
@@ -337,6 +387,15 @@ Number(input.dataset.system || 0)
 const real =
 Number(input.value || 0)
 
+const key =
+`${input.dataset.product}_${input.dataset.warehouse}`
+
+if(real === sys){
+  delete stockState.checkCache[key]
+}else{
+  stockState.checkCache[key] = real
+}
+
 const diff =
 real - sys
 
@@ -350,11 +409,40 @@ diff > 0
 ? "red"
 : ""
 
+updateChangedChip(root)
+
 }
 
 })
 
 }
+
+function bindTransferInputs(root){
+
+root.querySelectorAll(".transfer-qty")
+.forEach(input=>{
+
+input.oninput = ()=>{
+
+const key =
+`${input.dataset.product}_${input.dataset.warehouse}`
+
+const qty =
+Number(input.value || 0)
+
+if(qty <= 0){
+  delete stockState.transferCache[key]
+}else{
+  stockState.transferCache[key] = qty
+}
+
+updateChangedChip(root)
+}
+
+})
+
+}
+
 function bindSort(root){
 
 root
@@ -400,5 +488,52 @@ render(root)
 }
 
 })
+
+}
+
+function bindChangedChip(root){
+
+  const chip =
+  $(root,"btn-changed")
+
+  if(!chip)
+    return
+
+  chip.onclick = ()=>{
+
+    stockState.onlyChanged =
+    !stockState.onlyChanged
+
+    render(root)
+
+  }
+
+}
+
+function updateChangedChip(root){
+
+  const chip = $(root,"btn-changed")
+  if(!chip) return
+
+  const count =
+    isCheckMode()
+      ? Object.keys(stockState.checkCache).length
+      : stockState.transferMode
+      ? Object.keys(stockState.transferCache).length
+      : 0
+
+  if(!count){
+    stockState.onlyChanged = false
+  }
+
+  chip.style.display =
+    count ? "" : "none"
+
+  chip.textContent = `Chọn: ${count}`
+
+  chip.classList.toggle(
+    "active",
+    stockState.onlyChanged
+  )
 
 }

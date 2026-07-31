@@ -116,7 +116,7 @@ if(body){
 
 body.innerHTML = `
 <tr>
-<td colspan="10" style="text-align:center;padding:20px">
+<td colspan="8" style="text-align:center;padding:20px">
 Đang tải...
 </td>
 </tr>

@@ -375,6 +375,15 @@ Layout:
     box-sizing:border-box;
   }
 
+#stock-body .table-input{
+    margin-left:0;
+    text-align: left;
+    background: #a5d6a73d !important;
+    border-radius: 5px;
+    padding: 2px 10px;
+    transform: translateX(-10px);
+}
+
 .tab-host:not([data-page="matrix"]) .list-page tbody .dropdown-select{
     width:140px;
     max-width:100%;

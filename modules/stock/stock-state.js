@@ -8,6 +8,10 @@ export const stockState = {
 
   checkMode: false,
   transferMode: false,
+  onlyChanged:false,
+
+  checkCache: {},
+  transferCache: {},
 
   loading: false,
   lastLoadedAt: null,
@@ -31,6 +35,8 @@ export function resetStockState(){
 
   stockState.checkMode = false
   stockState.transferMode = false
+  stockState.checkCache = {}
+  stockState.transferCache = {}
 
   stockState.loading = false
   stockState.lastLoadedAt = null

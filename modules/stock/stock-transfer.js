@@ -5,9 +5,11 @@ import {render} from "./stock-render.js"
 import {loadStock} from "./stock-load.js"
 import {saveDocument} from "./stock-save.js"
 import {
-getStockRow,
-getProduct
-} from "./stock-helper.js"
+  getStockRow,
+  getProduct
+}
+from "./stock-helper.js"
+
 import {
   getDropdownValue
 }
@@ -23,29 +25,31 @@ export function toggleTransferMode(root){
   !stockState.transferMode
 
   if(stockState.transferMode){
-
     stockState.checkMode = false
-
   }
 
   const btnTransfer =
   $(root,"btn-transfer")
 
   if(btnTransfer){
+
     btnTransfer.textContent =
     stockState.transferMode
     ? "Thoát"
     : "Chuyển kho"
+
   }
 
   const btnMode =
   $(root,"btn-mode")
 
   if(btnMode){
+
     btnMode.style.display =
     stockState.transferMode
     ? "none"
     : ""
+
   }
 
   render(root)
@@ -60,8 +64,10 @@ export function toggleTransferToolbar(root){
   root
   .querySelectorAll(".transfer-col")
   .forEach(x=>{
+
     x.style.display =
     show ? "" : "none"
+
   })
 
 }
@@ -70,16 +76,16 @@ export async function saveTransfer(root){
 
   const fromId =
   Number(
-getDropdownValue(
-  $(root,"filter-kho")
-)
+    getDropdownValue(
+      $(root,"filter-kho")
+    )
   )
 
   const toId =
   Number(
-getDropdownValue(
-  $(root,"transfer-to")
-)
+    getDropdownValue(
+      $(root,"transfer-to")
+    )
   )
 
   if(!fromId){
@@ -99,32 +105,28 @@ getDropdownValue(
 
   const items = []
 
-  root
-  .querySelectorAll("#stock-body tr")
-  .forEach(tr=>{
-
-    const input =
-    tr.querySelector(".transfer-qty")
-
-    if(!input) return
+  for(const key in stockState.transferCache){
 
     const qty =
-    Number(input.value || 0)
+    Number(
+      stockState.transferCache[key]
+    )
 
-    if(qty <= 0) return
+    if(qty <= 0)
+      continue
 
-    const max =
-    Number(input.max || 0)
-
-    if(qty > max) return
-
-    const tongsoluong = qty
-
-    const productId =
-    Number(input.dataset.product)
+    const [
+      productId
+    ] =
+    key
+    .split("_")
+    .map(Number)
 
     const p =
     getProduct(productId)
+
+    if(!p)
+      continue
 
     const s =
     getStockRow(
@@ -132,52 +134,95 @@ getDropdownValue(
       fromId
     )
 
+    if(!s)
+      continue
+
+    const max =
+    Number(
+      s.qty_balance || 0
+    )
+
+    if(qty > max)
+      continue
+
     const cost =
-    Number(s.avg_cost || 0)
+    Number(
+      s.avg_cost || 0
+    )
 
     items.push(
 
       {
+
         id_product: productId,
-        parent_id: p.parent_id || null,
-        line: p.dinhluong || 0,
-        id_warehouse: fromId,
+        parent_id:
+          p.parent_id || null,
+        line:
+          p.dinhluong || 0,
+
+        id_warehouse:
+          fromId,
 
         qty: -qty,
-        tongsoluong: -tongsoluong,
+        tongsoluong: -qty,
 
-        name: p.name || "",
-        dvtGoc: p.dvtGoc || "",
-        id_unit: p.id_unit || null,
+        name:
+          p.name || "",
 
-        dongiavon: cost,
-        tienvon: -tongsoluong * cost,
+        dvtGoc:
+          p.dvtGoc || "",
 
-        note:"Chuyển kho xuất"
+        id_unit:
+          p.id_unit || null,
+
+        dongiavon:
+          cost,
+
+        tienvon:
+          -qty * cost,
+
+        note:
+          "Chuyển kho xuất"
+
       },
 
       {
+
         id_product: productId,
-        parent_id: p.parent_id || null,
-        line: p.dinhluong || 0,
-        id_warehouse: toId,
+        parent_id:
+          p.parent_id || null,
+        line:
+          p.dinhluong || 0,
+
+        id_warehouse:
+          toId,
 
         qty: qty,
-        tongsoluong: tongsoluong,
+        tongsoluong: qty,
 
-        name: p.name || "",
-        dvtGoc: p.dvtGoc || "",
-        id_unit: p.id_unit || null,
+        name:
+          p.name || "",
 
-        dongiavon: cost,
-        tienvon: tongsoluong * cost,
+        dvtGoc:
+          p.dvtGoc || "",
 
-        note:"Chuyển kho nhập"
+        id_unit:
+          p.id_unit || null,
+
+        dongiavon:
+          cost,
+
+        tienvon:
+          qty * cost,
+
+        note:
+          "Chuyển kho nhập"
+
       }
 
     )
 
-  })
+  }
 
   if(!items.length){
     alert("Không có số lượng chuyển")
@@ -193,14 +238,16 @@ getDropdownValue(
     items
   )
 
-  if(!doc) return
+  if(!doc)
+    return
 
   alert("Đã lưu chuyển kho")
 
+  stockState.transferCache = {}
+
   stockState.transferMode = false
+  stockState.onlyChanged = false
 
   await loadStock(root)
-
-  render(root)
 
 }
