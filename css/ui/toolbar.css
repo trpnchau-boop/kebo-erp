@@ -84,11 +84,12 @@
     background: #eef2ff;
     color: #1e40af;
     padding: 4px 10px;
-    border: none;
+    border: none !important;
     border-radius: 999px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 14px !important;
     white-space: nowrap;
+    height: 24px !important;
 
 }
 
