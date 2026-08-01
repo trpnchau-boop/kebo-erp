@@ -8,11 +8,6 @@ import {
 }
 from "./share-files.js"
 
-import {
-  waitPreload
-}
-from "./image-cache.js"
-
 let exporting = false
 
 /* =========================
@@ -31,8 +26,6 @@ export async function exportImages(
   exporting = true
 
   try{
-
-    await waitPreload()
 
     const files =
       await getImageFiles(

@@ -49,7 +49,10 @@ export async function getImageBlob(
   if(!promise){
 
     promise = fetch(
-      product.image_url
+        product.image_url,
+        {
+            cache: "force-cache"
+        }
     )
     .then(response=>{
 
