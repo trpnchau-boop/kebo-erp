@@ -110,12 +110,6 @@ function zoom(delta, clientX, clientY){
   const oy =
     clientY - rect.top
 
-  const px =
-    ox / rect.width
-
-  const py =
-    oy / rect.height
-
   const oldScale =
     scale
 
@@ -150,6 +144,41 @@ function renderImage(){
   if(!product){
     return
   }
+
+  const title =
+    overlay.querySelector(
+      ".catalog-viewer-title"
+    )
+
+  const prevBtn =
+    overlay.querySelector(
+      ".catalog-viewer-prev"
+    )
+
+  const nextBtn =
+    overlay.querySelector(
+      ".catalog-viewer-next"
+    )
+
+  title.textContent =
+    product.name || ""
+
+  prevBtn.style.visibility =
+
+    currentIndex === 0
+
+      ? "hidden"
+
+      : "visible"
+
+  nextBtn.style.visibility =
+
+    currentIndex ===
+    currentProducts.length - 1
+
+      ? "hidden"
+
+      : "visible"
 
   image.src =
     product.image_url ||
@@ -229,11 +258,27 @@ export function openCatalogViewer({
 
   overlay.innerHTML = `
 
+    <div class="catalog-viewer-title"></div>
+
     <button
       class="catalog-viewer-close"
       type="button"
     >
       ×
+    </button>
+
+    <button
+      class="catalog-viewer-prev"
+      type="button"
+    >
+      ❮
+    </button>
+
+    <button
+      class="catalog-viewer-next"
+      type="button"
+    >
+      ❯
     </button>
 
     <img
@@ -248,11 +293,11 @@ export function openCatalogViewer({
       ".catalog-viewer-image"
     )
 
-  renderImage()
-
   document.body.appendChild(
     overlay
   )
+
+  renderImage()
 
   document.body.style.overflow =
     "hidden"
@@ -394,6 +439,20 @@ export function openCatalogViewer({
 
       dragging=false
 
+      if(
+
+        image.hasPointerCapture?.(
+          e.pointerId
+        )
+
+       ){
+
+          image.releasePointerCapture(
+            e.pointerId
+          )
+
+        }
+
       if(!swipe){
         return
       }
@@ -430,6 +489,19 @@ export function openCatalogViewer({
 
     }
 
+  )
+
+  image.addEventListener(
+
+    "pointercancel",
+
+    ()=>{
+
+      dragging = false
+      swipe = null
+
+    } 
+  
   )
 
   overlay.addEventListener(
@@ -524,6 +596,17 @@ export function openCatalogViewer({
     "touchend",
 
     ()=>{
+        if(
+
+  pinch
+
+){
+
+  pinch = null
+
+  return
+
+}
 
       const now =
         Date.now()
@@ -553,6 +636,18 @@ export function openCatalogViewer({
     }
 
   )
+
+  overlay
+    .querySelector(
+      ".catalog-viewer-prev"
+    )
+    .onclick = prevImage
+
+  overlay
+    .querySelector(
+      ".catalog-viewer-next"
+    )
+    .onclick = nextImage
 
   window.addEventListener(
 
@@ -591,6 +686,20 @@ export function closeCatalogViewer(){
   if(!overlay){
     return
   }
+
+  dragging = false
+
+  pinch = null
+
+  swipe = null
+
+  lastTap = 0
+
+  scale = 1
+
+  x = 0
+
+  y = 0
 
   overlay.remove()
 
