@@ -28,24 +28,7 @@ export async function shareImageFiles(
 
     }
 
-const totalSize =
-  files.reduce(
-    (s,f)=>s+f.size,
-    0
-  )
 
-console.log({
-
-  count:files.length,
-
-  totalMB:
-    (
-      totalSize/
-      1024/
-      1024
-    ).toFixed(2)
-
-})
 await navigator.share({
 
   title:"Catalog",
@@ -56,21 +39,25 @@ await navigator.share({
 
     return true
 
-}catch(err){
+  }catch(err){
 
-  console.error(err)
+    // User bấm Hủy
+    if(
+      err.name === "AbortError"
+    ){
 
-  console.log(
-    err.name,
-    err.message
-  )
+      return false
 
-  alert(
-    `${err.name}\n${err.message}`
-  )
+    }
 
-  return false
+    console.error(err)
 
-}
+    alert(
+      "Không thể chia sẻ."
+    )
+
+    return false
+
+  }
 
 }

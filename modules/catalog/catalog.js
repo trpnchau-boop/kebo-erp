@@ -44,11 +44,6 @@ import {
 }
 from "./catalog-pinch.js"
 
-import {
-  preloadImages
-}
-from "./image-cache.js"
-
 let showHot = false
 let lastTap = 0
 
@@ -112,8 +107,6 @@ export async function init(
     products: initialProducts
   } =
   await getCatalogData()
-
-  preloadImages(initialProducts)
 
   let products = initialProducts
 
@@ -337,8 +330,6 @@ function applyFilter(){
 
       products =
         data.products
-
-      await preloadImages(products) 
 
       search.value = ""  
 

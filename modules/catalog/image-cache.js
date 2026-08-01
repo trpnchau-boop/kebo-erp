@@ -1,8 +1,7 @@
 // catalog/image-cache.js
 
 const imageCache = new Map()
-const PRELOAD_CONCURRENT = 5
-let preloadPromise = null
+
 
 /* =========================
 KEY
@@ -201,88 +200,5 @@ export function clearImageCache(){
 export function getImageCacheSize(){
 
   return imageCache.size
-
-}
-
-export async function preloadImage(product){
-
-  if(
-    hasImage(product)
-  ){
-    return
-  }
-
-  try{
-
-    await getImageBlob(product)
-
-  }catch{}
-
-}
-
-export async function preloadImages(products){
-
-  if(preloadPromise){
-
-    return preloadPromise
-
-  }
-
-  preloadPromise = (async()=>{
-
-    let index = 0
-
-    async function worker(){
-
-      while(index < products.length){
-
-        const current = index++
-
-        await preloadImage(products[current])
-
-      }
-
-    }
-
-    await Promise.all(
-
-      Array.from(
-
-        {
-
-          length: Math.min(
-            PRELOAD_CONCURRENT,
-            products.length
-          )
-
-        },
-
-        worker
-
-      )
-
-    )
-
-  })()
-
-  try{
-
-    await preloadPromise
-
-  }finally{
-
-    preloadPromise = null
-
-  }
-
-}
-
-export async function waitPreload(){
-
-  if(preloadPromise){
-
-    await preloadPromise
-
-  }
 
 }
