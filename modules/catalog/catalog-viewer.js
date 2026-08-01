@@ -83,7 +83,7 @@ function updateTransform(){
   clampPosition()
 
   image.style.transform =
-    `translate(${x}px,${y}px) scale(${scale})`
+     `translate3d(${x}px,${y}px,0) scale(${scale})`
 
 }
 

@@ -274,7 +274,9 @@
     transition:transform .08s linear;
 
     z-index: 1;
+    will-change: transform;
 
+    backface-visibility: hidden;
 }
 
 .catalog-viewer-image:active{
