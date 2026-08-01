@@ -131,6 +131,18 @@ export function applyCatalogZoom(root){
 
 }
 
+export function getCatalogWidth(){
+
+  return cardWidth
+
+}
+
+export function isDefaultCatalogWidth(){
+
+  return cardWidth >= DEFAULT_WIDTH
+
+}
+
 export function zoomDefault(
   root,
   snapshot

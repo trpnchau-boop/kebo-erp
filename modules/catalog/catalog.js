@@ -39,10 +39,16 @@ import {
   zoomDefault,
   saveSnapshot,
   restoreSnapshot,
-  hasSnapshot 
+  hasSnapshot ,
+  isDefaultCatalogWidth
 
 }
 from "./catalog-pinch.js"
+
+import {
+  openCatalogViewer
+}
+from "./catalog-viewer.js"
 
 let showHot = false
 let lastTap = 0
@@ -829,33 +835,55 @@ groupSelect.addEventListener(
 
           if(
 
-            now-lastTap<300
+  now-lastTap<300
 
-          ){
+){
 
-            lastTap = 0
+  lastTap = 0
 
-            zoomDefault(
+  if(
 
-    grid,
+    isDefaultCatalogWidth()
 
-    {
+  ){
+
+    openCatalogViewer({
+
+      products,
+
+      productId:Number(
+        card.dataset.id
+      )
+
+    })
+
+  }else{
+
+    zoomDefault(
+
+      grid,
+
+      {
 
         id: card.dataset.id,
 
         keyword: search.value,
 
-        group: getDropdownValue(groupSelect),
+        group:getDropdownValue(
+          groupSelect
+        ),
 
-        hot: showHot
+        hot:showHot
 
-    }
+      }
 
-)
+    )
 
-            return
+  }
 
-          }
+  return
+
+}
 
           lastTap = now
 
