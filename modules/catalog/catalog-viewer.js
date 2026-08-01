@@ -15,6 +15,7 @@ let startY = 0
 let pinch = null
 let swipe = null
 let lastTap = 0
+let raf = 0
 
 function distance(touches){
 
@@ -84,6 +85,22 @@ function updateTransform(){
 
   image.style.transform =
      `translate3d(${x}px,${y}px,0) scale(${scale})`
+
+}
+
+function requestUpdate(){
+
+  if(raf){
+    return
+  }
+
+  raf = requestAnimationFrame(()=>{
+
+    raf = 0
+
+    updateTransform()
+
+  })
 
 }
 
@@ -425,7 +442,7 @@ export function openCatalogViewer({
       y =
         e.clientY-startY
 
-      updateTransform()
+      requestUpdate()
 
     }
 
@@ -491,18 +508,33 @@ export function openCatalogViewer({
 
   )
 
-  image.addEventListener(
+image.addEventListener(
 
-    "pointercancel",
+  "pointercancel",
 
-    ()=>{
+  e=>{
 
-      dragging = false
-      swipe = null
+    dragging = false
 
-    } 
-  
-  )
+    swipe = null
+
+    if(
+
+      image.hasPointerCapture?.(
+        e.pointerId
+      )
+
+    ){
+
+      image.releasePointerCapture(
+        e.pointerId
+      )
+
+    }
+
+  }
+
+)
 
   overlay.addEventListener(
 
@@ -579,7 +611,7 @@ export function openCatalogViewer({
 
         )
 
-      updateTransform()
+      requestUpdate()
 
     },
 
@@ -591,51 +623,48 @@ export function openCatalogViewer({
 
   )
 
-  overlay.addEventListener(
+overlay.addEventListener(
 
-    "touchend",
+  "touchend",
 
-    ()=>{
-        if(
+  ()=>{
 
-  pinch
+    if(pinch){
 
-){
+      pinch = null
 
-  pinch = null
-
-  return
-
-}
-
-      const now =
-        Date.now()
-
-      if(
-
-        now-lastTap<300
-
-      ){
-
-        if(scale===1){
-
-          scale=2
-
-        }else{
-
-          resetTransform()
-
-        }
-
-        updateTransform()
-
-      }
-
-      lastTap=now
+      return
 
     }
 
-  )
+    const now =
+      Date.now()
+
+    if(
+
+      now-lastTap<300
+
+    ){
+
+      if(scale===1){
+
+        scale=2
+
+      }else{
+
+        resetTransform()
+
+      }
+
+      updateTransform()
+
+    }
+
+    lastTap = now
+
+  }
+
+)
 
   overlay
     .querySelector(
@@ -685,6 +714,16 @@ export function closeCatalogViewer(){
 
   if(!overlay){
     return
+  }
+
+  if(raf){
+
+    cancelAnimationFrame(
+      raf
+    )
+
+    raf = 0
+
   }
 
   dragging = false
