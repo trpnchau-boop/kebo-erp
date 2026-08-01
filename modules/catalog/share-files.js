@@ -4,11 +4,9 @@ export async function shareImageFiles(
 
   if(!navigator.share){
 
-    alert(
-      "Thiết bị không hỗ trợ chia sẻ."
-    )
-
-    return false
+    return {
+      status: "unsupported"
+    }
 
   }
 
@@ -24,53 +22,82 @@ export async function shareImageFiles(
 
     ){
 
-      return false
+      return {
+        status: "unsupported"
+      }
 
     }
 
-const totalSize =
-  files.reduce(
-    (s,f)=>s+f.size,
-    0
-  )
+    const totalSize =
+      files.reduce(
+        (s,f)=>s+f.size,
+        0
+      )
 
-console.log({
+    console.log({
 
-  count:files.length,
+      count: files.length,
 
-  totalMB:
-    (
-      totalSize/
-      1024/
-      1024
-    ).toFixed(2)
+      totalMB:
+        (
+          totalSize/
+          1024/
+          1024
+        ).toFixed(2)
 
-})
-await navigator.share({
+    })
 
-  title:"Catalog",
+    await navigator.share({
 
-  files
+      title: "Catalog",
 
-})
+      files
 
-    return true
+    })
 
-}catch(err){
+    return {
 
-  console.error(err)
+      status: "success",
 
-  console.log(
-    err.name,
-    err.message
-  )
+      count: files.length
 
-  alert(
-    `${err.name}\n${err.message}`
-  )
+    }
 
-  return false
+  }catch(err){
 
-}
+    console.error(err)
+
+    console.log(
+      err.name,
+      err.message
+    )
+
+    if(
+      err.name === "AbortError"
+    ){
+
+      return {
+        status: "cancel"
+      }
+
+    }
+
+    if(
+      err.name === "NotAllowedError"
+    ){
+
+      return {
+        status: "error"
+      }
+
+    }
+
+    return {
+
+      status: "error"
+
+    }
+
+  }
 
 }

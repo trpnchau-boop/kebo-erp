@@ -42,25 +42,52 @@ export async function exportImages(
 
     if(share){
 
-      const ok =
-        await shareImageFiles(files)
+      const result =
+        await shareImageFiles(
+          files
+        )
 
-      if(ok){
-        return
+      switch(result.status){
+
+        case "success":
+
+          alert(
+            `Đã chia sẻ ${result.count} ảnh.`
+          )
+
+          return
+
+        case "cancel":
+
+          return
+
+        case "unsupported":
+
+          if(files.length === 1){
+
+            downloadFile(
+              files[0]
+            )
+
+          }else{
+
+            await downloadZip(
+              files
+            )
+
+          }
+
+          return
+
+        case "error":
+
+          alert(
+            "Không thể chia sẻ."
+          )
+
+          return
+
       }
-
-      // fallback
-      if(files.length === 1){
-
-        downloadFile(files[0])
-
-      }else{
-
-        await downloadZip(files)
-
-      }
-
-      return
 
     }
 
@@ -85,6 +112,7 @@ export async function exportImages(
   }
 
 }
+
 /* =========================
 DOWNLOAD FILE
 ========================= */
