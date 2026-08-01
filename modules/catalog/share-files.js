@@ -28,13 +28,18 @@ export async function shareImageFiles(
 
     }
 
-    await navigator.share({
+await new Promise(
+  resolve =>
+    setTimeout(resolve, 100)
+)
 
-      title:"Catalog",
-      text:"Catalog sản phẩm",
-      files
+await navigator.share({
 
-    })
+  title:"Catalog",
+
+  files
+
+})
 
     return true
 
