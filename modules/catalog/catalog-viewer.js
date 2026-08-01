@@ -30,11 +30,57 @@ function distance(touches){
 
 }
 
+function clampPosition(){
+
+  if(scale <= 1){
+
+    x = 0
+    y = 0
+
+    return
+
+  }
+
+  const rect =
+    image.getBoundingClientRect()
+
+  const maxX =
+    Math.max(
+      0,
+      (rect.width - window.innerWidth) / 2
+    )
+
+  const maxY =
+    Math.max(
+      0,
+      (rect.height - window.innerHeight) / 2
+    )
+
+  x = Math.max(
+    -maxX,
+    Math.min(
+      maxX,
+      x
+    )
+  )
+
+  y = Math.max(
+    -maxY,
+    Math.min(
+      maxY,
+      y
+    )
+  )
+
+}
+
 function updateTransform(){
 
   if(!image){
     return
   }
+
+  clampPosition()
 
   image.style.transform =
     `translate(${x}px,${y}px) scale(${scale})`
@@ -53,7 +99,25 @@ function resetTransform(){
 
 }
 
-function zoom(delta){
+function zoom(delta, clientX, clientY){
+
+  const rect =
+    image.getBoundingClientRect()
+
+  const ox =
+    clientX - rect.left
+
+  const oy =
+    clientY - rect.top
+
+  const px =
+    ox / rect.width
+
+  const py =
+    oy / rect.height
+
+  const oldScale =
+    scale
 
   scale = Math.max(
     1,
@@ -62,6 +126,17 @@ function zoom(delta){
       scale + delta
     )
   )
+
+  const ratio =
+    scale / oldScale
+
+  x -=
+    (ox - rect.width / 2) *
+    (ratio - 1)
+
+  y -=
+    (oy - rect.height / 2) *
+    (ratio - 1)
 
   updateTransform()
 
@@ -77,7 +152,11 @@ function renderImage(){
   }
 
   image.src =
-    product.image
+    product.image_url ||
+    "/images/no-image.png"
+
+  image.alt =
+    product.name || ""
 
   resetTransform()
 
@@ -213,7 +292,11 @@ export function openCatalogViewer({
 
           ?0.2
 
-          :-0.2
+          :-0.2,
+
+        e.clientX,
+
+        e.clientY  
 
       )
 

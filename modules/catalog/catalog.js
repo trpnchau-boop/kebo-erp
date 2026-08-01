@@ -800,17 +800,6 @@ groupSelect.addEventListener(
 
       }
 
-
-        if(
-
-          window.matchMedia(
-            "(pointer:fine)"
-          ).matches
-
-        ){
-          return
-        }
-
         if(
 
           e.target.closest(
@@ -892,14 +881,86 @@ groupSelect.addEventListener(
     }
   )
 
-  /* =====================
-     FIRST LOAD
-  ===================== */
 
-  btnRefresh.addEventListener(
-    "click",
-    refreshCatalog
-  )
+grid.addEventListener(
+
+  "dblclick",
+
+  e=>{
+
+    const card =
+      e.target.closest(
+        ".catalog-card"
+      )
+
+    if(!card){
+      return
+    }
+
+    if(
+
+      e.target.closest(
+
+        ".product-check,.btn-download,.btn-share"
+
+      )
+
+    ){
+      return
+    }
+
+    if(
+
+      isDefaultCatalogWidth()
+
+    ){
+
+      openCatalogViewer({
+
+        products,
+
+        productId:Number(
+          card.dataset.id
+        )
+
+      })
+
+    }else{
+
+      zoomDefault(
+
+        grid,
+
+        {
+
+          id:card.dataset.id,
+
+          keyword:search.value,
+
+          group:getDropdownValue(
+            groupSelect
+          ),
+
+          hot:showHot
+
+        }
+
+      )
+
+    }
+
+  }
+
+)
+
+/* =====================
+   FIRST LOAD
+===================== */
+
+btnRefresh.addEventListener(
+  "click",
+  refreshCatalog
+)
 
 function restoreCatalog(){
 
