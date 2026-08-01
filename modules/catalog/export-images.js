@@ -8,6 +8,13 @@ import {
 }
 from "./share-files.js"
 
+import {
+  waitPreload
+}
+from "./image-cache.js"
+
+let exporting = false
+
 /* =========================
 EXPORT
 ========================= */
@@ -17,59 +24,74 @@ export async function exportImages(
   share = false
 ){
 
-  const files =
-    await getImageFiles(
-      products
-    )
-
-  if(!files.length){
-
-    alert("Không có ảnh")
-
+  if(exporting){
     return
-
   }
 
-  if(share){
+  exporting = true
 
-    const ok =
-      await shareImageFiles(files)
+  try{
 
-    if(ok){
+    await waitPreload()
+
+    const files =
+      await getImageFiles(
+        products
+      )
+
+    if(!files.length){
+
+      alert("Không có ảnh")
+
       return
+
     }
 
-    // fallback
+    if(share){
+
+      const ok =
+        await shareImageFiles(files)
+
+      if(ok){
+        return
+      }
+
+      // fallback
+      if(files.length === 1){
+
+        downloadFile(files[0])
+
+      }else{
+
+        await downloadZip(files)
+
+      }
+
+      return
+
+    }
+
     if(files.length === 1){
 
-      downloadFile(files[0])
+      downloadFile(
+        files[0]
+      )
 
-    }else{
-
-      await downloadZip(files)
+      return
 
     }
 
-    return
-
-  }
-
-  if(files.length === 1){
-
-    downloadFile(
-      files[0]
+    await downloadZip(
+      files
     )
 
-    return
+  }finally{
+
+    exporting = false
 
   }
 
-  await downloadZip(
-    files
-  )
-
 }
-
 /* =========================
 DOWNLOAD FILE
 ========================= */

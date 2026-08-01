@@ -9,10 +9,16 @@ import {
 }
 from "/js/components/progress-overlay.js"
 
-const CONCURRENT = 5
+import {
 
-const imageCache =
-  new Map()
+  getImageFile,
+
+  clearImageCache
+
+}
+from "./image-cache.js"
+
+const CONCURRENT = 5
 
 export async function getImageFiles(
   products
@@ -34,10 +40,26 @@ export async function getImageFiles(
 
         const current = index++
 
-        files[current] =
-          await loadImageFile(
-            products[current]
+        try{
+
+          files[current] =
+            await getImageFile(
+              products[current]
+            )
+
+        }catch(err){
+
+          console.warn(
+
+            "Không tải được ảnh:",
+
+            products[current]?.image_url,
+
+            err
+
           )
+
+        }
 
         completed++
 
@@ -89,139 +111,8 @@ export async function getImageFiles(
 
 }
 
-/* =========================
-LOAD IMAGE
-========================= */
+export {
 
-async function loadImageFile(
-  product
-){
-
-  if(
-    !product?.image_url
-  ){
-
-    return null
-
-  }
-
-  try{
-
-  const cacheKey =
-
-    `${product.id}-${product.updated_at || product.image_url}`
-
-  let blob =
-    imageCache.get(
-      cacheKey
-    )
-
-  if(!blob){
-
-    const response =
-      await fetch(
-        product.image_url
-      )
-
-    if(!response.ok){
-
-      return null
-
-    }
-
-    blob =
-      await response.blob()
-
-    imageCache.set(
-
-      cacheKey,
-
-      blob
-
-    )
-
-  }
-
-    const ext =
-
-      blob.type.split("/")[1]
-
-      ||
-
-      "jpg"
-
-    return new File(
-
-      [blob],
-
-      `${getFileName(product)}.${ext}`,
-
-      {
-
-        type: blob.type
-
-      }
-
-    )
-
-  }catch(err){
-
-    console.warn(
-
-      "Không tải được ảnh:",
-
-      product.image_url,
-
-      err
-
-    )
-
-    return null
-
-  }
-
-}
-
-/* =========================
-FILE NAME
-========================= */
-
-function getFileName(
-  product
-){
-
-  return (
-
-    product.name ||
-
-    product.code ||
-
-    product.id ||
-
-    "product"
-
-  )
-
-  .replace(
-
-    /[<>:"/\\|?*\x00-\x1F]+/g,
-
-    "-"
-
-  )
-
-  .replace(/\s+/g," ")
-
-  .trim()
-
-}
-
-/* =========================
-CACHE
-========================= */
-
-export function clearImageCache(){
-
-  imageCache.clear()
+  clearImageCache
 
 }
