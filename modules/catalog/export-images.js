@@ -8,6 +8,11 @@ import {
 }
 from "./share-files.js"
 
+import {
+  showShareWarning
+}
+from "/js/components/popup.js"
+
 let exporting = false
 
 /* =========================
@@ -42,18 +47,28 @@ export async function exportImages(
 
     if(share){
 
+      const ok =
+        await showShareWarning()
+
+      if(!ok){
+        return
+      }
+
       const result =
-        await shareImageFiles(
-          files
-        )
+        await shareImageFiles(files)
 
       switch(result.status){
 
         case "success":
 
-          alert(
+          await alertPopup({
+
+              title:"Thành công",
+
+              message:
             `Đã chia sẻ ${result.count} ảnh.`
-          )
+
+          })
 
           return
 

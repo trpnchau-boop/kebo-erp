@@ -1,0 +1,241 @@
+/* =========================
+POPUP OVERLAY
+========================= */
+
+.popup-overlay{
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,.45);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  z-index: 99999;
+
+  animation: popupFade .18s ease;
+
+  transition:.15s;
+}
+
+/* =========================
+POPUP
+========================= */
+
+.popup{
+
+  width: 100%;
+
+  max-width: 350px;
+
+  background: #fff;
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.25);
+
+  animation:
+    popupScale .18s ease;
+
+  transition:
+    opacity .15s,
+    transform .15s;
+
+}
+
+/* =========================
+HEADER
+========================= */
+
+.popup-header{
+
+  padding:
+    18px
+    22px
+    0px;
+
+}
+
+.popup-title{
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  color: #222;
+
+}
+
+/* =========================
+BODY
+========================= */
+
+.popup-body{
+
+  padding:
+    0
+    22px
+    20px;
+
+}
+
+.popup-message{
+
+  color: #000;
+
+  white-space: pre-line;
+
+}
+
+/* =========================
+CHECKBOX
+========================= */
+
+.popup-check{
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 18px;
+
+  font-size: 14px;
+
+  color: #000000d1;
+
+  cursor: pointer;
+
+  user-select: none;
+
+}
+
+.popup-check input{
+
+  width: 13px;
+
+  height: 13px;
+
+  cursor: pointer;
+
+  margin: unset;
+
+}
+
+/* =========================
+FOOTER
+========================= */
+
+.popup-footer{
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 8px;
+
+  border-top:
+    1px solid #eee;
+
+}
+
+/* =========================
+BUTTON
+========================= */
+
+.popup-btn{
+
+  min-width: 80px;
+
+  height: 28px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: .15s;
+
+}
+
+.popup-btn:hover{
+
+  opacity: .92;
+
+}
+
+.popup-btn-cancel{
+
+  background: #f2f2f2;
+
+  color: #444;
+
+}
+
+.popup-btn-ok{
+
+  background: #f5610b;
+
+  color: #fff;
+
+}
+
+/* =========================
+ANIMATION
+========================= */
+
+@keyframes popupFade{
+
+  from{
+
+    opacity: 0;
+
+  }
+
+  to{
+
+    opacity: 1;
+
+  }
+
+}
+
+@keyframes popupScale{
+
+  from{
+
+    opacity: 0;
+
+    transform:
+      scale(.94);
+
+  }
+
+  to{
+
+    opacity: 1;
+
+    transform:
+      scale(1);
+
+  }
+
+}

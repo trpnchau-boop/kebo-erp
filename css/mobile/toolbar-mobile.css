@@ -24,7 +24,7 @@
     }
 
     .toolbar-filter{
-        margin-left: auto;
+        justify-content: left;
     }    
 
     .toolbar-export{
