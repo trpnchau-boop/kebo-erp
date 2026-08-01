@@ -1,5 +1,5 @@
 import { renderCatalogImage }
-from "./catalog-card.js"
+from "./catalog-image.js"
 
 export function renderCatalog(
   groups,

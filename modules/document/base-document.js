@@ -143,7 +143,7 @@ export const BASE_DOCUMENT = {
           ]
         },
         mapping:{
-          customer_name:"name",
+          customer_name:"donvi",
           phone:"phone",
           mst:"mst",
           address:"add",
@@ -193,7 +193,7 @@ export const BASE_DOCUMENT = {
       },  
       {
         key:"customer_name",
-        label:"Tên KH",
+        label:"Tên đơn vị",
         type:"text",
         snapshot:true,
         persist:false,

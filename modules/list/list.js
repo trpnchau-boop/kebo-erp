@@ -549,8 +549,9 @@ continue
       html += `
         <td data-field="${k}">
           <a 
-          class="barcode-link"
-          href="#/payroll/employee/${row.id}">
+            href="#"
+            class="barcode-link"
+            data-id="${row.id}">
             ${value}
           </a>
         </td>
@@ -785,17 +786,34 @@ if(state.table === "print_templates"){
     return
   }
 
-  const barcode =
+const barcode =
     e.target.closest(".barcode-link")
 
-  if (barcode) {
+if (barcode) {
 
     stop(e)
 
-    openBarcodePopup(
-      barcode.dataset.barcode
-    )
-  }
+    if (state.table === "data_employee") {
+
+        openTab(
+            `payroll-${barcode.dataset.id}`,
+            "Bảng lương",
+            "payroll",
+            {
+                ref: barcode.dataset.id
+            }
+        )
+
+    } else {
+
+        openBarcodePopup(
+            barcode.dataset.barcode
+        )
+
+    }
+
+    return
+}
 }
 
 /* =========================

@@ -14,14 +14,9 @@ import {
 from "./catalog-render.js"
 
 import {
-  exportCatalogJpg
+  exportImages
 }
-from "./export-catalog.js"
-
-import {
-  exportCatalogPdf
-}
-from "./export-catalog-pdf.js"
+from "./export-images.js"
 
 import {
   renderDropdownSelect,
@@ -393,29 +388,7 @@ function applyFilter(){
 
     }
 
-    await exportCatalogJpg(
-      items
-    )
-
-  }
-
-  btnPdfSelected.onclick =
-  async ()=>{
-
-    const items =
-      getSelectedProducts()
-
-    if(!items.length){
-
-      alert(
-        "Chưa chọn sản phẩm"
-      )
-
-      return
-
-    }
-
-    await exportCatalogPdf(
+    await exportImages(
       items
     )
 
@@ -437,7 +410,7 @@ function applyFilter(){
 
     }
 
-    await exportCatalogJpg(
+    await exportImages(
       items,
       true
     )
@@ -781,7 +754,7 @@ groupSelect.addEventListener(
 
         if(product){
 
-          await exportCatalogJpg(
+          await exportImages(
             [product]
           )
 
@@ -811,7 +784,7 @@ groupSelect.addEventListener(
 
         if(product){
 
-          await exportCatalogJpg(
+          await exportImages(
             [product],
             true
           )

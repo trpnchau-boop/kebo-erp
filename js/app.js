@@ -70,7 +70,9 @@ function openMenuTab(el){
     delete params.table
   }
 
-  const title = el.textContent.trim()
+  const title =
+    el.dataset.title ||
+    el.textContent.trim()
   const id = buildTabId(page, params)
 
   setPageTitle(title)
@@ -149,9 +151,13 @@ function syncFromHash(){
      #sidebar [data-page="${data.page}"]`
   )
 
-  const title = menuEl
-    ? menuEl.textContent.trim()
-    : data.page
+  const title =
+    menuEl?.dataset.title ||
+    menuEl?.textContent.trim() ||
+    ({
+      payroll: "Bảng lương"
+    }[data.page]) ||
+    data.page
 
   openTab(id, title, data.page, params)
 }
@@ -163,9 +169,23 @@ MENU CLICK
 
 document.addEventListener("click", e => {
 
-  const menuTitle = e.target.closest("#sidebar .menu-title")
+  const menuTitle =
+    e.target.closest("#sidebar .menu-title")
+
   if(menuTitle){
-    menuTitle.parentElement.classList.toggle("open")
+
+    // Bấm mũi tên -> bung menu
+    if(e.target.closest(".arrow")){
+      menuTitle.parentElement.classList.toggle("open")
+      return
+    }
+
+    // Bấm tiêu đề -> mở trang
+    if(menuTitle.dataset.page){
+      closeSidebarPanel()
+      openMenuTab(menuTitle)
+    }
+
     return
   }
 
