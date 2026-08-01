@@ -263,7 +263,7 @@
 
     max-height:95vh;
 
-    transform-origin:center center;
+    transform-origin:center;
 
     cursor:grab;
 
@@ -271,12 +271,16 @@
 
     -webkit-user-drag:none;
 
-    transition:transform .08s linear;
+    z-index:1;
 
-    z-index: 1;
-    will-change: transform;
+    will-change:
+      translate,
+      scale;
 
-    backface-visibility: hidden;
+    backface-visibility:hidden;
+
+    contain:paint;
+
 }
 
 .catalog-viewer-image:active{
