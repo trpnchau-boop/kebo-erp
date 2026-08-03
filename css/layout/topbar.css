@@ -46,7 +46,19 @@
 
 }
 
+.topbar-actions{
+    overflow:hidden;
+    height:34px;
+    transition:height .2s ease;
+}
 
+@media (max-width:768px){
+
+    .topbar-actions.hide{
+        height:0;
+    }
+
+}
 /*=========================
 ROOT
 =========================*/

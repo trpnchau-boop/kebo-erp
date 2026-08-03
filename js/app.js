@@ -572,3 +572,67 @@ btnRefresh?.addEventListener("click", async ()=>{
   }
 
 })
+
+/* =========================
+MOBILE TOPBAR AUTO HIDE
+========================= */
+
+const topbarActions =
+  document.querySelector(".topbar-actions")
+const DELTA = 25;
+let lastY = 0
+let ticking = false
+
+document.addEventListener(
+  "scroll",
+  e => {
+
+    if(window.innerWidth > 768) return
+
+    const el = e.target
+
+    if(
+      !(el instanceof HTMLElement)
+    ){
+      return
+    }
+
+    // Chỉ xử lý các vùng thật sự scroll
+    if(el.scrollHeight <= el.clientHeight){
+      return
+    }
+
+    const y = el.scrollTop
+
+    if(!ticking){
+
+      requestAnimationFrame(()=>{
+
+        if(y < 5){
+
+            topbarActions.classList.remove("hide");
+            lastY = y;
+
+        }else if(y - lastY > DELTA){
+
+            topbarActions.classList.add("hide");
+            lastY = y;
+
+        }else if(lastY - y > DELTA){
+
+            topbarActions.classList.remove("hide");
+            lastY = y;
+
+        }
+
+        ticking = false;
+ 
+    });
+
+      ticking = true
+
+    }
+
+  },
+  true      // <-- capture, bắt mọi vùng scroll
+)
