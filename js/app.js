@@ -597,6 +597,13 @@ document.addEventListener(
       return
     }
 
+    const page =
+        el.closest(".tab-host")?.dataset.page;
+
+    if (page === "document") {
+        return;
+    } 
+
     // Chỉ xử lý các vùng thật sự scroll
     if(el.scrollHeight <= el.clientHeight){
       return

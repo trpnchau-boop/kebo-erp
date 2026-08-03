@@ -17,7 +17,7 @@ tr.className = `doc-row doc-row-${docType.toLowerCase()}`
   .doc-table-wrap{
     padding:0 !important;
     background:transparent !important;
-    border-radius:0 !important;
+    border-radius:5px !important;
     box-shadow:none !important;
     overflow:visible !important;
     max-height:none !important;

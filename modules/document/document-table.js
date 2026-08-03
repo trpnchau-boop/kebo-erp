@@ -249,7 +249,13 @@ export async function pushItemRow(
   )
 
   requestAnimationFrame(() => {
-    scrollToLastRow(root)
+
+    const isMobile = window.matchMedia("(pointer: coarse)").matches
+
+    if (!isMobile) {
+      scrollToLastRow(root)
+    }
+
   })
 }
 
