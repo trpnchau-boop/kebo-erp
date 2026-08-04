@@ -89,11 +89,13 @@ export const DOCUMENT_LIST_TYPES = {
       { key:"bulk_delete", label:"Xóa hàng loạt" }, 
       { key:"bulk_print", label:"In hàng loạt" }, 
       { key:"bulk_payment", label:"Thanh toán hàng loạt" },
+      { key:"bulk_export_stock", label:"Xuất kho hàng loạt" },       
     ],
     rowActions:[
       { key:"remove", label:"Xóa" },
       { key:"print", label:"In" },
       { key:"payment", label:"Thanh toán" },
+      { key:"export_stock", label:"Xuất kho" },        
       { key:"post", label:"Ghi sổ" },  
     ]
   },  

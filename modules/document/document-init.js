@@ -73,7 +73,7 @@ export async function initDocument(
   LOAD EDIT
   ========================= */
 
-  if(id){
+if(id){
 
     await loadDocument(
       id,
@@ -81,7 +81,34 @@ export async function initDocument(
       state
     )
 
-  }
+    /* =========================
+    EXPORT MODE
+    ========================= */
+
+    if(route.action === "create"){
+
+      const sourceId =
+          state.header.id
+
+      state.header.ref =
+          sourceId
+
+      state.header.id =
+          null
+
+      state.header.code =
+          `${schema.meta.prefix}...`
+
+      state.items.forEach(item=>{
+
+          item.id = null
+          item.id_doc = null
+
+      })
+
+    }
+
+}
 
   /* =========================
   CREATE MODE

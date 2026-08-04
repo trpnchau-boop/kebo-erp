@@ -25,6 +25,11 @@ import {
 }
 from "../document-generate-code.js"
 
+import {
+  updateDerivedDocument
+}
+from "./update-derived-document.js"
+
 export async function saveDocument({
   root,
   schema,
@@ -65,8 +70,6 @@ export async function saveDocument({
   ===================================================== */
 
   payload.header.type =
-
-    state.header.type ||
 
     schema.meta.code
 
@@ -345,45 +348,72 @@ export async function saveDocument({
   ===================================================== */
 
   if(
-    state.header.auto_export
+    schema.meta.code === "EXPORT"
+    &&
+    state.header.ref
   ){
 
-    await createDerivedDocument({
+      if(docId){
 
-      schema,
+        await updateDerivedDocument({
 
-      type:"EXPORT",
+            schema,
 
-      ref:
-        finalDocId,
+            type: "INVOICE",
 
-      header:
-        headerData,
+            ref: state.header.ref,
 
-      items:
-        itemData
+            header: headerData,
 
-    })
+            items: itemData
 
-    await createDerivedDocument({
+        })
 
-      schema,
+      }else{
 
-      type:"INVOICE",
+        await createDerivedDocument({
 
-      ref:
-        finalDocId,
+            schema,
 
-      header:
-        headerData,
+            type: "INVOICE",
 
-      items:
-        itemData
+            ref: state.header.ref,
 
-    })
+            header: headerData,
+
+            items: itemData
+
+        })
+
+      }
 
   }
 
+  /* =====================================================
+  INVOICE -> EXPORT
+  ===================================================== */
+
+  if(
+      schema.meta.code === "INVOICE"
+      &&
+      state.header.ref
+  ){
+
+      await updateDerivedDocument({
+
+          schema,
+
+          type: "EXPORT",
+
+          ref: state.header.ref,
+
+          header: headerData,
+
+          items: itemData
+
+      })
+
+  }
   /* =====================================================
   TAX INVOICE
   ===================================================== */

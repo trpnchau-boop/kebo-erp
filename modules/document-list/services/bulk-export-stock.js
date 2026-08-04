@@ -81,9 +81,11 @@ export async function bulkStockDocument(ctx){
       continue
     }
 
-    /* =========================================
-    CREATE EXPORT
-    ========================================= */
+  /* =========================================
+  SALE
+  ========================================= */
+
+  if(header.type === "SALE"){
 
     await createDerivedDocument({
 
@@ -100,10 +102,6 @@ export async function bulkStockDocument(ctx){
 
     })
 
-    /* =========================================
-    CREATE INVOICE
-    ========================================= */
-
     await createDerivedDocument({
 
       schema:
@@ -118,6 +116,32 @@ export async function bulkStockDocument(ctx){
       items
 
     })
+
+  }
+ 
+  /* =========================================
+  INVOICE
+  ========================================= */
+
+  else if(header.type === "INVOICE"){
+
+    await createDerivedDocument({
+
+      schema:
+        BASE_DOCUMENT,
+
+      type:"EXPORT",
+
+      ref:
+        header.ref || id,
+
+      header,
+ 
+      items
+
+    })
+
+  }
 
     successCount++
 
