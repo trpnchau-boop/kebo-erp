@@ -41,13 +41,6 @@ export async function loadDocuments({
     )
   }
 
-  if(search){
-    query = query.ilike(
-      "code",
-      `%${search}%`
-    )
-  }  
-
   if(fromDate){
     query = query.gte(
       "day",
@@ -121,33 +114,55 @@ export async function loadDocuments({
   MAP DISPLAY TEXT
   ===================================== */
 
-  return (data || [])
+  const rows = (data || [])
+  
+    .map(row=>({
 
-    .map(row=>{
+      ...row,
 
-      return {
+      id_customer_text:
+        customerMap[
+          row.id_customer
+        ] || "",
 
-        ...row,
+      id_employee_text:
+        employeeMap[
+          row.id_employee
+        ] || ""
 
-        id_customer_text:
+    }))
 
-          customerMap[
-            row.id_customer
-          ]
-          || "",
+  if(!search){
+    return rows
+  }
 
-        id_employee_text:
+  const keyword =
+    search.toLowerCase()
 
-          employeeMap[
-            row.id_employee
-          ]
-          || ""
+  return rows.filter(row=>{
 
-      }
+    return [
 
-    })
+      row.code,
+      row.id_customer_text,
+      row.id_employee_text,
+      row.note
 
-}
+    ]
+
+    .filter(Boolean)
+
+    .some(value=>
+
+      String(value)
+        .toLowerCase()
+        .includes(keyword)
+
+    )
+
+  })
+
+  }
 
 export async function loadOptions(
 
