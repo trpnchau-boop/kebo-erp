@@ -251,20 +251,6 @@ export const BASE_DOCUMENT = {
           show:true,
         }        
       },      
-     {
-        key:"tongtienvon",
-        type:"money",
-        computed:true,
-        formula:"sum(tienvon)",
-        show:{
-          form:false,
-          totals:false,
-          table:false
-        },
-        print:{
-          show:false,
-        }        
-      },
     {
       key:"payment_summary",
       label:"Thanh toán",
@@ -338,7 +324,26 @@ export const BASE_DOCUMENT = {
           section:"header",
           col:2
         }        
-      },           
+      },   
+      {
+        key:"tongtienvon",
+        label:"Tổng tiền vốn", 
+        type:"money",
+        readonly:true,        
+        computed:true,
+        formula:"sum(tienvon)",
+        show:{
+          form:true,
+          totals:false,
+          table:false
+        },
+        showInDocTypes:[
+          "EXPORT"
+        ],  
+        print:{
+          show:false,
+        }        
+      },              
       ]
       },      
     ]

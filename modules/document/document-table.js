@@ -28,6 +28,8 @@ import {
 }
 from "./document-summary-bar.js"
 
+import { loadRef } from "/js/relation-cache.js"
+
 /* =========================================================
 TABLE
 ========================================================= */
@@ -134,6 +136,26 @@ function renderHead(root, schema, state){
 
       th.textContent =
         col.label || ""
+
+        
+      if(col.key === "dongiavon"){
+
+        th.style.cursor = "pointer"
+
+        th.title =
+          "Cập nhật giá vốn"
+
+        th.onclick = async ()=>{
+
+          await refreshAllCost(
+            root,
+            schema,
+            state
+          )
+
+        }
+
+      }
 
       if(col.width){
         th.style.minWidth =
@@ -447,5 +469,81 @@ async function renderBody(
     })
 
   }
+
+}
+
+async function refreshAllCost(
+  root,
+  schema,
+  state
+){
+
+  const products =
+    await loadRef("data_product")
+
+  const productMap =
+    new Map(
+      products.map(p => [
+        String(p.id),
+        p
+      ])
+    )
+
+  let changed = false
+
+  for(const row of state.items){
+
+    const product =
+      productMap.get(
+        String(row.id_product)
+      )
+
+    if(!product){
+      continue
+    }
+
+    const newCost =
+      Number(product.giavon) || 0
+
+    if(row.dongiavon === newCost){
+      continue
+    }
+
+    row.dongiavon = newCost
+
+    computeTableRow(
+      schema,
+      row
+    )
+
+    changed = true
+
+  }
+
+  if(!changed){
+    console.log(
+      "Giá vốn đã mới nhất."
+    )
+    return
+  }
+
+  computeHeader(
+    schema,
+    state
+  )
+
+  await syncInputs({
+    schema,
+    target: state.header,
+    scope: "header"
+  })
+
+  updateSummaryBar(root)
+
+  await renderBody(
+    root,
+    schema,
+    state
+  )
 
 }

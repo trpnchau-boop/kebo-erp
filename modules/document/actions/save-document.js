@@ -25,11 +25,6 @@ import {
 }
 from "../document-generate-code.js"
 
-import {
-  updateDerivedDocument
-}
-from "./update-derived-document.js"
-
 export async function saveDocument({
   root,
   schema,
@@ -100,6 +95,39 @@ export async function saveDocument({
 
   const docId =
     state.header.id
+
+  if(
+    docId &&
+    schema.meta.code === "SALE"
+){
+
+    const { data } = await db
+
+        .from("document")
+
+        .select("id")
+
+        .eq("ref", docId)
+
+        .limit(1)
+
+    if(data?.length){
+
+        const ok = confirm(
+`Chứng từ đã tạo phiếu xuất kho / hóa đơn.
+
+Sửa SALE sẽ KHÔNG tự đồng bộ.
+
+Tiếp tục?`
+        )
+
+        if(!ok){
+            return
+        }
+
+    }
+
+}
 
   let headerData = null
 
@@ -344,102 +372,91 @@ export async function saveDocument({
   }
 
   /* =====================================================
-  AUTO WORKFLOW
+  SALE WORKFLOW
   ===================================================== */
 
-  if(
-    schema.meta.code === "EXPORT"
+  if(schema.meta.code === "SALE" 
     &&
-    state.header.ref
-  ){
+    !docId){
 
-      if(docId){
+    let exportDoc = null
 
-        await updateDerivedDocument({
+    /* ==========================
+    EXPORT
+    ========================== */
+
+    if(
+        state.header.auto_export ||
+        state.header.publish_invoice
+    ){
+
+        exportDoc =
+            await createDerivedDocument({
+
+                schema,
+
+                type:"EXPORT",
+
+                ref:finalDocId,
+
+                header:headerData,
+
+                items:itemData
+
+            })
+
+    }
+
+    /* ==========================
+    INVOICE
+    ========================== */
+
+    if(exportDoc){
+
+            await createDerivedDocument({
+
+                schema,
+
+                type:"INVOICE",
+
+                ref:finalDocId,
+
+                header:headerData,
+
+                items:itemData
+
+            })
+
+    }
+
+    /* ==========================
+    ISSUE
+    ========================== */
+
+    if(
+        state.header.publish_invoice
+    ){
+
+        await saveTaxInvoice({
 
             schema,
 
-            type: "INVOICE",
+            state,
 
-            ref: state.header.ref,
+            status,
 
-            header: headerData,
+            sourceId:finalDocId,
 
-            items: itemData
+            header:headerData,
 
-        })
-
-      }else{
-
-        await createDerivedDocument({
-
-            schema,
-
-            type: "INVOICE",
-
-            ref: state.header.ref,
-
-            header: headerData,
-
-            items: itemData
+            items:itemData
 
         })
 
-      }
+    }
 
   }
 
-  /* =====================================================
-  INVOICE -> EXPORT
-  ===================================================== */
-
-  if(
-      schema.meta.code === "INVOICE"
-      &&
-      state.header.ref
-  ){
-
-      await updateDerivedDocument({
-
-          schema,
-
-          type: "EXPORT",
-
-          ref: state.header.ref,
-
-          header: headerData,
-
-          items: itemData
-
-      })
-
-  }
-  /* =====================================================
-  TAX INVOICE
-  ===================================================== */
-
-  if(
-    state.header.publish_invoice
-  ){
-
-    await saveTaxInvoice({
-
-      schema,
-      state,
-      status,
-
-      sourceId:
-        finalDocId,
-
-      header:
-        headerData,
-
-      items:
-        itemData
-
-    })
-
-  }
 
   /* =====================================================
   SUCCESS

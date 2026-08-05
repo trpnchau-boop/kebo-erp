@@ -30,6 +30,16 @@ export async function clearDocument({
   }
 
   /* =========================
+  KEEP CHECKBOX
+  ========================= */
+
+  const autoExport =
+    state.header.auto_export
+
+  const publishInvoice =
+    state.header.publish_invoice
+
+  /* =========================
   CLEAR STATE
   ========================= */
 
@@ -42,7 +52,11 @@ export async function clearDocument({
     code: `${schema.meta.prefix}...`,
     day: new Date()
       .toISOString()
-      .slice(0,10)
+      .slice(0,10),
+      
+    auto_export: autoExport,
+    publish_invoice: publishInvoice  
+
   })
 
   state.items = []
