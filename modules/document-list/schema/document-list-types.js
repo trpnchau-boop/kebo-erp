@@ -17,7 +17,6 @@ export const DOCUMENT_LIST_TYPES = {
       "id_customer",
       "note",
       "tongthanhtoan",
-      "tien_tt",
     ],
     actions:[
       { key:"merge", label:"Gộp đơn"},
@@ -115,19 +114,17 @@ export const DOCUMENT_LIST_TYPES = {
       "id_customer",
       "note",      
       "tongthanhtoan",
-      "tien_tt",
+      "tongtienvon",
     ],
 
     actions:[
       { key:"bulk_post", label:"Ghi sổ hàng loạt" },
       { key:"bulk_delete", label:"Xóa hàng loạt" }, 
       { key:"bulk_print", label:"In hàng loạt" }, 
-      { key:"bulk_payment", label:"Thanh toán hàng loạt" },
     ],
     rowActions:[
       { key:"remove", label:"Xóa" },
       { key:"print", label:"In" },
-      { key:"payment", label:"Thanh toán" },
       { key:"post", label:"Ghi sổ" },        
     ]
   },
@@ -143,7 +140,6 @@ export const DOCUMENT_LIST_TYPES = {
       "id_customer",
       "note",      
       "tongthanhtoan",
-      "tien_tt",
     ],
 
     actions:[

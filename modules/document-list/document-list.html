@@ -1,146 +1,158 @@
-  <div class="toolbar" id="toolbar" >
+<div class="toolbar" id="toolbar">
 
-    <div class="list-footer" id="document-list-footer">
+  <div class="list-footer" id="document-list-footer">
 
-      <div class="list-total">
+    <div class="list-total">
 
-        Tổng:
-        <span class="list-chip" id="document-list-total">0</span>
+      Tổng:
+      <span class="list-chip" id="document-list-total">0</span>
 
-        |
+      |
 
-        Chọn:
-        <span class="list-chip" id="document-list-selected">0</span>
-
-        <span id="document-list-selected-info" hidden >
-          |
-          Money:
-          <span class="list-chip" id="document-list-selected-money">0</span>
-        </span>
-
-      </div>
+      Chọn:
+      <span class="list-chip" id="document-list-selected">0</span>
 
     </div>
 
-    <div class="search-doc">
-      <div class="search-box">
-        <input id="search-input" type="text" placeholder="Search..." />
-        <button class="search-btn">
-          🔍
-        </button>
-      </div>
+  </div>
+
+  <div class="search-doc">
+    <div class="search-box">
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search..."
+      />
+      <button class="search-btn">
+        🔍
+      </button>
     </div>
+  </div>
+
+  <div
+    class="list-actions"
+    id="list-actions"
+    title="Thao tác"
+  ></div>
+
+  <div class="dropdown-menu filter-menu">
+
+    <button
+      id="btn-filter"
+      class="
+        dropdown-trigger
+        filter-trigger
+      "
+      type="button"
+      title="Lọc"
+    >
+      <img
+        src="/icons/filter.svg"
+        alt=""
+      >
+    </button>
 
     <div
-      class="list-actions"
-      id="list-actions"
-      title="Thao tác"
-    ></div>
-    
-    <div class="dropdown-menu filter-menu">
+      class="
+        dropdown-panel
+        filter-dropdown
+      "
+    >
 
       <button
-        id="btn-filter"
         class="
-          dropdown-trigger
-          filter-trigger
+          dropdown-item
+          filter-item
         "
-        type="button"
-        title="Lọc"
+        data-status=""
       >
-        <img
-          src="/icons/filter.svg"
-          alt=""
-        >
+        Tất cả
       </button>
 
-      <div
+      <button
         class="
-          dropdown-panel
-          filter-dropdown
+          dropdown-item
+          filter-item
         "
+        data-status="draft"
       >
+        Chưa ghi sổ
+      </button>
 
-        <button
-          class="
-            dropdown-item
-            filter-item
-          "
-          data-status=""
-        >
-          Tất cả
-        </button>
-
-        <button
-          class="
-            dropdown-item
-            filter-item
-          "
-          data-status="draft"
-        >
-          Chưa ghi sổ
-        </button>
-
-        <button
-          class="
-            dropdown-item
-            filter-item
-          "
-          data-status="posted"
-        >
-          Đã ghi sổ
-        </button>
-
-      </div>
-
-    </div>
-
-    <div class="date-filter">
-      <span>Từ ngày:</span>
-      <input id="from-date" placeholder="yyyy-mm-dd">
-    </div>
-
-    <div class="date-filter">
-      <span>Đến ngày:</span>
-      <input id="to-date" placeholder="yyyy-mm-dd">
-    </div>
-
-  </div>
-
-  <!-- =========================
-  TABLE
-  ========================== -->
-
-  <div class="list-page">
-
-    <table>
-
-      <thead
-        id="document-list-head"
-      ></thead>
-
-      <tbody
-        id="document-list-body"
-      ></tbody>
-
-    </table>
-
-    <div class="list-summary">
-
-      <strong>Tổng:</strong>
-
-      <span id="summary-total-money">
-        0
-      </span>
-
-      <span>|</span>
-
-      <strong>Thanh toán:</strong>
-
-      <span id="summary-total-paid">
-        0
-      </span>
+      <button
+        class="
+          dropdown-item
+          filter-item
+        "
+        data-status="posted"
+      >
+        Đã ghi sổ
+      </button>
 
     </div>
 
   </div>
+
+  <div class="date-filter">
+    <span>Từ ngày:</span>
+    <input id="from-date" placeholder="yyyy-mm-dd">
+  </div>
+
+  <div class="date-filter">
+    <span>Đến ngày:</span>
+    <input id="to-date" placeholder="yyyy-mm-dd">
+  </div>
+
+</div>
+
+<!-- =========================
+TABLE
+========================== -->
+
+<div class="list-page">
+
+  <table>
+
+    <thead
+      id="document-list-head"
+    ></thead>
+
+    <tbody
+      id="document-list-body"
+    ></tbody>
+
+  </table>
+
+  <div class="list-summary">
+
+    <strong>Tổng:</strong>
+
+    <span id="summary-total-money">
+      0
+    </span>
+
+    <span>|</span>
+
+    <strong id="summary-label">
+      Thanh toán:
+    </strong>
+
+    <span id="summary-total-value">
+      0
+    </span> 
+
+    <span
+      id="summary-selected"
+      hidden
+    >
+      |
+      <strong>Đã chọn:</strong>
+
+      <span id="summary-selected-value">
+        0
+      </span>
+    </span>
+
+  </div>  
+
+</div>

@@ -59,6 +59,16 @@ export const documentFields = {
     width:"140px"
   },
 
+  tongtienvon:{
+    label:"Tổng tiền vốn",
+
+    format:"money",
+
+    align:"right",
+
+    width:"140px"
+  },  
+
   tien_tt:{
     label:"Đã thanh toán",
 

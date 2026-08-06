@@ -155,42 +155,42 @@ export async function init(
     schema
   )
 
-const now = new Date()
+  const now = new Date()
 
-const monthStart =
-  `${now.getFullYear()}-${
-    String(now.getMonth() + 1).padStart(2, "0")
-  }-01`
+  const monthStart =
+    `${now.getFullYear()}-${
+      String(now.getMonth() + 1).padStart(2, "0")
+    }-01`
 
-const today =
-  `${now.getFullYear()}-${
-    String(now.getMonth() + 1).padStart(2, "0")
-  }-${
-    String(now.getDate()).padStart(2, "0")
-  }`
+  const today =
+    `${now.getFullYear()}-${
+      String(now.getMonth() + 1).padStart(2, "0")
+    }-${
+      String(now.getDate()).padStart(2, "0")
+    }`
 
-root.querySelector("#from-date").value = monthStart
-root.querySelector("#to-date").value = today
+  root.querySelector("#from-date").value = monthStart
+  root.querySelector("#to-date").value = today
 
-createDatepicker(
-  root,
-  "#from-date",
-  ({ formattedDate })=>{
-    ctx.fromDate = formattedDate || ""
-    reload()
-  },
-  { side:"left" }
-)
+  createDatepicker(
+    root,
+    "#from-date",
+    ({ formattedDate })=>{
+      ctx.fromDate = formattedDate || ""
+      reload()
+    },
+    { side:"left" }
+  )
 
-createDatepicker(
-  root,
-  "#to-date",
-  ({ formattedDate })=>{
-    ctx.toDate = formattedDate || ""
-    reload()
-  },
-  { side:"right" }
-)
+  createDatepicker(
+    root,
+    "#to-date",
+    ({ formattedDate })=>{
+      ctx.toDate = formattedDate || ""
+      reload()
+    },
+    { side:"right" }
+  )
 
   /* =========================
   CTX
@@ -219,45 +219,55 @@ createDatepicker(
 
   ctx.container = actionsEl
 
-const totalEl =
-  root.querySelector(
-    "#document-list-total"
-  )
+  const totalEl =
+    root.querySelector(
+      "#document-list-total"
+    )
 
-const selectedEl =
-  root.querySelector(
-    "#document-list-selected"
-  )
+  const selectedEl =
+    root.querySelector(
+      "#document-list-selected"
+    )
 
-const selectedInfoEl =
-  root.querySelector(
-    "#document-list-selected-info"
-  )
+  const summaryTotalMoneyEl =
+    root.querySelector(
+      "#summary-total-money"
+    )
 
-const selectedMoneyEl =
-  root.querySelector(
-    "#document-list-selected-money"
-  )
+  const summaryLabelEl =
+    root.querySelector(
+      "#summary-label"
+    )
 
-const summaryTotalMoneyEl =
-  root.querySelector(
-    "#summary-total-money"
-  )
+  const summaryValueEl =
+    root.querySelector(
+      "#summary-total-value"
+    )
 
-const summaryTotalPaidEl =
-  root.querySelector(
-    "#summary-total-paid"
-  )  
+  const summarySelectedEl =
+    root.querySelector(
+      "#summary-selected"
+    )
 
-ctx.selection = createTableSelection({
+  const summarySelectedValueEl =
+    root.querySelector(
+      "#summary-selected-value"
+    )
 
-  thead,
-  tbody,
+  const summaryEl =
+    root.querySelector(
+      ".list-summary"
+    )
 
-  onChange({
-    ids,
-    count,
-    total
+  ctx.selection = createTableSelection({
+
+    thead,
+    tbody,
+
+    onChange({
+      ids,
+      count,
+      total
   }){
 
     if(totalEl){
@@ -278,6 +288,29 @@ ctx.selection = createTableSelection({
 
       )
 
+    const selectedProfit =
+
+      selectedRows.reduce(
+
+        (sum,row)=>
+
+          sum +
+
+          (
+
+            Number(row.tongthanhtoan || 0)
+
+            -
+
+            Number(row.tongtienvon || 0)
+ 
+          ),
+
+        0
+
+      )
+
+
     const selectedMoney =
 
       selectedRows.reduce(
@@ -292,18 +325,19 @@ ctx.selection = createTableSelection({
 
       )
 
-    if(selectedInfoEl){
+    if(type === "SALE"){
 
-      selectedInfoEl.hidden =
-        count === 0
+      summaryValueEl.textContent =
+
+        selectedMoney.toLocaleString("vi-VN")
 
     }
 
-    if(selectedMoneyEl){
+    if(type === "EXPORT"){
 
-      selectedMoneyEl.textContent =
+      summarySelectedValueEl.textContent =
 
-        selectedMoney.toLocaleString("vi-VN")
+        selectedProfit.toLocaleString("vi-VN")
 
     }
 
@@ -360,43 +394,112 @@ ctx.selection = createTableSelection({
 
       )
 
-    const totalPaid =
+let summaryValue = 0
+
+renderRows(
+
+  tbody,
+
+  ctx.rows,
+
+  schema
+
+)
+
+summaryEl.hidden =
+
+  !types.some(type=>
+
+    [
+      "SALE",
+      "INVOICE",
+      "IMPORT",
+      "EXPORT"
+    ].includes(type)
+
+  )
+
+summaryTotalMoneyEl.textContent =
+
+  totalMoney.toLocaleString("vi-VN")
+
+switch(type){
+
+  case "SALE":
+
+    summaryLabelEl.textContent =
+      "Đã chọn:"
+
+    break
+
+  case "EXPORT":
+
+    summaryLabelEl.textContent =
+      "Lợi nhuận:"
+
+    summaryValue =
 
       ctx.rows.reduce(
 
-        (sum, row)=>
+        (sum,row)=>
 
-          sum + Number(row.tien_tt || 0),
+          sum +
+
+          (
+
+            Number(row.tongthanhtoan || 0)
+
+            -
+
+            Number(row.tongtienvon || 0)
+
+          ),
 
         0
 
-      ) 
+      )
 
-    renderRows(
+    break
 
-      tbody,
+  default:
 
-      ctx.rows,
+    summaryLabelEl.textContent =
+      "Thanh toán:"
 
-      schema
+    summaryValue =
 
-    )
+      ctx.rows.reduce(
 
-    summaryTotalMoneyEl.textContent =
+        (sum,row)=>
 
-      totalMoney.toLocaleString("vi-VN")
+          sum +
 
-    summaryTotalPaidEl.textContent =
+          Number(row.tien_tt || 0),
 
-      totalPaid.toLocaleString("vi-VN")
+        0
+
+      )
+
+}
+
+if(type === "EXPORT"){
+
+  summarySelectedEl.hidden = false
+
+  summarySelectedValueEl.textContent = "0"
+
+}
+else{
+
+  summarySelectedEl.hidden = true
+
+}
+
+summaryValueEl.textContent =
+
+  summaryValue.toLocaleString("vi-VN") 
 
     ctx.selection.sync()
-
-    if(selectedInfoEl){
-
-      selectedInfoEl.hidden = true
-
-    }
 
     /* =====================
     RE-BIND

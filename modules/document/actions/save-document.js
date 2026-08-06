@@ -25,6 +25,11 @@ import {
 }
 from "../document-generate-code.js"
 
+import {
+  updateDerivedDocument
+}
+from "./update-derived-document.js"
+
 export async function saveDocument({
   root,
   schema,
@@ -95,39 +100,6 @@ export async function saveDocument({
 
   const docId =
     state.header.id
-
-  if(
-    docId &&
-    schema.meta.code === "SALE"
-){
-
-    const { data } = await db
-
-        .from("document")
-
-        .select("id")
-
-        .eq("ref", docId)
-
-        .limit(1)
-
-    if(data?.length){
-
-        const ok = confirm(
-`Chứng từ đã tạo phiếu xuất kho / hóa đơn.
-
-Sửa SALE sẽ KHÔNG tự đồng bộ.
-
-Tiếp tục?`
-        )
-
-        if(!ok){
-            return
-        }
-
-    }
-
-}
 
   let headerData = null
 
@@ -457,6 +429,96 @@ Tiếp tục?`
 
   }
 
+  /* =====================================================
+  EXPORT WORKFLOW
+  ===================================================== */
+
+  if(
+      schema.meta.code === "EXPORT"
+      &&
+      !docId
+  ){
+
+      /* =========================================
+      LOAD SOURCE
+      ========================================= */
+
+      const {
+
+        data:source,
+
+        error:sourceError
+
+      }
+
+      = await db
+
+        .from("document")
+
+        .select("id,type")
+
+        .eq(
+            "id",
+            headerData.ref
+        )
+
+        .single()
+
+      if(sourceError){
+
+        console.error(
+            "LOAD SOURCE ERROR",
+            sourceError
+        )
+
+    }
+
+    /* =========================================
+    CREATE INVOICE
+    ========================================= */
+
+    else if(
+        source.type === "SALE"
+    ){
+
+        await createDerivedDocument({
+
+            schema,
+
+            type:"INVOICE",
+
+            ref:
+                headerData.ref,
+
+            header:
+                headerData,
+
+            items:
+                itemData
+
+        })
+
+    }
+
+  }
+
+  if(docId){
+
+    await updateDerivedDocument({
+
+        schema,
+
+        state,
+
+        status,
+
+        header: headerData,
+
+        items: itemData
+
+    })
+
+  }
 
   /* =====================================================
   SUCCESS
@@ -468,3 +530,4 @@ Tiếp tục?`
   }
 
 }
+

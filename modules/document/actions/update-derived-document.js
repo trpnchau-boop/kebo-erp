@@ -10,7 +10,7 @@ import {
 }
 from "../document-payload.js"
 
-export async function updateDerivedDocument({
+async function syncDocument({
 
   schema,
 
@@ -62,20 +62,6 @@ export async function updateDerivedDocument({
   if(!doc){
 
     return null
-
-  }
-
-  /* =========================================
-  POSTED
-  ========================================= */
-
-  if(doc.status === "posted"){
-
-    alert(
-      "Phiếu xuất kho đã ghi sổ, không thể đồng bộ."
-    )
-
-    return false
 
   }
 
@@ -264,4 +250,187 @@ export async function updateDerivedDocument({
 
   }
 
+}
+
+/* =========================================
+CAN SYNC
+========================================= */
+
+async function canSync(ref){
+
+    const {
+
+        data,
+
+        error
+
+    }
+
+    = await db
+
+        .from("document")
+
+        .select(`
+            type,
+            status
+        `)
+
+        .eq("ref", ref)
+
+        .in("type",[
+            "EXPORT",
+            "INVOICE"
+        ])
+
+    if(error){
+
+        console.error(
+            "CHECK DERIVED ERROR",
+            error
+        )
+
+        return false
+
+    }
+
+    if(
+        data.some(
+            doc=>
+                doc.status === "posted"
+        )
+    ){
+
+        alert(
+            "Phiếu xuất kho hoặc hóa đơn đã ghi sổ, không thể đồng bộ."
+        )
+
+        return false
+
+    }
+
+    return true
+
+}
+
+/* =========================================
+WORKFLOW
+========================================= */
+
+export async function updateDerivedDocument({
+
+    schema,
+
+    state,
+
+    header,
+
+    items
+
+}){
+
+/* =========================================
+SALE
+========================================= */
+
+if(schema.meta.code === "SALE"){
+
+    const ref = header.id
+
+    const ok = await canSync(ref)
+
+    if(!ok){
+        return
+    }
+
+    await syncDocument({
+
+        schema,
+
+        type:"EXPORT",
+
+        ref,
+
+        header,
+
+        items
+
+    })
+
+    await syncDocument({
+
+        schema,
+
+        type:"INVOICE",
+
+        ref,
+
+        header,
+
+        items
+
+    })
+
+    return
+
+}
+/* =========================================
+EXPORT
+========================================= */
+
+if(schema.meta.code === "EXPORT"){
+
+    const ref = header.ref
+
+    const ok = await canSync(ref)
+
+    if(!ok){
+        return
+    }
+
+    await syncDocument({
+
+        schema,
+
+        type:"INVOICE",
+
+        ref,
+
+        header,
+
+        items
+
+    })
+
+    return
+
+}
+/* =========================================
+INVOICE
+========================================= */
+
+if(schema.meta.code === "INVOICE"){
+
+    const ref = header.ref
+
+    const ok = await canSync(ref)
+
+    if(!ok){
+        return
+    }
+
+    await syncDocument({
+
+        schema,
+
+        type:"EXPORT",
+
+        ref,
+
+        header,
+
+        items
+
+    })
+
+}
 }

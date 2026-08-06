@@ -7,8 +7,15 @@ tr.className = `doc-row doc-row-${docType.toLowerCase()}`
 @media (max-width: 768px){
 
   .list-summary {
-    gap: 12px;
-    padding: 0 10px;
+    gap: 6px 12px;
+    padding: 6px 10px;
+    flex-wrap: wrap;
+  }
+
+  .list-summary > *{
+
+    white-space:nowrap;
+
   }
 
   /* =======================================================
