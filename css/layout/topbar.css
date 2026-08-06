@@ -49,13 +49,24 @@
 .topbar-actions{
     overflow:hidden;
     height:34px;
-    transition:height .2s ease;
+
+    transform-origin:top;
+    transform:scaleY(1);
+    opacity:1;
+
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
 }
 
 @media (max-width:768px){
 
     .topbar-actions.hide{
         height:0;
+        transform:scaleY(0);
+        opacity:0;
+
+        pointer-events:none;  
     }
 
 }
