@@ -42,20 +42,32 @@
 
   cursor:pointer;
 
-  margin-left: auto;
-  overflow:hidden;
+  margin-left: auto
+
+}
+
+.topbar-actions{
+    overflow:hidden;
+    height:34px;
+
+    transform-origin:top;
+    transform:scaleY(1);
+    opacity:1;
+
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
 }
 
 @media (max-width:768px){
 
-  .topbar-actions{
-    transition:height .2s ease;
-  }
+    .topbar-actions.hide{
+        height:0;
+        transform:scaleY(0);
+        opacity:0;
 
-  .topbar-actions.hide{
-    height:0;
-    pointer-events:none;
-  }
+        pointer-events:none;  
+    }
 
 }
 /*=========================
