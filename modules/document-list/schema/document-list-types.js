@@ -28,7 +28,6 @@ export const DOCUMENT_LIST_TYPES = {
     rowActions:[
       { key:"remove", label:"Xóa" },
       { key:"print", label:"In" },
-      { key:"payment", label:"Thanh toán" },
       { key:"release", label:"Phát hành"},
       { key:"split", label:"Tách đơn" },      
       { key:"export_stock", label:"Xuất kho" }      
