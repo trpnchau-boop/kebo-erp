@@ -1,3 +1,4 @@
+//catalog-api.js
 import {
   getAll
 }

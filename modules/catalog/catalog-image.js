@@ -1,3 +1,4 @@
+//catalog-image.js
 export function renderCatalogImage(
   imageUrl,
   ratio = 0.3

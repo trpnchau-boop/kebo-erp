@@ -1,121 +1,232 @@
-import { renderCatalogImage }
+// catalog-render.js
+
+import {
+  renderCatalogImage
+}
 from "./catalog-image.js"
 
+
 export function renderCatalog(
+
   groups,
+
   products,
+
   box,
+
   selectedIds,
+
   showHot = false,
+
   canViewPrice = true
+
 ){
 
+
+  /* =====================================================
+     NO GROUP
+  ===================================================== */
+
   const noGroup =
+
     products.filter(
+
       p => !p.id_group
+
     )
+
 
   let html = ""
 
-if(showHot){
 
-  const hotProducts =
+  /* =====================================================
+     HOT
+  ===================================================== */
 
-    products.filter(
-      p=>p.catalog_priority
-    )
+  if(showHot){
 
-  if(hotProducts.length){
+    const hotProducts =
 
-    const allSelected =
+      products.filter(
 
-      hotProducts.every(
-        p=>selectedIds.has(p.id)
+        p => p.catalog_priority
+
       )
 
-    html += `
-      <section 
-        id="catalog-hot"
-        class="catalog-group">
 
-        <h2 class="catalog-group-title">
+    if(hotProducts.length){
 
-          <label class="group-label">
+      const allSelected =
 
-            <input
-              type="checkbox"
-              class="group-check"
-              data-group-id="hot"
-              ${
-                allSelected
-                  ? "checked"
-                  : ""
-              }
+        hotProducts.every(
+
+          p =>
+            selectedIds.has(
+              p.id
+            )
+
+        )
+
+
+      html += `
+
+        <section
+          id="catalog-hot"
+          class="catalog-group"
+        >
+
+          <h2
+            class="catalog-group-title"
+          >
+
+            <label
+              class="group-label"
             >
 
-            <span class="star-wrap">
+              <input
+                type="checkbox"
+                class="group-check"
+                data-group-id="hot"
+                ${
+                  allSelected
+                    ? "checked"
+                    : ""
+                }
+              >
 
-              <img
-                src="/images/hot-star.webp"
-                class="hot-icon"
-                alt=""
-              >  
+              <span
+                class="star-wrap"
+              >
 
-              <span class="hot-text">Hot</span>
-            </span>   
+                <img
+                  src="/images/hot-star.webp"
+                  class="hot-icon"
+                  alt=""
+                >
 
-          </label>
+                <span
+                  class="hot-text"
+                >
+                  Hot
+                </span>
 
-        </h2>
+              </span>
 
-        <div class="catalog-grid">
+            </label>
 
-          ${
-            hotProducts
-              .map(p=>
+          </h2>
 
-                renderCard(
-                  p,
-                  selectedIds.has(
-                    p.id
-                  ),
-                  canViewPrice
+
+          <div
+            class="catalog-grid"
+          >
+
+            ${
+              hotProducts
+
+                .map(
+
+                  p =>
+
+                    renderCard(
+
+                      p,
+
+                      selectedIds.has(
+                        p.id
+                      ),
+
+                      canViewPrice
+
+                    )
+
                 )
 
-              )
-              .join("")
-          }
+                .join("")
 
-        </div>
+            }
 
-      </section>
-    `
+          </div>
+
+        </section>
+
+      `
+
+    }
+
   }
 
-}
+
+  /* =====================================================
+     GROUPS
+  ===================================================== */
 
   for(const group of groups){
 
-    const groupProducts =
+
+    let groupProducts =
+
       products.filter(
+
         p =>
-          Number(p.id_group) ===
-          Number(group.id)
+
+          Number(
+            p.id_group
+          )
+
+          ===
+
+          Number(
+            group.id
+          )
+
       )
 
-    if(!groupProducts.length){
-      continue
+
+    /*
+      Khi Hot đang bật:
+
+      - Hot đã được đưa lên section Hot
+      - Không render lại Hot trong group
+      - Sản phẩm thường vẫn giữ nguyên
+    */
+
+    if(showHot){
+
+      groupProducts =
+
+        groupProducts.filter(
+
+          p =>
+            !p.catalog_priority
+
+        )
+
     }
 
+
+    if(!groupProducts.length){
+
+      continue
+
+    }
+
+
     const allSelected =
+
       groupProducts.every(
+
         p =>
+
           selectedIds.has(
             p.id
           )
+
       )
 
+
     html += `
+
       <section
         id="catalog-group-${group.id}"
         class="catalog-group"
@@ -146,43 +257,83 @@ if(showHot){
 
         </h2>
 
+
         <div
           class="catalog-grid"
         >
 
           ${
             groupProducts
-              .map(p=>
 
-                renderCard(
-                  p,
-                  selectedIds.has(
-                    p.id
-                  ),
-                  canViewPrice
-                )
+              .map(
+
+                p =>
+
+                  renderCard(
+
+                    p,
+
+                    selectedIds.has(
+                      p.id
+                    ),
+
+                    canViewPrice
+
+                  )
 
               )
+
               .join("")
+
           }
 
         </div>
 
       </section>
+
     `
+
   }
 
-  if(noGroup.length){
+
+  /* =====================================================
+     NO GROUP
+  ===================================================== */
+
+  let visibleNoGroup = noGroup
+
+
+  if(showHot){
+
+    visibleNoGroup =
+
+      noGroup.filter(
+
+        p =>
+          !p.catalog_priority
+
+      )
+
+  }
+
+
+  if(visibleNoGroup.length){
 
     const noGroupSelected =
-      noGroup.every(
+
+      visibleNoGroup.every(
+
         p =>
+
           selectedIds.has(
             p.id
           )
+
       )
 
+
     html += `
+
       <section
         id="catalog-group-nogroup"
         class="catalog-group"
@@ -213,145 +364,262 @@ if(showHot){
 
         </h2>
 
+
         <div
           class="catalog-grid"
         >
 
           ${
-            noGroup
-              .map(p=>
+            visibleNoGroup
 
-                renderCard(
-                  p,
-                  selectedIds.has(
-                    p.id
-                  ),
-                  canViewPrice
-                )
+              .map(
+
+                p =>
+
+                  renderCard(
+
+                    p,
+
+                    selectedIds.has(
+                      p.id
+                    ),
+
+                    canViewPrice
+
+                  )
 
               )
+
               .join("")
+
           }
 
         </div>
 
       </section>
+
     `
+
   }
+
+
+  /* =====================================================
+     RENDER
+  ===================================================== */
 
   box.innerHTML = html
 
 }
 
+
+/* =====================================================
+   CARD
+===================================================== */
+
 function renderCard(
+
   p,
+
   checked = false,
+
   canViewPrice = true
+
 ){
 
+
   const imageUrl =
+
     p.image_url ||
+
     "/images/no-image.png"
 
+
   const outOfStock =
+
     Number(p.qty) <= 0
 
+
   return `
+
     <div
       class="catalog-card ${
         outOfStock
           ? "out-stock"
           : ""
       }"
+
       data-id="${p.id}"
+
+      data-name="${
+        (p.name || "")
+          .toLowerCase()
+      }"
+
+      data-code="${
+        (p.code || "")
+          .toLowerCase()
+      }"
+
+      data-group-id="${
+        p.id_group ?? ""
+      }"
+
+      data-priority="${
+        p.catalog_priority
+          ? "true"
+          : "false"
+      }"
     >
+
 
       ${
         outOfStock
+
           ? `
-            <div class="out-stock-badge">
+
+            <div
+              class="out-stock-badge"
+            >
               Tạm hết
             </div>
+
           `
+
           : ""
+
       }
+
 
       ${
         p.catalog_priority
+
           ? `
-            <div class="card-hot">
+
+            <div
+              class="card-hot"
+            >
+
               <img
                 src="/images/hot-star.webp"
                 class="hot-icon"
                 alt=""
               >
+
             </div>
+
           `
+
           : ""
+
       }
+
 
       <div
         class="card-toolbar"
       >
+
         <input
           type="checkbox"
           class="product-check"
           data-id="${p.id}"
-          ${checked ? "checked" : ""}
+          ${
+            checked
+              ? "checked"
+              : ""
+          }
         >
+
 
         <button
           class="btn-download"
           data-id="${p.id}"
           type="button"
         >
-          <i class="bi bi-download"></i>
+
+          <i
+            class="bi bi-download"
+          ></i>
+
         </button>
+
 
         <button
           class="btn-share"
           data-id="${p.id}"
           type="button"
         >
-          <i class="bi bi-share"></i>
+
+          <i
+            class="bi bi-share"
+          ></i>
+
         </button>
 
       </div>
 
+
       ${renderCatalogImage(imageUrl)}
 
-      <div class="name">
+
+      <div
+        class="name"
+      >
         ${p.name || ""}
       </div>
 
+
       ${
         p.catalogTinhChat
+
           ? `
-            <div class="tinhchat">
+
+            <div
+              class="tinhchat"
+            >
               ${p.catalogTinhChat}
             </div>
+
           `
+
           : ""
+
       }
+
 
       ${
         canViewPrice
+
           ? `
-            <div class="price">
+
+            <div
+              class="price"
+            >
               ${formatPrice(p.dongia3)}
             </div>
+
           `
+
           : ""
+
       }
 
     </div>
+
   `
-  }
+
+}
+
+
+/* =====================================================
+   PRICE
+===================================================== */
 
 function formatPrice(v){
 
   return Number(
+
     v || 0
+
   ).toLocaleString()
 
 }

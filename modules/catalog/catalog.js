@@ -1,3 +1,4 @@
+//catalog.js
 import {
   updateRow
 }
@@ -272,6 +273,252 @@ renderDropdownSelect({
 
 }
 
+function renderCurrentCatalog(){
+
+  renderCatalog(
+    groups,
+    products,
+    grid,
+    selectedIds,
+    showHot,
+    canViewPrice
+  )
+
+  applyCatalogZoom(grid)
+
+  applyFilter()
+
+}
+
+function syncCardChecks(){
+
+  const checks =
+    grid.querySelectorAll(
+      ".product-check"
+    )
+
+  for(const checkbox of checks){
+
+    const id =
+      Number(
+        checkbox.dataset.id
+      )
+
+    checkbox.checked =
+      selectedIds.has(id)
+
+  }
+
+}
+
+function showHotCards(){
+
+  let hotSection =
+    grid.querySelector(
+      "#catalog-hot"
+    )
+
+  if(!hotSection){
+
+    hotSection =
+      document.createElement(
+        "section"
+      )
+
+    hotSection.id =
+      "catalog-hot"
+
+    hotSection.className =
+      "catalog-group"
+
+    hotSection.innerHTML = `
+
+      <h2
+        class="catalog-group-title"
+      >
+
+        <label
+          class="group-label"
+        >
+
+          <input
+            type="checkbox"
+            class="group-check"
+            data-group-id="hot"
+          >
+
+          <span class="star-wrap">
+
+            <img
+              src="/images/hot-star.webp"
+              class="hot-icon"
+              alt=""
+            >
+
+            <span class="hot-text">
+              Hot
+            </span>
+
+          </span>
+
+        </label>
+
+      </h2>
+
+      <div
+        class="catalog-grid"
+      ></div>
+
+    `
+
+    grid.prepend(
+      hotSection
+    )
+
+  }
+
+
+  const hotGrid =
+    hotSection.querySelector(
+      ".catalog-grid"
+    )
+
+
+  const cards =
+    [
+      ...grid.querySelectorAll(
+        ".catalog-card"
+      )
+    ]
+
+
+  for(const card of cards){
+
+    if(
+      card.dataset.priority !==
+      "true"
+    ){
+      continue
+    }
+
+
+    /*
+      Lưu vị trí gốc của card
+    */
+
+    if(
+      !card.__catalogOrigin
+    ){
+
+      card.__catalogOrigin = {
+
+        parent:
+          card.parentElement,
+
+        index:
+          [
+            ...card.parentElement
+              .children
+          ]
+          .indexOf(card)
+
+      }
+
+    }
+
+
+    hotGrid.appendChild(
+      card
+    )
+
+  }
+
+
+  syncCardChecks()
+
+}
+
+
+function hideHotCards(){
+
+  const hotSection =
+    grid.querySelector(
+      "#catalog-hot"
+    )
+
+
+  if(!hotSection){
+    return
+  }
+
+
+  const cards =
+    [
+      ...hotSection.querySelectorAll(
+        ".catalog-card"
+      )
+    ]
+
+
+  for(const card of cards){
+
+    const origin =
+      card.__catalogOrigin
+
+
+    if(!origin){
+      continue
+    }
+
+
+    const siblings =
+      [
+        ...origin.parent.children
+      ]
+
+
+    const reference =
+      siblings.find(
+        (el, index) =>
+
+          index >= origin.index
+
+          &&
+
+          el !== card
+
+          &&
+
+          el.classList.contains(
+            "catalog-card"
+          )
+      )
+
+
+    if(reference){
+
+      origin.parent.insertBefore(
+        card,
+        reference
+      )
+
+    }else{
+
+      origin.parent.appendChild(
+        card
+      )
+
+    }
+
+  }
+
+
+  hotSection.remove()
+
+  syncCardChecks()
+
+}
+
 function applyFilter(){
 
   const keyword =
@@ -279,42 +526,68 @@ function applyFilter(){
       .trim()
       .toLowerCase()
 
-  const filtered =
 
-    products.filter(p=>{
+  const cards =
+    grid.querySelectorAll(
+      ".catalog-card"
+    )
 
-      return (
 
-        !keyword
+  for(const card of cards){
 
-        ||
+    const name =
+      card.dataset.name || ""
 
-        (p.name || "")
-          .toLowerCase()
-          .includes(keyword)
+    const code =
+      card.dataset.code || ""
 
-        ||
 
-        (p.code || "")
-          .toLowerCase()
-          .includes(keyword)
+    const match =
+      !keyword
+      ||
+      name.includes(keyword)
+      ||
+      code.includes(keyword)
 
+
+    card.style.display =
+      match
+        ? ""
+        : "none"
+
+  }
+
+
+  /* =====================
+     HIDE EMPTY GROUPS
+  ===================== */
+
+  const groups =
+    grid.querySelectorAll(
+      ".catalog-group"
+    )
+
+
+  for(const group of groups){
+
+    const visibleCards =
+      [
+        ...group.querySelectorAll(
+          ".catalog-card"
+        )
+      ]
+      .some(
+        card =>
+          card.style.display !== "none"
       )
 
-    })
 
-  renderCatalog(
+    group.style.display =
+      visibleCards
+        ? ""
+        : "none"
 
-    groups,
-    filtered,
-    grid,
-    selectedIds,
-    showHot,
-    canViewPrice
-
-  )
-
-  applyCatalogZoom(grid)
+  }
 
 }
 
@@ -361,7 +634,7 @@ function applyFilter(){
 
       updateSelectionUI()
 
-      applyFilter()
+      renderCurrentCatalog()
 
     }finally{
 
@@ -422,38 +695,45 @@ function applyFilter(){
 
   }
 
-  btnHot.addEventListener(
-    "click",
-    ()=>{
+btnHot.addEventListener(
+  "click",
+  ()=>{
 
-      showHot = !showHot
+    showHot = !showHot
 
-      btnHot.classList.toggle(
-        "active",
-        showHot
-      )
+    btnHot.classList.toggle(
+      "active",
+      showHot
+    )
 
-      applyFilter()
 
-      if(showHot){
+    if(showHot){
 
-        requestAnimationFrame(()=>{
+      showHotCards()
 
-          document
-            .getElementById("catalog-hot")
-            ?.scrollIntoView({
+      requestAnimationFrame(()=>{
 
-              behavior:"smooth",
-              block:"start"
+        document
+          .getElementById(
+            "catalog-hot"
+          )
+          ?.scrollIntoView({
 
-            })
+            behavior:"smooth",
+            block:"start"
 
-        })
+          })
 
-      }
+      })
+
+    }else{
+
+      hideHotCards()
 
     }
-  )
+
+  }
+)
 
   /* =====================
      FILTER EVENTS
@@ -515,11 +795,17 @@ groupSelect.addEventListener(
   "change",
   ()=>{
 
-    showHot = false
+    if(showHot){
 
-    btnHot.classList.remove(
-      "active"
-    )
+      showHot = false
+
+      btnHot.classList.remove(
+        "active"
+      )
+
+      hideHotCards()
+
+    }
 
     applyFilter()
 
@@ -576,7 +862,7 @@ groupSelect.addEventListener(
 
       updateSelectionUI()
 
-      applyFilter()
+      syncCardChecks()
 
     }
   )
@@ -630,7 +916,7 @@ groupSelect.addEventListener(
 
         updateSelectionUI()
 
-        applyFilter()
+        syncCardChecks()
 
         return
 
@@ -689,7 +975,7 @@ groupSelect.addEventListener(
 
         updateSelectionUI()
 
-        applyFilter()
+        syncCardChecks()
 
         return
 
@@ -991,7 +1277,7 @@ initCatalogPinch(
 
 )
 
-  applyFilter()
+  renderCurrentCatalog()
   updateSelectionUI()
 
 }
