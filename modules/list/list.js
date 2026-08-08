@@ -632,19 +632,13 @@ async function formatValue(
 
     return v
       ? `
-        <img
-          src="${v}"
-          class="product-thumb"
+        <a
+          href="#"
+          class="product-image-link"
           data-image="${v}"
-          style="
-            width:50px;
-            height:50px;
-            object-fit:cover;
-            border-radius:8px;
-            border:1px solid #e5e7eb;
-            cursor:pointer;
-          "
         >
+          Xem ảnh
+        </a>
       `
       : ""
   }
@@ -686,17 +680,17 @@ BODY CLICK
 
 function handleBodyClick(e, state) {
 
-  const thumb =
+  const imageLink =
     e.target.closest(
-      ".product-thumb"
+      ".product-image-link"
     )
 
-  if(thumb){
+  if(imageLink){
 
     stop(e)
 
     openImagePreview(
-      thumb.dataset.image
+      imageLink.dataset.image
     )
 
     return

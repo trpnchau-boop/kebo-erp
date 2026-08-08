@@ -428,11 +428,9 @@ function renderCard(
 
 
   const imageUrl =
-
+    p.image_thumb_url ||
     p.image_url ||
-
     "/images/no-image.png"
-
 
   const outOfStock =
 

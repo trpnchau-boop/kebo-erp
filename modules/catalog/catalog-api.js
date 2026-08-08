@@ -1,10 +1,37 @@
-//catalog-api.js
+// catalog-api.js
+
 import {
   getAll
-}
-from "/js/crud.js"
+} from "/js/crud.js"
+
+
+// =====================================================
+// CATALOG CACHE
+// =====================================================
+
+let catalogCache = null
+
+
+// =====================================================
+// GET CATALOG DATA
+// =====================================================
 
 export async function getCatalogData(){
+
+  // ---------------------------------------------------
+  // CACHE HIT
+  // ---------------------------------------------------
+
+  if(catalogCache){
+
+    return catalogCache
+
+  }
+
+
+  // ---------------------------------------------------
+  // LOAD DATA
+  // ---------------------------------------------------
 
   const [
     groups,
@@ -31,9 +58,10 @@ export async function getCatalogData(){
 
   ])
 
-  /* =====================================================
-  STOCK
-  ===================================================== */
+
+  // =====================================================
+  // STOCK
+  // =====================================================
 
   const stockMap = {}
 
@@ -43,43 +71,54 @@ export async function getCatalogData(){
 
       (stockMap[row.id_product] || 0)
 
-      + Number(row.qty_balance || 0)
+      + Number(
+        row.qty_balance || 0
+      )
 
   }
 
-  /* =====================================================
-  CHILDREN MAP
-  ===================================================== */
+
+  // =====================================================
+  // CHILDREN MAP
+  // =====================================================
 
   const childrenMap = {}
 
   for(const product of products){
 
     if(!product.parent_id){
+
       continue
+
     }
 
-    ;(childrenMap[product.parent_id] ??= [])
-
-      .push(product)
+    ;(
+      childrenMap[product.parent_id]
+      ??= []
+    ).push(product)
 
   }
 
-  /* =====================================================
-  RETURN
-  ===================================================== */
 
-  return {
+  // =====================================================
+  // BUILD RESULT
+  // =====================================================
+
+  const result = {
 
     groups:
 
       groups.sort((a,b)=>{
 
         const lineA =
-          Number(a.line ?? 999999)
+          Number(
+            a.line ?? 999999
+          )
 
         const lineB =
-          Number(b.line ?? 999999)
+          Number(
+            b.line ?? 999999
+          )
 
         if(lineA !== lineB){
 
@@ -87,14 +126,15 @@ export async function getCatalogData(){
 
         }
 
-        return (a.name || "")
-
-          .localeCompare(
-            b.name || "",
-            "vi"
-          )
+        return (
+          a.name || ""
+        ).localeCompare(
+          b.name || "",
+          "vi"
+        )
 
       }),
+
 
     products:
 
@@ -112,28 +152,42 @@ export async function getCatalogData(){
               parent.id
             ] || []
 
+
           const childTinhChat =
 
             children
-              .map(child => child.tinhchat)
+
+              .map(
+                child =>
+                  child.tinhchat
+              )
+
               .filter(Boolean)
+
               .join(" / ")
-              
+
+
           const catalogTinhChat =
-          
+
             [
+
               parent.tinhchat,
+
               childTinhChat
+
             ]
-            .filter(Boolean)
-            .join(" / ")
+
+              .filter(Boolean)
+
+              .join(" / ")
+
 
           return {
-            
+
             ...parent,
-            
+
             catalogTinhChat,
-            
+
             qty:
               stockMap[parent.id] || 0
 
@@ -142,5 +196,26 @@ export async function getCatalogData(){
         })
 
   }
+
+
+  // =====================================================
+  // SAVE CACHE
+  // =====================================================
+
+  catalogCache = result
+
+
+  return result
+
+}
+
+
+// =====================================================
+// CLEAR CACHE
+// =====================================================
+
+export function clearCatalogCache(){
+
+  catalogCache = null
 
 }

@@ -40,14 +40,20 @@ export async function saveData(ctx){
       const imageField =
         i.closest(".image-field")
 
-      const file = 
+      const file =
         imageField?._imageFile ||
         i.files?.[0]
 
       if(file){
 
-        row[field] =
+        const imageResult =
           await uploadImage(file)
+
+        row[field] =
+          imageResult.image_url
+
+        row.image_thumb_url =
+          imageResult.image_thumb_url
 
       }
 

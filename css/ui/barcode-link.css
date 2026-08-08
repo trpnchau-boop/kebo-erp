@@ -1,8 +1,10 @@
+.product-image-link,
 .barcode-link{
   color:#0216c4;
   text-decoration:none;
 }
 
+.product-image-link:hover,
 .barcode-link:hover{
   text-decoration:underline;
 }
