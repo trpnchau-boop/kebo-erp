@@ -279,7 +279,6 @@ async function canSync(ref){
 
         .in("type",[
             "EXPORT",
-            "INVOICE"
         ])
 
     if(error){
@@ -301,7 +300,7 @@ async function canSync(ref){
     ){
 
         alert(
-            "Phiếu xuất kho hoặc hóa đơn đã ghi sổ, không thể đồng bộ."
+            "Phiếu xuất kho đã ghi sổ, không thể đồng bộ."
         )
 
         return false
@@ -356,81 +355,8 @@ if(schema.meta.code === "SALE"){
 
     })
 
-    await syncDocument({
-
-        schema,
-
-        type:"INVOICE",
-
-        ref,
-
-        header,
-
-        items
-
-    })
-
     return
 
 }
-/* =========================================
-EXPORT
-========================================= */
 
-if(schema.meta.code === "EXPORT"){
-
-    const ref = header.ref
-
-    const ok = await canSync(ref)
-
-    if(!ok){
-        return
-    }
-
-    await syncDocument({
-
-        schema,
-
-        type:"INVOICE",
-
-        ref,
-
-        header,
-
-        items
-
-    })
-
-    return
-
-}
-/* =========================================
-INVOICE
-========================================= */
-
-if(schema.meta.code === "INVOICE"){
-
-    const ref = header.ref
-
-    const ok = await canSync(ref)
-
-    if(!ok){
-        return
-    }
-
-    await syncDocument({
-
-        schema,
-
-        type:"EXPORT",
-
-        ref,
-
-        header,
-
-        items
-
-    })
-
-}
 }

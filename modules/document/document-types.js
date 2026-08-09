@@ -143,55 +143,6 @@ const SALE = mergeDocument(
 )
 
 /* =========================================================
-INVOICE
-========================================================= */
-
-const INVOICE = mergeDocument(
-  BASE_DOCUMENT,
-  {
-
-    meta:{
-
-      code:"INVOICE",
-
-      prefix:"HD",
-
-      title:"HÓA ĐƠN"
-
-    },
-
-    workflow:{
-
-      postable:false
-
-    },
-
-    validate:{
-
-      requireCustomer:true
-
-    },
-
-    table:{
-
-      columns:{
-
-        price:{
-          visible:true
-        },
-
-        amount:{
-          visible:true
-        }
-
-      }
-
-    }
-
-  }
-)
-
-/* =========================================================
 IMPORT
 ========================================================= */
 
@@ -541,8 +492,6 @@ EXPORT
 export const DOCUMENT_TYPES = {
 
   SALE,
-
-  INVOICE,
 
   IMPORT,
 

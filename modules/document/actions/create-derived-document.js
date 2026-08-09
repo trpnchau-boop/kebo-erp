@@ -115,8 +115,6 @@ export async function createDerivedDocument({
 
     IMPORT:"NK",
 
-    INVOICE:"HD",
-
     TRANSFER:"CK",
 
     ADJUST:"KK",

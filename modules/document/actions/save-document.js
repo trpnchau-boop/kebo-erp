@@ -351,8 +351,6 @@ export async function saveDocument({
     &&
     !docId){
 
-    let exportDoc = null
-
     /* ==========================
     EXPORT
     ========================== */
@@ -361,8 +359,6 @@ export async function saveDocument({
         state.header.auto_export ||
         state.header.publish_invoice
     ){
-
-        exportDoc =
             await createDerivedDocument({
 
                 schema,
@@ -378,29 +374,6 @@ export async function saveDocument({
             })
 
     }
-
-    /* ==========================
-    INVOICE
-    ========================== */
-
-    if(exportDoc){
-
-            await createDerivedDocument({
-
-                schema,
-
-                type:"INVOICE",
-
-                ref:finalDocId,
-
-                header:headerData,
-
-                items:itemData
-
-            })
-
-    }
-
     /* ==========================
     ISSUE
     ========================== */
@@ -430,77 +403,8 @@ export async function saveDocument({
   }
 
   /* =====================================================
-  EXPORT WORKFLOW
+  UPDATE DERIVED
   ===================================================== */
-
-  if(
-      schema.meta.code === "EXPORT"
-      &&
-      !docId
-  ){
-
-      /* =========================================
-      LOAD SOURCE
-      ========================================= */
-
-      const {
-
-        data:source,
-
-        error:sourceError
-
-      }
-
-      = await db
-
-        .from("document")
-
-        .select("id,type")
-
-        .eq(
-            "id",
-            headerData.ref
-        )
-
-        .single()
-
-      if(sourceError){
-
-        console.error(
-            "LOAD SOURCE ERROR",
-            sourceError
-        )
-
-    }
-
-    /* =========================================
-    CREATE INVOICE
-    ========================================= */
-
-    else if(
-        source.type === "SALE"
-    ){
-
-        await createDerivedDocument({
-
-            schema,
-
-            type:"INVOICE",
-
-            ref:
-                headerData.ref,
-
-            header:
-                headerData,
-
-            items:
-                itemData
-
-        })
-
-    }
-
-  }
 
   if(docId){
 

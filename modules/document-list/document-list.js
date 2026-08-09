@@ -100,6 +100,26 @@ export async function init(
 
     .map(v=>v.trim())
 
+  const schema =
+    DOCUMENT_LIST_TYPES[
+      types[0]
+    ]
+
+  if(!schema){
+
+    console.error(
+      "Schema not found:",
+      type
+    )
+
+    return
+  }
+
+  const filterTypes =
+    schema.filterType
+      ? [schema.filterType]
+      : types
+
   const employees =
 
     await loadOptions(
@@ -118,23 +138,6 @@ export async function init(
         label:a.name
 
       }))  
-
-  const schema =
-
-    DOCUMENT_LIST_TYPES[
-      types[0]
-    ]
-
-  if(!schema){
-
-    console.error(
-      "Schema not found:",
-      type
-    )
-
-    return
-
-  }
 
   /* =========================
   RENDER
@@ -370,7 +373,7 @@ export async function init(
 
       await loadDocuments({
         schema,
-        types,
+        types: filterTypes,
         status:
           ctx.status || "",
         search:
@@ -412,8 +415,8 @@ summaryEl.hidden =
 
     [
       "SALE",
-      "INVOICE",
       "IMPORT",
+      "SALE_PROFIT",
       "EXPORT"
     ].includes(type)
 

@@ -8,16 +8,6 @@ import {
 }
 from "/js/crud.js"
 
-import {
-  deleteDerivedDocument
-}
-from "../../document/actions/delete-derived-document.js"
-
-import {
-  BASE_DOCUMENT
-}
-from "../../document/base-document.js"
-
 export async function bulkDeleteDocuments(ctx){
 
   if(!ctx.ids?.length){
@@ -78,32 +68,6 @@ export async function bulkDeleteDocuments(ctx){
         alert(
           "Phiếu xuất kho đã ghi sổ, không thể xóa."
         )
-
-        continue
-
-      }
-
-    }
-
-    /* =========================================
-    INVOICE
-    ========================================= */
-
-    if(header.type === "INVOICE"){
-
-      const deleted =
-
-        await deleteDerivedDocument({
-
-          schema: BASE_DOCUMENT,
-
-          type: "EXPORT",
-
-          ref: header.ref
-
-        })
-
-      if(!deleted){
 
         continue
 

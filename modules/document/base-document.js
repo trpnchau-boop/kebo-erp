@@ -697,7 +697,7 @@ export const BASE_DOCUMENT = {
         width:100,
         placeholder:"Phí PB",
         default:0,
-        hideInDocTypes:["SALE","INVOICE","EXPORT","ISSUE"],
+        hideInDocTypes:["SALE","EXPORT","ISSUE"],
         show:{
           input:true,
           table:true
@@ -710,7 +710,7 @@ export const BASE_DOCUMENT = {
         type:"money",
         width:100,
         placeholder:"Giá vốn",
-        hideInDocTypes:["SALE","IMPORT","INVOICE","ISSUE"],
+        hideInDocTypes:["SALE","IMPORT","ISSUE"],
         show:{
           input:true,
           table:true
@@ -729,7 +729,7 @@ export const BASE_DOCUMENT = {
         formula:"tongsoluong * dongiavon",
         width:100,
         placeholder:"Tiền vốn",
-        hideInDocTypes:["SALE","IMPORT","INVOICE","ISSUE"],
+        hideInDocTypes:["SALE","IMPORT","ISSUE"],
         show:{
           input:true,
           table:true

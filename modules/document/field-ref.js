@@ -27,8 +27,6 @@ export function createRefField(
 
     EXPORT:"export",
 
-    INVOICE:"invoice"
-
   }
 
   related.forEach(doc=>{

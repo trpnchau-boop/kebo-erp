@@ -65,14 +65,11 @@ export const DOCUMENT_LIST_TYPES = {
     ]
   },
 
-  INVOICE:{
+  SALE_PROFIT:{
     table:"document",    
     title:"Hóa đơn",
-    primaryAction:{
-      key:"add",
-      label:"+ Thêm",
-      route:"document"
-    },    
+    filterType:"SALE",
+   
     list:[
       "code",
       "day",

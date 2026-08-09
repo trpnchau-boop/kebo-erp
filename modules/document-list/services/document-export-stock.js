@@ -64,13 +64,7 @@ export async function exportStockDocument(ctx){
   REF
   ========================================= */
 
-  const ref =
-
-    header.type === "INVOICE"
-
-      ? (header.ref || header.id)
-
-      : header.id
+  const ref = header.id
 
   /* =========================================
   FIND EXPORT
