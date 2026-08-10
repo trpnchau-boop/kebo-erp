@@ -665,7 +665,7 @@ if(block.type === "table"){
                     
                         display:block;
 
-                        padding:3px 0 3px 3px;
+                        padding:3px 1px 2px 3px;
 
                         box-sizing:border-box;
 
@@ -709,7 +709,7 @@ if(block.type === "table"){
                       style="
                         display:block;
 
-                        padding:3px 0 3px 3px;
+                        padding:3px 0 2px 3px;
 
                         box-sizing:border-box;
 
