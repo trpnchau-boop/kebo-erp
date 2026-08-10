@@ -1,4 +1,6 @@
 import { withSystemFields } from "./core.js"
+import { getDropdownValue } from "/js/components/dropdown-select.js"
+import { db } from "/js/supabase.js"
 
 export const authSchema = {
 
@@ -225,44 +227,48 @@ export const authSchema = {
       ).value
 
       const role =
-      root.querySelector(
-      '[data-field="role"]'
-      ).value
+        getDropdownValue(
+          root.querySelector(
+            '[data-field="role"]'
+          )
+        )
 
       const employee_id =
-      root.querySelector(
-      '[data-field="employee_id"]'
-      ).value
+        getDropdownValue(
+          root.querySelector(
+            '[data-field="employee_id"]'
+          )
+        )
 
       if(
         !email ||
         !password ||
-        !role
+        !role ||
+        !employee_id
       ){
         alert("Thiếu dữ liệu")
         return
       }
 
-      const res =
-      await fetch(
-      "http://localhost:3000/create-user",
-      {
-        method:"POST",
+      const { data: result, error } =
+        await db.functions.invoke(
+          "create-user",
+          {
+            body:{
+              email,
+              password,
+              role,
+              employee_id
+            }
+          }
+        )
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+      if(error){
 
-        body:JSON.stringify({
-          email,
-          password,
-          role,
-          employee_id
-        })
-      })
+        alert(error.message)
+        return
 
-      const result =
-      await res.json()
+      }
 
       if(result.success){
 
@@ -315,21 +321,22 @@ export const authSchema = {
 
     onDelete: async (id)=>{
 
-      const res =
-      await fetch(
-      "http://localhost:3000/delete-user",
-      {
-        method:"POST",
+      const { data: result, error } =
+        await db.functions.invoke(
+          "delete-user",
+          {
+            body:{
+              id
+            }
+          }
+        )
 
-        headers:{
-          "Content-Type":"application/json"
-        },
+      if(error){
 
-        body:JSON.stringify({id})
-      })
+        alert(error.message)
+        throw new Error(error.message)
 
-      const result =
-      await res.json()
+      }
 
       if(!result.success){
 
