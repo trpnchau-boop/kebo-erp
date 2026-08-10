@@ -3,6 +3,11 @@ import {
 }
 from "/js/supabase.js"
 
+import {
+  openTab
+}
+from "/js/tabs.js"
+
 export async function exportStockDocument(ctx){
 
   const row =
@@ -107,8 +112,15 @@ export async function exportStockDocument(ctx){
 
   if(exportDoc){
 
-    location.hash =
-      `#/document/EXPORT/${exportDoc.id}`
+    await openTab(
+      `document-EXPORT-${exportDoc.id}`,
+      "Xuất kho",
+      "document",
+      {
+        type:"EXPORT",
+        id:exportDoc.id
+      }
+    )
 
     return
 

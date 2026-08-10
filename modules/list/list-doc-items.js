@@ -1,4 +1,5 @@
 import {getAll} from "../../js/crud.js"
+import {openTab} from "../../js/tabs.js"
 import {
   formatMoney,
   formatDecimal
@@ -109,6 +110,43 @@ thead.innerHTML = `
 
 function bindEvents(){
 
+$("tbody")
+?.addEventListener(
+  "click",
+  async e => {
+
+    const link =
+      e.target.closest(".barcode-link")
+
+    if(!link){
+      return
+    }
+
+    e.preventDefault()
+
+    const id =
+      link.dataset.id
+
+    const type =
+      link.dataset.type
+
+    if(!id || !type){
+      return
+    }
+
+    await openTab(
+      `document-${type}-${id}`,
+      link.textContent.trim(),
+      "document",
+      {
+        type,
+        id
+      }
+    )
+
+  }
+)
+
 $("from-date")
 ?.addEventListener("input", render)
 
@@ -218,7 +256,14 @@ html += `
 <td data-field="day">${day}</td>
 
 <td data-field="code">
-  ${doc.code || ""}
+  <a
+    href="#"
+    class="barcode-link"
+    data-id="${doc.id}"
+    data-type="${doc.type || ""}"
+  >
+    ${doc.code || ""}
+  </a>
 </td>
 
 <td data-field="id_customer">
