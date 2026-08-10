@@ -117,8 +117,7 @@ export async function init(
 
   let products = initialProducts
 
-  const canViewPrice =
-    !!(await getSession())
+  // const canViewPrice = !!(await getSession()) // ẩn hiện giá khi chưa đăng nhập
 
   const now = new Date()
 
@@ -281,7 +280,7 @@ function renderCurrentCatalog(){
     grid,
     selectedIds,
     showHot,
-    canViewPrice
+    //canViewPrice
   )
 
   applyCatalogZoom(grid)
