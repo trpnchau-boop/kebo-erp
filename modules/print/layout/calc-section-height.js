@@ -51,6 +51,6 @@ block.renderHeight = height
 
     80,
 
-    maxBottom + 10
+    maxBottom
   )
 }

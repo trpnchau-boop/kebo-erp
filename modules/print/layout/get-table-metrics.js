@@ -1,27 +1,28 @@
-const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
+import {
+  formatMoney
+} from "/js/core/format.js"
 
 /* =========================================
-   CONFIG
+CONFIG
 ========================================= */
 
 const METRICS = {
 
-  widthPadding: 8,        // cột "ảo" rộng thêm
-
-  widthScale: 0.95,       // canvas nhỏ hơn browser bao nhiêu
-
-  wrapRatio: 0.5,        // cho phép tràn trước khi xuống dòng
-
-  cellPadding: 5.0,      // padding dọc
-
   lineHeight: 1.2,
 
-  defaultFont: "Arial"
+  defaultFont: "Arial",
+
+  mainPadding:
+    "3px 1px 2px 3px",
+
+  detailPadding:
+    "3px 0 2px 3px"
 
 }
 
-/* ========================================= */
+/* =========================================
+PUBLIC
+========================================= */
 
 export function getTableMetrics(
   table,
@@ -29,347 +30,752 @@ export function getTableMetrics(
 ){
 
   const headerFontSize =
-    table.props?.headerFontSize || 14
+    Number(
+      table.props?.headerFontSize || 14
+    )
 
-  const rowHeight = Math.max(
-    table.props?.rowHeight || 24,
-    headerFontSize
-  )
+  const rowHeight =
+    Math.max(
 
-  const headerHeight = Math.max(
-    rowHeight,
-    headerFontSize * METRICS.lineHeight +
-    8
-  )
+      Number(
+        table.props?.rowHeight || 24
+      ),
+
+      headerFontSize
+
+    )
+
+  /*
+    Nếu caller truyền number,
+    giữ compatibility với logic cũ.
+  */
 
   if(typeof rows === "number"){
 
-    return{
+    return {
 
       rowHeight,
 
-      headerHeight,
+      headerHeight:
+        rowHeight,
 
       tableHeight:
-        headerHeight +
+        rowHeight +
         rows * rowHeight
 
     }
 
   }
 
-  let tableHeight =
-    headerHeight
+  /*
+    ĐO CHÍNH TABLE HTML THẬT
+  */
 
-  for(const row of rows){
+  const measured =
+    measureRealTable({
 
-    tableHeight +=
-      getRowHeight({
+      table,
 
-        table,
+      rows,
 
-        row,
+      rowHeight
 
-        baseRowHeight: rowHeight
+    })
 
-      })
-
-  }
-
-  return{
+  return {
 
     rowHeight,
 
-    headerHeight,
+    headerHeight:
+      measured.headerHeight,
 
-    tableHeight
+    tableHeight:
+      measured.tableHeight
 
   }
 
 }
 
-/* ========================================= */
+/* =========================================
+MEASURE REAL TABLE
+========================================= */
 
-function getRowHeight({
+function measureRealTable({
 
   table,
 
-  row,
+  rows,
 
-  baseRowHeight
+  rowHeight
 
 }){
 
-  let height =
-    baseRowHeight
+  const columns =
+    table.props?.columns || []
 
-  for(const column of
-      table.props?.columns || []){
+  /*
+    Tạo chính <table> mà print-render
+    đang tạo.
 
-    if(column.key==="stt"){
-      continue
+    Không dùng display:none vì browser
+    sẽ không layout nó.
+  */
+
+  const measurementTable =
+    document.createElement("table")
+
+  measurementTable.className =
+    "print-table"
+
+  measurementTable.style.position =
+    "absolute"
+
+  measurementTable.style.left =
+    "-100000px"
+
+  measurementTable.style.top =
+    "0"
+
+  measurementTable.style.visibility =
+    "hidden"
+
+  measurementTable.style.pointerEvents =
+    "none"
+
+  measurementTable.style.width =
+    `${Number(table.width || 0)}px`
+
+  measurementTable.style.borderCollapse =
+    "collapse"
+
+  /*
+    Giống print-render.js:
+      <colgroup>
+        <col style="width:...">
+      </colgroup>
+  */
+
+  const colgroup =
+    document.createElement("colgroup")
+
+  for(const column of columns){
+
+    const col =
+      document.createElement("col")
+
+    col.style.width =
+      `${Number(
+        column.width || 0
+      )}px`
+
+    colgroup.appendChild(col)
+
+  }
+
+  measurementTable.appendChild(
+    colgroup
+  )
+
+  const tbody =
+    document.createElement("tbody")
+
+  measurementTable.appendChild(
+    tbody
+  )
+
+  /* =======================================
+  HEADER
+  ======================================= */
+
+  const headerRow =
+    document.createElement("tr")
+
+  for(const column of columns){
+
+    const main =
+      column.main || {}
+
+    const th =
+      document.createElement("th")
+
+    th.style.border =
+      "1px solid #000"
+
+    th.style.padding =
+      "4px"
+
+    th.style.textAlign =
+      main.align || "left"
+
+    th.style.fontSize =
+      `${Number(
+        table.props?.headerFontSize || 14
+      )}px`
+
+    th.style.fontWeight =
+      table.props?.headerBold
+        ? "700"
+        : "400"
+
+    th.style.fontStyle =
+      table.props?.headerItalic
+        ? "italic"
+        : "normal"
+
+    th.style.textDecoration =
+      table.props?.headerUnderline
+        ? "underline"
+        : "none"
+
+    th.style.color =
+      table.props?.headerColor ||
+      "#000"
+
+    th.style.background =
+      table.props?.headerBackgroundColor ||
+      "#eeeeee"
+
+    th.textContent =
+      column.label ||
+      cleanColumnKey(column.key)
+
+    headerRow.appendChild(th)
+
+  }
+
+  tbody.appendChild(
+    headerRow
+  )
+
+  /* =======================================
+  DATA ROWS
+  ======================================= */
+
+  rows.forEach(
+    (item, index) => {
+
+      const tr =
+        document.createElement("tr")
+
+      for(const column of columns){
+
+        const main =
+          column.main || {}
+
+        const detail =
+          column.detail || {}
+
+        const layout =
+          column.layout || "none"
+
+        /*
+          MAIN
+        */
+
+        let mainValue = ""
+
+        if(column.key === "stt"){
+
+          mainValue =
+            index + 1
+
+        }else{
+
+          mainValue =
+            getColumnValue(
+              item,
+              main,
+              column.key
+            )
+
+        }
+
+        /*
+          DETAIL
+        */
+
+        const detailValue =
+          getColumnValue(
+            item,
+            detail,
+            ""
+          )
+
+        /*
+          SPECIAL QTY
+        */
+
+        if(column.key === "qty"){
+
+          const qty =
+            Number(
+              item?.qty || 0
+            )
+
+          const tong =
+            Number(
+              item?.tongsoluong || 0
+            )
+
+          if(qty === tong){
+
+            mainValue = ""
+
+          }
+
+        }
+
+        const td =
+          document.createElement("td")
+
+        /*
+          Giống print-render.js
+        */
+
+        td.style.border =
+          "1px solid #000"
+
+        td.style.padding =
+          "0px"
+
+        td.style.verticalAlign =
+          "top"
+
+        /*
+          layout === none
+          thì renderer không render gì.
+        */
+
+        if(layout !== "none"){
+
+          const content =
+            document.createElement("div")
+
+          /*
+            COLUMN
+          */
+
+          if(layout === "column"){
+
+            content.style.display =
+              "flex"
+
+            content.style.flexDirection =
+              "column"
+
+            content.style.gap =
+              "0"
+
+          }
+
+          /*
+            ROW
+          */
+
+          else if(layout === "row"){
+
+            content.style.display =
+              "flex"
+
+            content.style.flexDirection =
+              "row"
+
+            content.style.alignItems =
+              "center"
+
+            content.style.gap =
+              "0"
+
+            content.style.flexWrap =
+              "wrap"
+
+          }
+
+          /*
+            MAIN
+          */
+
+          if(mainValue !== ""){
+
+            content.appendChild(
+
+              createTextElement({
+
+                value:
+                  mainValue,
+
+                config:
+                  main,
+
+                padding:
+                  METRICS.mainPadding
+
+              })
+
+            )
+
+          }
+
+          /*
+            DETAIL
+          */
+
+          if(detailValue !== ""){
+
+            content.appendChild(
+
+              createTextElement({
+
+                value:
+                  detailValue,
+
+                config:
+                  detail,
+
+                padding:
+                  METRICS.detailPadding
+
+              })
+
+            )
+
+          }
+
+          td.appendChild(
+            content
+          )
+
+        }
+
+        tr.appendChild(td)
+
+      }
+
+      tbody.appendChild(tr)
+
     }
+  )
 
-    height = Math.max(
+  /*
+    Thêm vào DOM để browser thực sự layout.
+  */
 
-      height,
+  document.body.appendChild(
+    measurementTable
+  )
 
-      getCellHeight({
+  /*
+    Ép browser layout trước khi đọc.
+  */
 
-        column,
+  const tableRect =
+    measurementTable
+      .getBoundingClientRect()
 
-        row,
+  const headerRect =
+    headerRow
+      .getBoundingClientRect()
 
-        baseRowHeight
+  const tableHeight =
+    tableRect.height
 
-      })
+  const headerHeight =
+    headerRect.height
 
-    )
+  /*
+    Xóa ngay sau khi đo.
+  */
+
+  measurementTable.remove()
+
+  return {
+
+    tableHeight,
+
+    headerHeight
 
   }
 
-  return height
-
 }
 
-/* ========================================= */
+/* =========================================
+CREATE TEXT ELEMENT
+========================================= */
 
-function getCellHeight({
+function createTextElement({
 
-  column,
+  value,
 
-  row,
+  config,
 
-  baseRowHeight
+  padding
 
 }){
 
-  const layout =
-    column.layout || "none"
+  const el =
+    document.createElement("div")
 
-  const mainField =
-    column.main?.field ||
-    column.key
+  el.style.display =
+    "block"
 
-  const detailField =
-    column.detail?.field
+  el.style.padding =
+    padding
 
-  const mainValue =
-    String(row?.[mainField] ?? "")
+  el.style.boxSizing =
+    "border-box"
 
-  const detailValue =
-    String(row?.[detailField] ?? "")
+  el.style.textAlign =
+    config?.align || "left"
 
-  const mainFont =
-    column.main?.fontSize || 12
+  el.style.fontFamily =
+    METRICS.defaultFont
 
-  const detailFont =
-    column.detail?.fontSize || 11
+  el.style.fontSize =
+    `${Number(
+      config?.fontSize || 12
+    )}px`
 
-  const width =
-    column.width +
-    METRICS.widthPadding
-
-  let height = 0
-
-  let lines = 0
-
-  const mainLines = estimateLines(
-
-    mainValue,
-
-    width,
-
-    mainFont,
-
-    column.main?.bold
-      ? 700
-      : 400
-
-  )
-
-  lines = mainLines
-
-  height +=
-
-    mainLines *
-
-    Math.ceil(
-
-      mainFont *
+  el.style.lineHeight =
+    String(
       METRICS.lineHeight
-
     )
 
-  if(
+  el.style.fontWeight =
+    config?.bold
+      ? "700"
+      : "400"
 
-    layout === "column" &&
-    detailField &&
-    detailValue
+  el.style.fontStyle =
+    config?.italic
+      ? "italic"
+      : "normal"
 
-  ){
+  el.style.textDecoration =
+    config?.underline
+      ? "underline"
+      : "none"
 
-    const detailLines = estimateLines(
+  el.style.color =
+    config?.color ||
+    "#000"
 
-      detailValue,
+  /*
+    Giống div thực tế.
+  */
 
-      width,
+  el.style.whiteSpace =
+    "normal"
 
-      detailFont,
+  el.style.wordBreak =
+    "normal"
 
-      column.detail?.bold
-        ? 700
-        : 400
+  el.style.overflowWrap =
+    "normal"
 
-    )
+  /*
+    Dùng textContent thay vì innerHTML.
+  */
 
-    lines += detailLines
+  el.textContent =
+    String(value)
 
-    height +=
-
-      detailLines *
-
-      Math.ceil(
-
-        detailFont *
-        METRICS.lineHeight
-
-      )
-
-  }
-
-  else if(
-
-    layout === "row" &&
-    detailField &&
-    detailValue
-
-  ){
-
-    const font =
-      Math.max(
-        mainFont,
-        detailFont
-      )
-
-    lines = estimateLines(
-
-      `${mainValue} ${detailValue}`,
-
-      width,
-
-      font,
-
-      column.main?.bold
-        ? 700
-        : 400
-
-    )
-
-    height =
-
-      lines *
-
-      Math.ceil(
-
-        font *
-        METRICS.lineHeight
-
-      )
-
-  }
-
-  const padding = Math.max(
-
-    2,
-
-    METRICS.cellPadding -
-    (lines - 1)
-
-  )
-
-  return Math.max(
-
-    baseRowHeight,
-
-    height + padding
-
-  )
+  return el
 
 }
 
-/* ========================================= */
+/* =========================================
+COLUMN VALUE
+========================================= */
 
-function estimateLines(
+function getColumnValue(
 
-  text,
+  item,
 
-  width,
+  config,
 
-  fontSize,
-
-  fontWeight
+  fallbackKey
 
 ){
 
-  text = String(text)
+  const field =
+    config?.field ||
+    fallbackKey
 
-  if(!text){
-    return 1
-  }
+  if(
+    !field ||
+    field === "none"
+  ){
 
-  ctx.font =
-
-    `${fontWeight} ${fontSize}px ${METRICS.defaultFont}`
-
-  const wrapWidth =
-
-    width +
-
-    width *
-    METRICS.wrapRatio
-
-  let current = 0
-
-  let lines = 1
-
-  for(const word of text.split(/\s+/)){
-
-    const wordWidth =
-
-      ctx.measureText(
-
-        word + " "
-
-      ).width
-
-      *
-
-      METRICS.widthScale
-
-    if(
-
-      current + wordWidth >
-      wrapWidth
-
-    ){
-
-      lines++
-
-      current =
-        wordWidth
-
-    }
-
-    else{
-
-      current +=
-        wordWidth
-
-    }
+    return ""
 
   }
 
-  return lines
+  return formatValue(
+
+    resolveBindingValue(
+      field,
+      item
+    ),
+
+    field
+
+  )
+
+}
+
+/* =========================================
+DISPLAY VALUE RESOLVER
+========================================= */
+
+function resolveBindingValue(
+
+  key,
+
+  data = {}
+
+){
+
+  if(!key){
+
+    return ""
+
+  }
+
+  const displayMap = {
+
+    id_customer:
+      data.customer_name,
+
+    id_employee:
+      data.employee_name,
+
+    id_product:
+      data.name,
+
+    id_unit:
+      data.unit_name,
+
+    id_warehouse:
+      data.warehouse_name
+
+  }
+
+  if(
+    displayMap[key] !== undefined
+  ){
+
+    return displayMap[key]
+
+  }
+
+  return getBindingValue(
+    key,
+    data
+  )
+
+}
+
+/* =========================================
+GET VALUE BY PATH
+========================================= */
+
+function getBindingValue(
+
+  path,
+
+  data = {}
+
+){
+
+  if(!path){
+
+    return ""
+
+  }
+
+  const keys =
+    String(path).split(".")
+
+  let current =
+    data
+
+  for(const key of keys){
+
+    if(current == null){
+
+      return ""
+
+    }
+
+    current =
+      current[key]
+
+  }
+
+  return current ?? ""
+
+}
+
+/* =========================================
+FORMAT VALUE
+========================================= */
+
+function formatValue(
+
+  value,
+
+  key
+
+){
+
+  const moneyFields = [
+
+    "dongia",
+    "thanhtien",
+
+    "tongtien",
+    "tongthanhtoan",
+
+    "thue",
+    "chietkhau",
+
+    "dongiavon",
+    "tienvon"
+
+  ]
+
+  if(
+    moneyFields.includes(key)
+  ){
+
+    return formatMoney(value)
+
+  }
+
+  return value
+
+}
+
+/* =========================================
+CLEAN COLUMN KEY
+========================================= */
+
+function cleanColumnKey(
+
+  key = ""
+
+){
+
+  return String(key)
+
+    .replace(
+      "items.",
+      ""
+    )
+
+    .replace(
+      "document_items.",
+      ""
+    )
 
 }

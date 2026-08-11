@@ -10,6 +10,10 @@ import {
 }
 from "/modules/print/layout/calc-section-height.js"
 
+import {
+  reflowSections
+} from "/modules/print/layout/reflow-sections.js"
+
 export function getPrintContent({
 
   template,
@@ -22,10 +26,16 @@ export function getPrintContent({
     document?.company || {}
 
   const sections =
+    structuredClone(
+      template
+        ?.template_json
+        ?.sections || []
+    )
 
-    template
-      ?.template_json
-      ?.sections || []
+  reflowSections(
+    sections,
+    items
+  )
 
   return sections
 

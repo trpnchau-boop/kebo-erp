@@ -1,45 +1,45 @@
 import {
   calcSectionHeight
-}
-from "/modules/print/layout/calc-section-height.js"
+} from "/modules/print/layout/calc-section-height.js"
 
 import {
   layoutBlocks
-}
-from "/modules/print/layout/layout-blocks.js"
+} from "/modules/print/layout/layout-blocks.js"
 
 export function reflowSections(
 
   sections,
-  itemsCount = 0
+  items = []
 
 ){
 
   let currentY = 40
 
-  sections.forEach(section=>{
+  sections.forEach(section => {
 
-    // 1. Tính lại vị trí block
+    // 1. Tính lại vị trí các block
     layoutBlocks(
       section,
-      itemsCount
+      items
     )
 
     // 2. Tính lại chiều cao section
     section.height =
-
       calcSectionHeight(
         section,
-        itemsCount
+        items
       )
 
-    // 3. Đặt vị trí section
+    // 3. Đặt section vào vị trí mới
     section.y =
       currentY
 
+    // 4. Section sau nhường chỗ
     currentY +=
       section.height + 20
 
   })
+
+  return sections
 
 }
