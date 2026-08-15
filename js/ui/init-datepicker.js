@@ -12,7 +12,10 @@ export function createDatepicker(
     return
   }
 
-  const { side = "left" } = options
+  const {
+    side = "left",
+    direction = "bottom"
+  } = options
 
   const viLocale = {
     days:["Chủ nhật","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"],
@@ -40,9 +43,14 @@ export function createDatepicker(
     selectedDates: input.value ? [input.value] : [],
 
     /* QUAN TRỌNG: dùng built-in position string */
-    position: side === "right"
-      ? "bottom right"
-      : "bottom left",
+    position:
+      direction === "top"
+        ? (side === "right"
+            ? "top right"
+            : "top left")
+        : (side === "right"
+            ? "bottom right"
+            : "bottom left"),
 
     offset: 8,
 

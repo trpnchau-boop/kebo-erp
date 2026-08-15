@@ -38,6 +38,10 @@ import {
 }
 from "./document-summary-bar.js"
 
+import {
+  loadCustomerDebt
+} from "/modules/receivable/receivable-load.js"
+
 /* =========================================================
 DISPLAY NAME
 ========================================================= */
@@ -383,6 +387,13 @@ await syncInputs({
             source:data,
             target:row
           })
+
+          if(field.key === "id_customer"){
+
+            row.no_khachhang =
+              await loadCustomerDebt(data.id)
+
+          }
 
           row.product_code =
             `${Number(data.giavon || 0).toLocaleString()} - ${data.code}`

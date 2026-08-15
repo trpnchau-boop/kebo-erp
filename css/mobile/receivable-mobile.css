@@ -1,0 +1,69 @@
+@media (max-width: 768px){
+  .receivable-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: -8px;
+    padding: 0;
+  }
+
+  .receivable-allocation-row small{
+    display: inline-flex;
+    gap: 15px;
+    margin-left: 25px;
+  }
+  .receivable-payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+  .receivable-payment-grid > label:last-child {
+    justify-self: start;
+    text-align: left;
+  }
+  .receivable-history-summary {
+    grid-template-columns: 15px 1fr 100px 100px;
+  }
+}
+@media (max-width: 768px){
+  .receivable-history-allocation tr{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+
+  .receivable-history-allocation th,
+  .receivable-history-allocation td{
+    width: auto !important;
+    padding: 10px 8px !important;
+  }
+  .receivable-history-allocation tfoot tr{
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr 1fr !important;
+    width: 100%;
+  }
+
+  .receivable-history-allocation tfoot th:first-child{
+    grid-column: 1 / 3;
+    padding: 10px 20px !important;
+  }
+
+  .receivable-history-allocation tfoot th:last-child{
+    grid-column: 3;
+    text-align: right;
+    padding: 10px 20px !important;
+  }
+.receivable-payment-grid select{
+  padding: 5px 0;
+  margin-left: 0;
+}  
+.receivable-payment-grid input{
+  padding: 5px 15px;
+  margin-left: 0;
+}  
+.receivable-payment-close{
+  width: 6px;
+  margin-left: auto;
+}
+.receivable-payment-head {
+  gap: 5px;
+}
+}

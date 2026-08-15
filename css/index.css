@@ -33,6 +33,7 @@
 @import "./pages/catalog.css";
 @import "./pages/payroll.css";
 @import "./pages/release.css";
+@import "./pages/receivable.css";
 
 @import "./btn/add.css";
 @import "./btn/date.css";
@@ -67,3 +68,4 @@
 @import "./mobile/catalog-mobile.css";
 @import "./mobile/form-mobile.css";
 @import "./mobile/template-areas.css";
+@import "./mobile/receivable-mobile.css";

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <!-- Cán kính lúp (Handle) -->
+  <g transform="translate(210, 210) rotate(45)">
+    <!-- Phần nối màu xám đậm -->
+    <rect x="75" y="-16" width="55" height="32" fill="#3F5364" />
+    <!-- Phần tay cầm màu cam (đã đẩy ra xa hơn) -->
+    <rect x="120" y="-24" width="75" height="48" rx="24" fill="#FF6B55" />
+  </g>
+
+  <!-- Viền ngoài kính lúp (Outer Rim) -->
+  <circle cx="210" cy="210" r="110" fill="#3F5364" />
+
+  <!-- Vòng tròn màu xanh dương bên trong -->
+  <circle cx="210" cy="210" r="88" fill="#3CB3E4" />
+
+  <!-- Đồng tử mắt (Pupil) -->
+  <circle cx="210" cy="210" r="52" fill="#314150" />
+
+  <!-- Điểm sáng phản chiếu lớn -->
+  <circle cx="188" cy="185" r="14" fill="#FFFFFF" />
+
+  <!-- Điểm sáng phản chiếu nhỏ -->
+  <circle cx="205" cy="202" r="7" fill="#FFFFFF" />
+</svg>

@@ -1,0 +1,257 @@
+.receivable-open {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.receivable-open img {
+  width: 38px;
+  height: 38px;
+  display: block;
+}
+
+.receivable-pay-one{
+  border:none;
+  background:none;
+
+  padding:0 6px;
+
+  color:#6b7280;
+
+  font-size:14px;
+  font-weight:500;
+
+  cursor:pointer;
+
+  position:relative;
+
+}
+
+.receivable-pay-one:hover{
+  color:#3b82f6;
+}
+.receivable-payment-cancel,
+.receivable-payment-save,
+.receivable-pay-all,
+.receivable-back{
+
+  border:none;
+  background:#99999929;
+  border-radius: 10px;
+  box-shadow:none;
+  outline:none;
+
+  height: 28px;
+  padding:0 12px;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  font-size:15px;
+  font-weight:600;
+  color:#6b7280;
+
+  cursor:pointer;
+  white-space: nowrap;
+
+}
+.receivable-back::before {
+    content: "⬅";
+    color: #328d34;
+    font-size: 18px;
+}
+.receivable-back:hover{
+  color:#328d34;
+}
+.receivable-pay-all::before {
+    content: "$";
+    color: #ff8600;
+    font-size: 15px;
+}
+.receivable-pay-all:hover{
+  color:#ff8600;
+}
+.receivable-payment-head{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.receivable-payment-cancel,
+.receivable-payment-save{
+
+  border:none;
+  background:#99999929;
+  border-radius: 10px;
+  box-shadow:none;
+  outline:none;
+
+  height: 28px;
+  padding:0 12px;
+  align-items:center;
+  gap:6px;
+  display: inline-flex;
+
+  font-size:15px;
+  font-weight:600;
+  color:#6b7280;
+
+  cursor:pointer;
+  white-space: nowrap;
+
+}
+.receivable-payment-cancel{
+    margin-left: auto;
+}
+.receivable-actions{
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+}
+.receivable-history-head{
+    display: flex;
+    padding: 10px 20px;
+}
+.receivable-history-head span {
+  margin-left: auto;
+  text-align: right;
+}
+
+.receivable-history-summary {
+  display: grid;
+  grid-template-columns: 15px 1fr 1fr 1fr;
+  align-items: center;
+  padding: 5px 20px 5px 5px;
+}
+
+.receivable-history-summary::before {
+  content: "▶";
+  font-size: 10px;
+}
+
+.receivable-payment-history-item[open]
+.receivable-history-summary::before {
+  content: "▼";
+}
+
+.receivable-history-summary > :last-child {
+  text-align: right;
+}
+.receivable-history-detail > div {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 10px;
+  padding: 5px 20px;
+  text-align: right;
+}
+.receivable-history-allocation-title,
+.receivable-history-detail > div strong {
+  text-align: left !important;
+}
+.receivable-payment-modal{
+    margin-bottom: 10px;
+}
+
+.receivable-payment-grid,
+.receivable-allocation-title,
+.receivable-payment-actions,
+.receivable-payment-total,
+.receivable-payment-head{
+    padding: 5px 5px;
+}
+.receivable-payment-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+.receivable-payment-grid input,
+.receivable-payment-grid select{
+  width: 60%;
+  height: 28px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 15px;
+  margin-left: 10px;
+}
+.receivable-payment-grid > label:last-child{
+  justify-self: end;
+  text-align: right;
+}
+.receivable-allocation-row{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.receivable-allocation-row > label{
+  flex: 1;
+  min-width: 0;
+}
+
+.receivable-allocation-amount {
+    margin-left: auto;
+    margin-right: 5px;
+    width: 170px;
+    box-sizing: border-box;
+    text-align: right;
+    border: none;
+    height: 28px;
+    border-radius: 10px;
+    padding: 5px 15px;
+}
+
+.receivable-allocation-row small{
+  display: inline-flex;
+  gap: 25px;
+  margin-left: 50px;
+}
+
+.receivable-payment-close {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    border: none;
+    background: none;
+    padding: 0;
+    color: transparent;
+    cursor: pointer;
+    top: 0px;
+}
+.receivable-payment-close::after{
+
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  width:18px;
+  height:18px;
+
+  transform:translate(-50%,-50%);
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:12px;
+  font-weight:700;
+
+  box-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+
+.receivable-payment-close::after{
+
+  content:"✕";
+  background:#fff1f0;
+  border:1px solid #e53935;
+  color:#e53935;
+}

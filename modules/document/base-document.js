@@ -250,7 +250,7 @@ export const BASE_DOCUMENT = {
         print:{
           show:true,
         }        
-      },      
+      },            
     {
       key:"payment_summary",
       label:"Thanh toán",
@@ -324,7 +324,18 @@ export const BASE_DOCUMENT = {
           section:"header",
           col:2
         }        
-      },   
+      },         
+      {
+        key:"no_khachhang",
+        label:"Công nợ KH",
+        type:"money",
+        readonly:true,
+        persist:false,
+        runtime:true,
+        show:{
+          form:true
+        }
+      },
       {
         key:"tongtienvon",
         label:"Tổng tiền vốn", 
