@@ -34,7 +34,7 @@ BOX - Btn ACTIONS
     align-items:center;
     justify-content:center;
     padding: none;
-    gap:36px;
+    gap:26px;
 }
 
 .doc-inline-actions{
@@ -48,4 +48,8 @@ BOX - Btn ACTIONS
     display:flex;
     align-items:center;
     gap:6px;    
+}
+
+.document-customer-debt-label{
+  cursor:pointer;
 }

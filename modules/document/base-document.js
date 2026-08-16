@@ -56,6 +56,16 @@ export const BASE_DOCUMENT = {
             show:{
             form:true
             }
+          },
+          {
+            key:"in_cong_no",
+            label:"In công nợ",
+            type:"checkbox",
+            default:false,
+            persist:true,
+            show:{    
+              form:true    
+            }  
           }
         ]
       },
@@ -330,10 +340,14 @@ export const BASE_DOCUMENT = {
         label:"Công nợ KH",
         type:"money",
         readonly:true,
-        persist:false,
-        runtime:true,
+        persist:true,
         show:{
           form:true
+        },
+        print:{
+          show:true,
+          section:"header",
+          col:2
         }
       },
       {

@@ -66,4 +66,7 @@
 .receivable-payment-head {
   gap: 5px;
 }
+.receivable-pay-one{
+  padding: 0;
+}
 }

@@ -187,28 +187,65 @@ export function renderDocumentForm(
             if(childField.type === "checkbox"){
 
               const text =
-                document.createElement(
-                  "span"
-                )
-
+                document.createElement("span")
+                
               text.textContent =
                 childField.label || ""
-
+                
               childWrap.append(
                 input,
                 text
               )
-
+            
             }else{
-
+              
               const label =
                 document.createElement("label")
 
               label.className =
                 "doc-field-label"
-
+              
               label.textContent =
                 childField.label || ""
+
+              /* =========================
+              CLICK CÔNG NỢ KH
+              ========================= */
+
+              if(childField.key === "no_khachhang"){
+  
+                label.style.cursor = "pointer"
+
+                label.addEventListener(
+                  "click",
+                  async ()=>{
+                    
+                    const customerId =
+                      state.header?.id_customer
+
+                    if(!customerId){
+                      console.warn(
+                        "Công nợ KH: chưa có khách hàng"
+                      )
+                      return
+                    }
+
+                    window.dispatchEvent(
+                      new CustomEvent(
+                        "document-open-receipt",
+                        {
+                          detail:{
+                            customerId,
+                            documentRoot:root
+                          }
+                        }
+                      )
+                    )
+
+                  }
+                )
+
+              }
 
               childWrap.append(
                 label,
@@ -314,6 +351,7 @@ export function renderDocumentForm(
 
       label.textContent =
         field.label || ""
+
 
       /* =================================================
       INPUT ROW

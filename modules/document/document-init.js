@@ -30,50 +30,178 @@ from "./document-load.js"
 
 import {
   initSummaryBar
-} from "./document-summary-bar.js"
+}
+from "./document-summary-bar.js"
+
+import {
+  openStandaloneReceipt
+}
+from "../receivable/receivable-standalone.js"
+
+import {
+  loadCustomerDebt
+}
+from "../receivable/receivable-load.js"
+
 
 export async function initDocument(
   root,
   schema,
-  route,
+  route
 ){
 
-  const state =
-    route.state
+  const state = route.state
 
   if(!state){
-
     console.error(
       "initDocument: missing state"
     )
-
     return
   }
 
-  /* =========================
-  SCHEMA
-  ========================= */
 
-  state.schema =
-    schema
+  /* =====================================================
+     STATE
+  ===================================================== */
 
-  root._docState =
-    state
+  state.schema = schema
+  state.root = root
 
-  state.root = root  
+  root._docState = state
 
-  /* =========================
-  ROUTE
-  ========================= */
+
+  /* =====================================================
+     MỞ PHIẾU THU TỪ CÔNG NỢ KH
+  ===================================================== */
+
+  if(!root._documentReceiptHandler){
+
+    root._documentReceiptHandler =
+      async e => {
+
+        const customerId =
+          e.detail?.customerId
+
+        if(!customerId){
+          console.warn(
+            "document-open-receipt: missing customerId"
+          )
+          return
+        }
+
+        try{
+
+          await openStandaloneReceipt({
+            customerId,
+            root
+          })
+
+        }catch(error){
+
+          console.error(
+            "OPEN STANDALONE RECEIPT",
+            error
+          )
+
+          alert(
+            error?.message ||
+            "Không thể mở form thu tiền"
+          )
+
+        }
+
+      }
+
+
+    window.addEventListener(
+      "document-open-receipt",
+      root._documentReceiptHandler
+    )
+
+  }
+
+
+  /* =====================================================
+     CẬP NHẬT CÔNG NỢ SAU KHI THU
+  ===================================================== */
+
+  if(!root._documentReceivableUpdated){
+
+    root._documentReceivableUpdated =
+      async e => {
+
+        const customerId =
+          e.detail?.customerId
+
+        if(!customerId){
+          return
+        }
+
+        try{
+
+          const debt =
+            await loadCustomerDebt(
+              customerId
+            )
+
+
+          /* =========================
+             STATE
+          ========================= */
+
+          state.header.no_khachhang =
+            debt
+
+
+          /* =========================
+             INPUT
+          ========================= */
+
+          const input =
+            root.querySelector(
+              '[data-key="no_khachhang"]'
+            )
+
+          if(input){
+
+            input.value =
+              Number(
+                debt || 0
+              ).toLocaleString(
+                "vi-VN"
+              )
+
+          }
+
+        }catch(error){
+
+          console.error(
+            "UPDATE CUSTOMER DEBT",
+            error
+          )
+
+        }
+
+      }
+
+
+    window.addEventListener(
+      "document-receivable-updated",
+      root._documentReceivableUpdated
+    )
+
+  }
+
+
+  /* =====================================================
+     LOAD DOCUMENT
+  ===================================================== */
 
   const id =
     route.id
 
-  /* =========================
-  LOAD EDIT
-  ========================= */
 
-if(id){
+  if(id){
 
     await loadDocument(
       id,
@@ -81,44 +209,50 @@ if(id){
       state
     )
 
-    /* =========================
-    EXPORT MODE
-    ========================= */
+
+    /* =================================================
+       EXPORT / CREATE FROM EXISTING
+    ================================================= */
 
     if(route.action === "create"){
 
       const sourceId =
-          state.header.id
+        state.header.id
 
       state.header.ref =
-          sourceId
+        sourceId
 
       state.header.id =
-          null
+        null
 
       state.header.code =
-          `${schema.meta.prefix}...`
+        `${schema.meta.prefix}...`
 
-      state.items.forEach(item=>{
+
+      state.items.forEach(
+        item => {
 
           item.id = null
           item.id_doc = null
 
-      })
+        }
+      )
 
     }
 
-}
+  }
 
-  /* =========================
-  CREATE MODE
-  ========================= */
+
+  /* =====================================================
+     CREATE NEW DOCUMENT
+  ===================================================== */
 
   else{
 
     state.header = {}
     state.items = []
     state.draftRow = {}
+
 
     state.header.type =
       schema.meta.code
@@ -133,9 +267,10 @@ if(id){
 
   }
 
-  /* =========================
-  RENDER
-  ========================= */
+
+  /* =====================================================
+     RENDER FORM
+  ===================================================== */
 
   renderDocumentForm(
     root,
@@ -144,10 +279,20 @@ if(id){
     state
   )
 
+
+  /* =====================================================
+     ACTIONS
+  ===================================================== */
+
   renderActions(
     root,
     schema
   )
+
+
+  /* =====================================================
+     INPUT BAR
+  ===================================================== */
 
   renderInputBar(
     root,
@@ -155,20 +300,31 @@ if(id){
     state
   )
 
+
+  /* =====================================================
+     TABLE
+  ===================================================== */
+
   renderDocumentTable(
     root,
     schema,
     state
   )
 
+
+  /* =====================================================
+     SUMMARY
+  ===================================================== */
+
   initSummaryBar(
     root,
     state
   )
 
-  /* =========================
-  ACTION EVENTS
-  ========================= */
+
+  /* =====================================================
+     ACTION EVENTS
+  ===================================================== */
 
   bindDocumentActions({
     root,

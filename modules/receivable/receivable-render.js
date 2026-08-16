@@ -115,7 +115,7 @@ export function renderCustomerDetail(){
             class="receivable-pay-one"
             data-document-id="${doc.id}"
           >
-            Thu
+            Thu tiền
           </button>
         </td>
       </tr>
@@ -157,7 +157,7 @@ function renderDetailToolbar(){
       Công nợ
     </button>
     <button type="button" class="receivable-pay-all">
-      Thu tiền
+      + Phiếu thu
     </button>
   `
 }
@@ -264,29 +264,77 @@ export function renderCustomerPayments(){
   `
 }
 
-export function renderPaymentForm({documents, customer, preselectedId=null}){
-  closePaymentForm()
+export function renderPaymentForm({
+  documents,
+  customer,
+  preselectedId=null,
+  root=state.root,
+  employees=state.employees || []
+}){
 
-  const available = (documents || []).filter(x=>Number(x.due) > 0)
+  closePaymentForm(root)
 
-  const selected = preselectedId
-    ? available.filter(x=>String(x.id) === String(preselectedId))
-    : []
+  const available =
+    (documents || [])
+      .filter(
+        x => Number(x.due) > 0
+      )
+
+  const selected =
+    preselectedId
+      ? available.filter(
+          x =>
+            String(x.id) ===
+            String(preselectedId)
+        )
+      : []
+
 
   const html = `
-    <div class="receivable-overlay" id="receivable-payment-overlay">
+    <div
+      class="receivable-overlay"
+      id="receivable-payment-overlay"
+    >
+
       <div class="receivable-payment-modal">
+
         <div class="receivable-payment-head">
-          <strong>Thu tiền — ${esc(customer.name)}</strong>
-          <button type="button" class="receivable-payment-close">×</button>
-          <button type="button" class="receivable-payment-cancel">Hủy</button>
-          <button type="button" class="receivable-payment-save">Lưu thu tiền</button>      
+
+          <strong>
+            Thu tiền — ${esc(customer.name)}
+          </strong>
+
+          <button
+            type="button"
+            class="receivable-payment-close"
+          >
+            ×
+          </button>
+
+          <button
+            type="button"
+            class="receivable-payment-cancel"
+          >
+            Hủy
+          </button>
+
+          <button
+            type="button"
+            class="receivable-payment-save"
+          >
+            Lưu phiếu
+          </button>
+
         </div>
 
+
         <div class="receivable-payment-form">
+
           <div class="receivable-payment-grid">
+
             <label>
               Ngày
+
               <input
                 id="receivable-payment-day"
                 type="text"
@@ -295,47 +343,93 @@ export function renderPaymentForm({documents, customer, preselectedId=null}){
               >
             </label>
 
-            <label>
-              Nhân viên
-              <select id="receivable-payment-employee">
-                <option value="">-- Không chọn --</option>
-                ${(state.employees || []).map(e=>`
-                  <option value="${e.id}">${esc(e.name)}</option>
-                `).join("")}
-              </select>
-            </label>
 
             <label>
-              Số tiền thu
-              <input id="receivable-payment-amount" type="text" data-format="money">
+              Nhân viên
+
+              <select
+                id="receivable-payment-employee"
+              >
+
+                <option value="">
+                  -- Không chọn --
+                </option>
+
+                ${employees.map(e => `
+                  <option value="${e.id}">
+                    ${esc(e.name)}
+                  </option>
+                `).join("")}
+
+              </select>
+
             </label>
 
             <label>
               Ghi chú
-              <input id="receivable-payment-note" type="text">
+
+              <input
+                id="receivable-payment-note"
+                type="text"
+              >
             </label>
+
+            <label>
+              Số tiền thu
+
+              <input
+                id="receivable-payment-amount"
+                type="text"
+                data-format="money"
+              >
+            </label>
+
           </div>
+
 
           <div class="receivable-allocation-title">
             Phân bổ vào chứng từ
           </div>
 
+
           <div class="receivable-allocation-list">
-            ${available.map(doc=>{
-              const isChecked = selected.some(x=>String(x.id) === String(doc.id))
+
+            ${available.map(doc => {
+
+              const isChecked =
+                selected.some(
+                  x =>
+                    String(x.id) ===
+                    String(doc.id)
+                )
 
               return `
-                <div class="receivable-allocation-row">
+
+                <div
+                  class="receivable-allocation-row"
+                >
+
                   <label>
+
                     <input
                       type="checkbox"
                       class="receivable-allocation-check"
                       data-document-id="${doc.id}"
                       ${isChecked ? "checked" : ""}
                     >
-                    <span>${esc(doc.code)}</span>
-                    <small>${esc(doc.day)} <span>·</span> Còn ${money(doc.due)}</small>
+
+                    <span>
+                      ${esc(doc.code)}
+                    </span>
+
+                    <small>
+                      ${esc(doc.day)}
+                      <span>·</span>
+                      Còn ${money(doc.due)}
+                    </small>
+
                   </label>
+
 
                   <input
                     type="text"
@@ -347,45 +441,94 @@ export function renderPaymentForm({documents, customer, preselectedId=null}){
                     step="0.01"
                     value="${isChecked ? Number(doc.due) : 0}"
                   >
+
                 </div>
+
               `
+
             }).join("")}
+
           </div>
+
 
           <div class="receivable-payment-total">
+
             Tổng phân bổ:
-            <strong id="receivable-allocation-total">0</strong>
+
+            <strong
+              id="receivable-allocation-total"
+            >
+              0
+            </strong>
+
           </div>
 
-          <div class="receivable-payment-error" id="receivable-payment-error"></div>
-          
+
+          <div
+            class="receivable-payment-error"
+            id="receivable-payment-error"
+          ></div>
+
         </div>
+
       </div>
+
     </div>
   `
 
-  state.root.insertAdjacentHTML("beforeend", html)
-  bindMoneyInput(
-    state.root.querySelector("#receivable-payment-amount")
+
+  root.insertAdjacentHTML(
+    "beforeend",
+    html
   )
 
-  state.root
-    .querySelectorAll(".receivable-allocation-amount")
-    .forEach(input => bindMoneyInput(input))
+
+  bindMoneyInput(
+    root.querySelector(
+      "#receivable-payment-amount"
+    )
+  )
+
+
+  root
+    .querySelectorAll(
+      ".receivable-allocation-amount"
+    )
+    .forEach(
+      input =>
+        bindMoneyInput(input)
+    )
+
 
   createDatepicker(
-  state.root,
+    root,
     "#receivable-payment-day",
     null,
-    { side: "left", direction: "top" }
+    {
+      side:"left",
+      direction:"top"
+    }
   )
 
+
   state.paymentOpen = true
-  syncAllocationTotal()
+
+
+  syncAllocationTotal(
+    root
+  )
 }
 
-export function closePaymentForm(){
-  state.root?.querySelector("#receivable-payment-overlay")?.remove()
+export function closePaymentForm(
+  root=state.root
+){
+
+  root
+    ?.querySelector(
+      "#receivable-payment-overlay"
+    )
+    ?.remove()
+
   state.paymentOpen = false
 }
 
@@ -403,24 +546,47 @@ export function updateSummary(total, due, count){
   if(label) label.textContent = "Còn nợ:"
 }
 
-export function syncAllocationTotal(){
-  const root = state.root
+export function syncAllocationTotal(
+  root=state.root
+){
+
   if(!root) return
 
   let total = 0
 
-  root.querySelectorAll(".receivable-allocation-check").forEach(check=>{
-    if(!check.checked) return
+  root
+    .querySelectorAll(
+      ".receivable-allocation-check"
+    )
+    .forEach(check => {
 
-    const input = root.querySelector(
-      `.receivable-allocation-amount[data-document-id="${check.dataset.documentId}"]`
+      if(!check.checked){
+        return
+      }
+
+      const input =
+        root.querySelector(
+          `.receivable-allocation-amount[data-document-id="${check.dataset.documentId}"]`
+        )
+
+      total += Number(
+        input?.value || 0
+      )
+
+    })
+
+
+  const el =
+    root.querySelector(
+      "#receivable-allocation-total"
     )
 
-    total += Number(input?.value || 0)
-  })
+  if(el){
 
-  const el = root.querySelector("#receivable-allocation-total")
-  if(el) el.textContent = money(total)
+    el.textContent =
+      money(total)
+
+  }
 }
 
 function clearHistory(){

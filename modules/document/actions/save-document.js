@@ -30,6 +30,11 @@ import {
 }
 from "./update-derived-document.js"
 
+import {
+  loadCustomerDebt
+}
+from "/modules/receivable/receivable-load.js"
+
 export async function saveDocument({
   root,
   schema,
@@ -44,6 +49,23 @@ export async function saveDocument({
     )
     return
   }
+
+  if(
+    state.header.in_cong_no === true
+  ){
+
+    state.header.no_khachhang =
+      await loadCustomerDebt(
+        state.header.id_customer
+      )
+
+  }else{
+
+    state.header.no_khachhang = 0
+
+  }
+
+
 
   /* =====================================================
   PAYLOAD

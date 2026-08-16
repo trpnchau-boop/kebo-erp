@@ -566,3 +566,151 @@ export async function loadDocument(
   })
 
 }
+export async function loadCustomerDebt(customerId){
+
+  if(!customerId){
+    return 0
+  }
+
+  /* =========================
+     CHỨNG TỪ BÁN HÀNG
+  ========================= */
+
+  const {
+    data: documents,
+    error: documentError
+  } = await db
+    .from("document")
+    .select("id,tongthanhtoan")
+    .eq("type", "SALE")
+    .eq("status", "posted")
+    .eq("id_customer", customerId)
+
+  if(documentError){
+    throw documentError
+  }
+
+  if(!documents?.length){
+    return 0
+  }
+
+  const documentIds =
+    documents.map(x => x.id)
+
+
+  /* =========================
+     PHÂN BỔ THANH TOÁN
+  ========================= */
+
+  const {
+    data: allocations,
+    error: allocationError
+  } = await db
+    .from("payment_allocation")
+    .select("payment_id,document_id,amount")
+    .in("document_id", documentIds)
+
+  if(allocationError){
+    throw allocationError
+  }
+
+
+  if(!allocations?.length){
+
+    return documents.reduce(
+      (sum,doc) =>
+        sum +
+        Number(
+          doc.tongthanhtoan || 0
+        ),
+      0
+    )
+
+  }
+
+
+  /* =========================
+     PHIẾU THU
+  ========================= */
+
+  const paymentIds =
+    [
+      ...new Set(
+        allocations.map(
+          x => x.payment_id
+        )
+      )
+    ]
+
+  const {
+    data: payments,
+    error: paymentError
+  } = await db
+    .from("payment")
+    .select("id,type,status")
+    .in("id", paymentIds)
+
+  if(paymentError){
+    throw paymentError
+  }
+
+
+  const paymentMap =
+    Object.fromEntries(
+      (payments || []).map(
+        x => [
+          String(x.id),
+          x
+        ]
+      )
+    )
+
+
+  /* =========================
+     TỔNG ĐÃ THU
+  ========================= */
+
+  let paid = 0
+
+  for(const allocation of allocations){
+
+    const payment =
+      paymentMap[
+        String(
+          allocation.payment_id
+        )
+      ]
+
+    if(
+      payment?.type !== "RECEIPT" ||
+      payment?.status !== "posted"
+    ){
+      continue
+    }
+
+    paid +=
+      Number(
+        allocation.amount || 0
+      )
+  }
+
+
+  /* =========================
+     CÔNG NỢ
+  ========================= */
+
+  const total =
+    documents.reduce(
+      (sum,doc) =>
+        sum +
+        Number(
+          doc.tongthanhtoan || 0
+        ),
+      0
+    )
+
+  return Math.max(
+    total - paid,
+    0
+  )
+}

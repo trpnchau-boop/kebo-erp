@@ -35,6 +35,10 @@ function shouldHideBlock(
 
   if(
     bind === "tongtien" &&
+    (
+      document.in_cong_no !== true ||
+      Number(document.no_khachhang || 0) === 0
+    ) &&
     tongTien === thanhToan &&
     thue === 0 &&
     chietKhau === 0
@@ -54,6 +58,16 @@ function shouldHideBlock(
     chietKhau === 0
   ){
 
+    return true
+  }
+
+  if(
+    bind === "no_khachhang" &&
+    (
+      Number(document.no_khachhang || 0) === 0 ||
+      document.in_cong_no !== true
+    )
+  ){
     return true
   }
 
@@ -163,19 +177,6 @@ function renderBlock({
         company || {}
     }
 
-    let value =
-
-      resolveBindingValue(
-        bind,
-        sourceData
-      )
-    value =
-
-      formatValue(
-        value,
-        bind
-      )
-
     const tongTien =
       Number(document.tongtien || 0)
 
@@ -188,11 +189,36 @@ function renderBlock({
     const chietKhau =
       Number(document.chietkhau || 0)  
 
+    const thanhToanIn =
+      Number(document.tongthanhtoan || 0) +
+      (
+        document.in_cong_no === true
+          ? Number(document.no_khachhang || 0)
+          : 0
+      )  
+
+    let value =
+      resolveBindingValue(
+        bind,
+        sourceData
+      )
+
+    if(bind === "tongthanhtoan"){
+      value = thanhToanIn
+    }
+
+    value =
+      formatValue(
+        value,
+        bind
+      )
+
+
     const text =
       value
         ? `${rawText}: ${value}`
         : rawText
-
+              
     if(
       bind &&
         (
@@ -211,6 +237,10 @@ function renderBlock({
 
     if(
       bind === "tongtien" &&
+      (
+        document.in_cong_no !== true ||
+        Number(document.no_khachhang || 0) === 0
+      ) &&
       tongTien === thanhToan &&
       thue === 0 &&
       chietKhau === 0
@@ -231,6 +261,16 @@ function renderBlock({
     ){
       return ""
     }
+
+  if(
+    bind === "no_khachhang" &&
+    (
+      Number(document.no_khachhang || 0) === 0 ||
+      document.in_cong_no !== true
+    )
+  ){
+    return ""
+  }
 
     const fontSize =
 
@@ -913,6 +953,7 @@ function formatValue(
 
     "tongtien",
     "tongthanhtoan",
+    "no_khachhang",
 
     "thue",
     "chietkhau",

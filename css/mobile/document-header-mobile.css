@@ -500,7 +500,7 @@ Paste ở CUỐI file CSS hiện tại
   /* 2 checkbox đầu form nằm cùng 1 hàng */
   .inline-checkbox-group .doc-group-wrap{
     display:grid !important;
-    grid-template-columns:1fr 1fr !important;
+    grid-template-columns:1fr 1fr 0.6fr  !important;
     gap:10px 14px !important;
     align-items:center !important;
   }
@@ -508,7 +508,7 @@ Paste ở CUỐI file CSS hiện tại
   .inline-checkbox-group .doc-group-item{
     display:flex !important;
     align-items:center !important;
-    gap:8px !important;
+    gap:3px !important;
     min-width:0;
   }
 

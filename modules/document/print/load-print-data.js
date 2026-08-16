@@ -13,6 +13,11 @@ import {
 }
 from "./group-items.js"
 
+import {
+  loadCustomerDebt
+}
+from "/modules/receivable/receivable-load.js"
+
 export async function loadPrintData({
 
   id,
@@ -30,6 +35,14 @@ export async function loadPrintData({
     schema,
     state
   )
+
+  const customerId =
+    state.header?.id_customer
+
+  const noKhachHang =
+    customerId
+      ? await loadCustomerDebt(customerId)
+      : 0
 
   let items = [...state.items]
 
@@ -52,6 +65,9 @@ export async function loadPrintData({
     document:{
 
       ...state.header,
+
+      no_khachhang:
+        noKhachHang,
 
       company
 
