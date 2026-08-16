@@ -388,6 +388,47 @@ export function bindMoveEngine(root){
         }
       )
 
+      const state =
+        printStore.getState()
+
+      const block =
+        getBlockById(
+        state,
+        selectedIds[0]
+      )
+
+      if(block){
+
+        const panel =
+          document.querySelector(
+            ".print-property-panel"
+          )
+
+        if(panel){
+
+          const xInput =
+            panel.querySelector(
+              '[data-prop="x"]'
+            )
+
+          const yInput =
+            panel.querySelector(
+              '[data-prop="y"]'
+            )
+
+          if(xInput){
+            xInput.value =
+            block.x
+          }
+
+          if(yInput){
+            yInput.value =
+            block.y
+          }
+
+        }
+      }
+
       removeGuides(
         verticalGuide,
         horizontalGuide

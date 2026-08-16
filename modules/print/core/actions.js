@@ -88,7 +88,7 @@ export function setBlockSize(
   const minHeight =
     block.type === "line"
       ? 1
-      : 30
+      : 18
 
   block.height =
     Math.max(

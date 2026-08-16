@@ -198,7 +198,7 @@ export function bindResizeEngine(root){
 
       nextHeight =
         Math.max(
-          30,
+          18,
           nextHeight
         )
 
@@ -369,6 +369,47 @@ export function bindResizeEngine(root){
             finalHeight
           )
         })
+
+        const state =
+          printStore.getState()
+
+        const block =
+          getBlockById(
+            state,
+            blockId
+          )
+
+        if(block){
+
+          const panel =
+            document.querySelector(
+            ".print-property-panel"
+            )
+
+          if(panel){
+
+            const widthInput =
+              panel.querySelector(
+                '[data-prop="width"]'
+              )
+
+            const heightInput =
+              panel.querySelector(
+                '[data-prop="height"]'
+              )
+
+            if(widthInput){
+              widthInput.value =
+              block.width
+            }
+
+            if(heightInput){
+              heightInput.value =
+              block.height
+            }
+
+          }
+        }
       }
 
       /* =========================================

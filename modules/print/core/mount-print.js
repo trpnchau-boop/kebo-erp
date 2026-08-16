@@ -317,7 +317,7 @@ function renderSchema(){
 function render(){
 
   renderCanvas()
-
+  renderSidebar()
   renderSchema()
 }
 
