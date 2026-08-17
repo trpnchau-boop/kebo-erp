@@ -1,4 +1,5 @@
 // js/router.js
+import { can } from "./core/permission.js"
 
 const htmlCache = new Map()
 const moduleCache = new Map()
@@ -34,6 +35,24 @@ export async function loadPage(
         page,
         params
       )
+
+    /* =========================
+    PERMISSION
+    ========================= */
+
+    if(!canRoute(route)){
+
+      root.innerHTML = `
+        <div style="
+          padding:30px;
+          font-size:16px;
+        ">
+          Bạn không có quyền truy cập chức năng này.
+        </div>
+      `
+
+      return
+    }
 
     /* =========================
     URL
@@ -374,5 +393,79 @@ function moduleKey(route){
   }
 
   return route.page
+
+}
+
+/* =========================
+ROUTE PERMISSION
+========================= */
+
+function canRoute(route){
+
+  /* =========================
+  CATALOG = LUÔN ĐƯỢC PHÉP
+  ========================= */
+
+  if(
+    route.page === "catalog"
+  ){
+    return true
+  }
+
+
+  /* =========================
+  BUILD CODE
+  ========================= */
+
+  const parts = [
+    "menu",
+    route.page
+  ]
+
+
+  /* =========================
+  TYPE
+  ========================= */
+
+  if(route.type){
+
+    parts.push(
+      route.type
+    )
+
+  }
+
+
+  /* =========================
+  TABLE
+  ========================= */
+
+  /*
+    list/settings:
+      route.type === route.table
+
+    Không được thêm table lần nữa.
+  */
+
+  if(
+    route.table &&
+    route.table !== route.type
+  ){
+
+    parts.push(
+      route.table
+    )
+
+  }
+
+
+  parts.push("view")
+
+
+  const code =
+    parts.join(".")
+
+
+  return can(code)
 
 }

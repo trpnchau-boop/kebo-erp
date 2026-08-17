@@ -35,7 +35,7 @@ label:"Phân loại",
 type:"select",
 options:[
 {value:"single",text:"Sản phẩm thường"},
-{value:"variant",text:"Sản phẩm có biến thể"},
+{value:"variant",text:"Thêm biến thể"},
 {value:"combo",text:"Combo"}
 ],
 },
@@ -87,7 +87,7 @@ showInQuote:true,
 },
 
 dongia1:{
-label:"Giá bán",
+label:"Giá mặc định",
 showInList:true,
 showInQuote:true,
 type:"number",
@@ -95,13 +95,13 @@ format:"money"
 },
 
 dongia2:{
-label:"Giá bán 2",
+label:"Giá bán sỉ",
 type:"number",
 format:"money"
 },
 
 dongia3:{
-label:"Giá bán 3",
+label:"Giá bán lẻ",
 type:"number",
 format:"money"
 },
@@ -118,7 +118,7 @@ format:"money"
 },
 
 gianhapGoc:{
-label:"Giá nhập",
+label:"Giá nhập gốc",
 showInList:true,
 permission:{
 

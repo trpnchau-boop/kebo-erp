@@ -1,4 +1,4 @@
-
+import { can } from "./core/permission.js"
 
 const tabs = {}
 let order = []
@@ -206,55 +206,145 @@ saveTabs()
 
 }
 
+function canRestoreTab(page, params = {}){
+
+  /* =========================
+  CATALOG = LUÔN ĐƯỢC PHÉP
+  ========================= */
+
+  if(page === "catalog"){
+    return true
+  }
+
+
+  /* =========================
+  KHÔNG PHẢI MENU TABLE
+  ========================= */
+
+  if(!params.table){
+    return true
+  }
+
+
+  /* =========================
+  BUILD PERMISSION CODE
+  ========================= */
+
+  const type =
+    params.type || ""
+
+  const table =
+    params.table || ""
+
+  const code = [
+    "menu",
+    page,
+    type,
+    table,
+    "view"
+  ]
+    .filter(Boolean)
+    .join(".")
+
+
+  return can(code)
+
+}
+
 /* =========================
 RESTORE
 ========================= */
 
 export async function restoreTabs(){
 
-const raw =
-localStorage.getItem("kebo_tabs")
+  const raw =
+    localStorage.getItem("kebo_tabs")
 
-if(!raw) return
+  if(!raw) return
 
-try{
 
-const data =
-JSON.parse(raw)
+  try{
 
-if(!data.tabs?.length) return
+    const data =
+      JSON.parse(raw)
 
-for(const t of data.tabs){
+    if(!data.tabs?.length){
+      return
+    }
 
-createTab(
-t.id,
-t.title,
-t.page,
-t.params,
-t.state
-)
 
-}
+    /* =========================
+    RESTORE CÓ KIỂM TRA QUYỀN
+    ========================= */
 
-if(
-data.activeTabId &&
-tabs[data.activeTabId]
-){
-await activateTab(
-data.activeTabId
-)
-}
-else if(order.length){
-await activateTab(order[0])
-}
+    for(const t of data.tabs){
 
-}catch(err){
+      if(
+        !canRestoreTab(
+          t.page,
+          t.params
+        )
+      ){
 
-localStorage.removeItem(
-"kebo_tabs"
-)
+        continue
 
-}
+      }
+
+
+      createTab(
+        t.id,
+        t.title,
+        t.page,
+        t.params,
+        t.state
+      )
+
+    }
+
+
+    /* =========================
+    ACTIVE TAB
+    ========================= */
+
+    if(
+      data.activeTabId &&
+      tabs[data.activeTabId]
+    ){
+
+      await activateTab(
+        data.activeTabId
+      )
+
+    }
+    else if(order.length){
+
+      await activateTab(
+        order[0]
+      )
+
+    }
+
+
+    /* =========================
+    SAVE LẠI
+    XÓA CÁC TAB ĐÃ MẤT QUYỀN
+    ========================= */
+
+    saveTabs()
+
+
+  }catch(err){
+
+    console.error(
+      "Lỗi restore tabs:",
+      err
+    )
+
+    localStorage.removeItem(
+      "kebo_tabs"
+    )
+
+  }
 
 }
 

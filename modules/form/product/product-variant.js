@@ -85,7 +85,7 @@ const html = `
 <div class="editor-grid-3">
 
 <div class="editor-field">
-<label class="editor-label">Nhóm SP</label>
+<label class="editor-label">Nhóm sản phẩm</label>
 <div class="variant-group">${groupInput}</div>
 </div>
 
@@ -120,7 +120,7 @@ value="${data.dinhluong ?? ""}">
 </div>
 
 <div class="editor-field">
-<label class="editor-label">Giá 1</label>
+<label class="editor-label">Giá mặc định</label>
 <input
 class="variant-gia1 editor-input"
 data-format="money"
@@ -129,7 +129,7 @@ value="${data.dongia1 ?? ""}">
 </div>
 
 <div class="editor-field">
-<label class="editor-label">Giá 2</label>
+<label class="editor-label">Giá bán sỉ</label>
 <input
 class="variant-gia2 editor-input"
 data-format="money"
@@ -138,7 +138,7 @@ value="${data.dongia2 ?? ""}">
 </div>
 
 <div class="editor-field">
-<label class="editor-label">Giá 3</label>
+<label class="editor-label">Giá bán lẻ</label>
 <input
 class="variant-gia3 editor-input"
 data-format="money"
@@ -287,26 +287,26 @@ const options = dvtCache.map(d=>({
 const html = `
 <div class="variant-unit-row">
 
-${renderDropdownSelect({
-  value: data.unit ?? "",
-  options,
-  field: "",
-  rowId: "",
-  className: "unit",
-  allowEmpty: true,
-  emptyText: "",
-  allowAdd: true,
-  addTable: "set_sp_dvt",
-  addField: "dvt" 
-})}
+  ${renderDropdownSelect({
+    value: data.unit ?? "",
+    options,
+    field: "",
+    rowId: "",
+    className: "unit",
+    allowEmpty: true,
+    emptyText: "",
+    allowAdd: true,
+    addTable: "set_sp_dvt",
+    addField: "dvt" ,
+  })}
 
-<input class="ratio"
-type="number"
-step="0.01"
-value="${data.ratio ?? ""}"
-placeholder="Tỷ lệ">
+  <input class="ratio"
+  type="number"
+  step="0.01"
+  value="${data.ratio ?? ""}"
+  placeholder=" ← Quy đổi">
 
-<button class="remove-unit" type="button">×</button>
+  <button class="remove-unit" type="button">×</button>
 
 </div>
 `

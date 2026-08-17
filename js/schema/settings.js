@@ -237,7 +237,7 @@ set_price_rule:{
     },
 
     product_group:{
-      label:"Nhóm SP",
+      label:"Nhóm sản phẩm",
       type:"select",
       ref:"set_sp_group",
       value:"id",

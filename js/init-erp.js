@@ -14,12 +14,21 @@ import {
   loadPermissions
 } from "./core/permission.js"
 
+import {
+  syncMenuPermissions,
+  applyMenuPermissions
+} from "./core/sync-menu-permissions.js"
+
 export async function initERP(session){
 
   window.currentUser =
     session.user
 
+  await syncMenuPermissions()
+
   await loadPermissions()
+
+  applyMenuPermissions()
 
   initKeyboard()
 
@@ -27,7 +36,7 @@ export async function initERP(session){
 
   initNotifications()
 
-  await new Promise(r=>setTimeout(r,0))
+  await new Promise(r => setTimeout(r,0))
 
   await restoreTabs()
 
