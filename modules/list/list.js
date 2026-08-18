@@ -323,7 +323,26 @@ const opt = {
     ?.addEventListener("click", e => {
 
       stop(e)
-      exportExcel(state.table)
+
+      const ids =
+        state.selection.getIds()
+
+      if(!ids.length){
+        alert("Chưa chọn dòng")
+        return
+      }
+
+      const selectedRows =
+        state.rows.filter(row =>
+          ids.includes(
+            String(row.id)
+          )
+        )
+
+      exportExcel(
+        state.table,
+        selectedRows
+      )
 
     })
 
