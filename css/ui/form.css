@@ -1,8 +1,12 @@
 .form-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  margin-bottom:6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: sticky;
+  top: -1px;
+  z-index: 10;
+  background: #fff;
+  padding: 7px 0;
 }
 
 .form-head h2{

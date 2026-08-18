@@ -54,11 +54,11 @@ set_kh_money:{
       label:"Giá cố định",
       type:"select",
       options:[
-        {value:"dongia1", text:"đơn giá"},
+        {value:"dongia1", text:"giá mặc định"},
         {value:"giavon", text:"giá vốn"},
-        {value:"gianhapGoc", text:"giá nhập"},
-        {value:"dongia2", text:"đơn giá 2"},
-        {value:"dongia3", text:"đơn giá 3"}
+        {value:"gianhapGoc", text:"giá nhập gốc"},
+        {value:"dongia2", text:"giá bán sỉ"},
+        {value:"dongia3", text:"giá bán lẻ"}
       ],
       showInList:true
     },
@@ -67,11 +67,11 @@ set_kh_money:{
       label:"Fallback",
       type:"multi_select_tags",
       options:[
-        {value:"dongia1", text:"đơn giá"},
+        {value:"dongia1", text:"giá mặc định"},
         {value:"giavon", text:"giá vốn"},
-        {value:"gianhapGoc", text:"giá nhập"},
-        {value:"dongia2", text:"đơn giá 2"},
-        {value:"dongia3", text:"đơn giá 3"}
+        {value:"gianhapGoc", text:"giá nhập gốc"},
+        {value:"dongia2", text:"giá bán sỉ"},
+        {value:"dongia3", text:"giá bán lẻ"}
        ]
     },
    })
