@@ -5,7 +5,8 @@ import {
 from "/js/crud.js"
 
 import {
-  getCatalogData
+  getCatalogData,
+  clearCatalogCache
 }
 from "./catalog-api.js"
 
@@ -59,6 +60,8 @@ export async function init(
   root
 ){
 
+  clearCatalogCache()
+  
   const grid =
     root.querySelector(
       "#catalog-grid"
@@ -602,6 +605,8 @@ function applyFilter(){
       "spin .8s linear infinite"
 
     try{
+
+      clearCatalogCache()
 
       const data =
         await getCatalogData()

@@ -397,6 +397,48 @@ function moduleKey(route){
 }
 
 /* =========================
+BUILD PERMISSION CODE
+========================= */
+
+export function getPermissionCode(
+  page,
+  params = {}
+){
+
+  const route =
+    normalizeRoute(
+      page,
+      params
+    )
+
+  const parts = [
+    "menu",
+    route.page
+  ]
+
+  if(route.type){
+    parts.push(
+      route.type
+    )
+  }
+
+  if(
+    route.table &&
+    route.table !== route.type
+  ){
+
+    parts.push(
+      route.table
+    )
+
+  }
+
+  parts.push("view")
+
+  return parts.join(".")
+}
+
+/* =========================
 ROUTE PERMISSION
 ========================= */
 
@@ -414,58 +456,40 @@ function canRoute(route){
 
 
   /* =========================
-  BUILD CODE
+  QUYỀN TRỰC TIẾP
   ========================= */
-
-  const parts = [
-    "menu",
-    route.page
-  ]
-
-
-  /* =========================
-  TYPE
-  ========================= */
-
-  if(route.type){
-
-    parts.push(
-      route.type
-    )
-
-  }
-
-
-  /* =========================
-  TABLE
-  ========================= */
-
-  /*
-    list/settings:
-      route.type === route.table
-
-    Không được thêm table lần nữa.
-  */
-
-  if(
-    route.table &&
-    route.table !== route.type
-  ){
-
-    parts.push(
-      route.table
-    )
-
-  }
-
-
-  parts.push("view")
-
 
   const code =
-    parts.join(".")
+    getPermissionCode(
+      route.page,
+      {
+        type: route.type,
+        table: route.table
+      }
+    )
 
 
-  return can(code)
+  if(can(code)){
+    return true
+  }
+
+
+  /* =========================
+  QUYỀN KẾ THỪA TỪ CHA
+  ========================= */
+
+  const inheritedPermission =
+    route.state?.permissionCode
+
+
+  if(
+    inheritedPermission &&
+    can(inheritedPermission)
+  ){
+    return true
+  }
+
+
+  return false
 
 }

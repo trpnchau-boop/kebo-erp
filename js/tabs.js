@@ -1,4 +1,7 @@
 import { can } from "./core/permission.js"
+import {
+  getPermissionCode
+} from "./router.js"
 
 const tabs = {}
 let order = []
@@ -21,15 +24,72 @@ export async function openTab(
     return
   }
 
+
+  /* =========================
+  KẾ THỪA QUYỀN TỪ TAB CHA
+  ========================= */
+
+  let nextState = {}
+
+  if(
+    state?.permissionCode
+  ){
+
+    nextState.permissionCode =
+      state.permissionCode
+
+  }
+
+  const parent =
+    tabs[activeTabId]
+
+  if(
+    parent &&
+    !nextState.permissionCode
+  ){
+
+    /*
+
+      Nếu cha đã là con của một permission khác
+      thì tiếp tục giữ permission gốc.
+
+    */
+
+    if(
+      parent.state?.permissionCode
+    ){
+
+      nextState.permissionCode =
+        parent.state.permissionCode
+
+    }else{
+
+      /*
+        Cha là tab gốc.
+        Lấy permission trực tiếp của cha.
+      */
+
+      nextState.permissionCode =
+        getPermissionCode(
+          parent.page,
+          parent.params
+        )
+
+    }
+
+  }
+
+
   createTab(
     id,
     title,
     page,
     params,
-    state
+    nextState
   )
 
   await activateTab(id)
+
   saveTabs()
 }
 
@@ -206,10 +266,14 @@ saveTabs()
 
 }
 
-function canRestoreTab(page, params = {}){
+function canRestoreTab(
+  page,
+  params = {},
+  state = null
+){
 
   /* =========================
-  CATALOG = LUÔN ĐƯỢC PHÉP
+  CATALOG
   ========================= */
 
   if(page === "catalog"){
@@ -218,37 +282,38 @@ function canRestoreTab(page, params = {}){
 
 
   /* =========================
-  KHÔNG PHẢI MENU TABLE
+  PERMISSION TRỰC TIẾP
   ========================= */
 
-  if(!params.table){
+  const code =
+    getPermissionCode(
+      page,
+      params
+    )
+
+
+  if(can(code)){
     return true
   }
 
 
   /* =========================
-  BUILD PERMISSION CODE
+  PERMISSION KẾ THỪA
   ========================= */
 
-  const type =
-    params.type || ""
-
-  const table =
-    params.table || ""
-
-  const code = [
-    "menu",
-    page,
-    type,
-    table,
-    "view"
-  ]
-    .filter(Boolean)
-    .join(".")
+  const inheritedPermission =
+    state?.permissionCode
 
 
-  return can(code)
+  if(
+    inheritedPermission &&
+    can(inheritedPermission)
+  ){
+    return true
+  }
 
+
+  return false
 }
 
 /* =========================
@@ -282,7 +347,8 @@ export async function restoreTabs(){
       if(
         !canRestoreTab(
           t.page,
-          t.params
+          t.params,
+          t.state
         )
       ){
 
@@ -463,11 +529,17 @@ tabs: order.map(id=>{
 const t = tabs[id]
 
 return {
-id:t.id,
-title:t.title,
-page:t.page,
-params:t.params,
-state:t.state
+  id:t.id,
+  title:t.title,
+  page:t.page,
+  params:t.params,
+  state:
+    t.state?.permissionCode
+      ? {
+          permissionCode:
+            t.state.permissionCode
+        }
+      : null
 }
 
 })
