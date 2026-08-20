@@ -83,3 +83,12 @@
   border-right:none;
 }
 
+#search-code-label {
+    position: absolute;
+    pointer-events: none;
+    left: 40px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: normal;
+    color: #6b7280;
+}
