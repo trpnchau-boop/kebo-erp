@@ -39,7 +39,21 @@ export async function createReceipt({
   note,
   allocations
 }){
+  const {
+    data: {
+      session
+    }
+  } = await db.auth.getSession()
 
+  console.log(
+    "RECEIPT AUTH:",
+    {
+      role: session?.user?.role,
+      userId: session?.user?.id,
+      email: session?.user?.email,
+      hasAccessToken: !!session?.access_token
+    }
+  )
   const total = Number(amount || 0)
 
   if(!idCustomer){
@@ -196,18 +210,10 @@ export async function createReceipt({
           0
         )
 
-      const doc = byId[item.document_id]
-
-      const no_tt = Math.max(
-        Number(doc.tongthanhtoan || 0) - tien_tt,
-        0
-      )
-
       const { error: updateError } = await db
         .from("document")
         .update({
-          tien_tt,
-          no_tt
+          tien_tt
         })
         .eq("id", item.document_id)
 

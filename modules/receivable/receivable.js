@@ -17,6 +17,7 @@ import {
 import { bindEvents } from "./receivable-events.js"
 
 import { createDatepicker } from "/js/ui/init-datepicker.js"
+import { parseMoney } from "/js/core/format.js"
 
 export async function init(route, root){
   state.root = root
@@ -397,9 +398,9 @@ export function getSelectedCustomer(){
 export function getPaymentFormData(){
   const root = state.root
 
-  const amount = Number(
-    root.querySelector("#receivable-payment-amount")?.value || 0
-  )
+  const amount = parseMoney(
+    root.querySelector("#receivable-payment-amount")?.value
+  ) || 0
 
   const allocations = []
 
@@ -409,7 +410,7 @@ export function getPaymentFormData(){
         `.receivable-allocation-amount[data-document-id="${check.dataset.documentId}"]`
       )
 
-      const value = Number(input?.value || 0)
+      const value = parseMoney(input?.value) || 0
 
       if(value > 0){
         allocations.push({

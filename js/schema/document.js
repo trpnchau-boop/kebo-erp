@@ -82,13 +82,6 @@ type:"number",
 format:"money"
 },
 
-no_tt: {
-label: "Chưa thanh toán",
-type:"number",
-format:"money",
-readonly:true
-},
-
 tongtienvon: {
 label: "Tổng tiền vốn",
 type:"number",
@@ -309,13 +302,6 @@ tien_tt: {
 label: "Đã thanh toán",
 type:"number",
 format:"money"
-},
-
-no_tt: {
-label: "Chưa thanh toán",
-type:"number",
-format:"money",
-readonly:true
 },
 
 tongtienvon: {

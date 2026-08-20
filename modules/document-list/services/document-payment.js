@@ -5,18 +5,23 @@ import {
 }
 from "/js/supabase.js"
 
+
 export async function paymentDocument(ctx){
 
   const ids =
     ctx.ids || []
 
+
   if(!ids.length){
+
     alert("Chưa chọn chứng từ")
+
     return
   }
 
+
   /* =====================================
-  LOAD DOCUMENTS
+     LOAD DOCUMENTS
   ===================================== */
 
   const {
@@ -39,6 +44,7 @@ export async function paymentDocument(ctx){
       ids
     )
 
+
   if(error){
 
     console.error(error)
@@ -50,23 +56,125 @@ export async function paymentDocument(ctx){
     return
   }
 
+
   /* =====================================
-  UPDATE
+     CHECK PHIẾU THU
+     
+     Chỉ cần có:
+       payment_allocation
+       +
+       payment.type = RECEIPT
+
+     => đã lập phiếu thu
+     => không cho nút Thanh toán
+        thay đổi tien_tt
   ===================================== */
 
-  let hasPaid = false
-  let hasUnpaid = false
+  const {
+    data: allocations,
+    error: allocationError
+  }
+
+  = await db
+
+    .from("payment_allocation")
+
+    .select(`
+      document_id,
+      payment:payment_id(
+        type,
+        status
+      )
+    `)
+
+    .in(
+      "document_id",
+      ids
+    )
+
+
+  if(allocationError){
+
+    console.error(
+      allocationError
+    )
+
+    alert(
+      "Không kiểm tra được phiếu thu"
+    )
+
+    return
+  }
+
+
+  const receiptDocumentIds =
+    new Set(
+
+      (allocations || [])
+
+        .filter(
+          allocation =>
+            allocation.payment?.type ===
+            "RECEIPT"
+        )
+
+        .map(
+          allocation =>
+            String(
+              allocation.document_id
+            )
+        )
+    )
+
+
+  /* =====================================
+     UPDATE
+  ===================================== */
+
+  let hasReceipt = false
+
 
   for(
     const row of data
   ){
 
-    const isPaid =
+    /* -------------------------------------
+       ĐÃ CÓ PHIẾU THU
 
-      Number(row.tien_tt || 0) > 0
+       Bỏ qua chứng từ này.
+       Không ảnh hưởng các chứng từ khác.
+    ------------------------------------- */
+
+    if(
+      receiptDocumentIds.has(
+        String(row.id)
+      )
+    ){
+
+      hasReceipt = true
+
+      continue
+    }
+
+
+    /* -------------------------------------
+       CHƯA CÓ PHIẾU THU
+
+       tien_tt > 0
+         => chuyển về 0
+
+       tien_tt = 0
+         => chuyển thành tổng thanh toán
+    ------------------------------------- */
+
+    const isPaid =
+      Number(
+        row.tien_tt || 0
+      ) > 0
+
 
     const {
-      error:updateError
+      error: updateError
     }
 
     = await db
@@ -75,9 +183,13 @@ export async function paymentDocument(ctx){
 
       .update({
 
-        tien_tt: isPaid
-          ? 0
-          : row.tongthanhtoan
+        tien_tt:
+
+          isPaid
+            ? 0
+            : Number(
+                row.tongthanhtoan || 0
+              )
 
       })
 
@@ -86,47 +198,42 @@ export async function paymentDocument(ctx){
         row.id
       )
 
+
     if(updateError){
 
-      console.error(updateError)
+      console.error(
+        updateError
+      )
 
       continue
-
-    }
-
-    if(isPaid){
-
-      hasUnpaid = true
-
-    }else{
-
-      hasPaid = true
-
     }
 
   }
 
+
   /* =====================================
-  RELOAD
+     THÔNG BÁO
+     
+     Chỉ báo nếu trong danh sách
+     có ít nhất một HD đã lập PT.
+  ===================================== */
+
+  if(hasReceipt){
+
+    alert(
+      "Hóa đơn đã lập phiếu thu"
+    )
+
+  }
+
+
+  /* =====================================
+     RELOAD
   ===================================== */
 
   if(ctx.reload){
 
     await ctx.reload()
-
-  }
-
-  if(hasPaid && !hasUnpaid){
-
-    alert("Đã thanh toán")
-
-  }else if(hasUnpaid && !hasPaid){
-
-    alert("Đã hủy thanh toán")
-
-  }else{
-
-    alert("Đã cập nhật thanh toán")
 
   }
 

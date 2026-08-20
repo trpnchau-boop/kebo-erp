@@ -84,7 +84,6 @@ export const documentFields = {
       update(row,value){
         return {
           tien_tt:value,
-          no_tt: row.tongthanhtoan - value
         } 
       }
     }     

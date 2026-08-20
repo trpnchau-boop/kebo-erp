@@ -1,6 +1,7 @@
 import { state } from "./receivable-state.js"
 import { createDatepicker } from "/js/ui/init-datepicker.js"
 import { bindMoneyInput } from "/js/core/input-format.js"
+import { parseMoney } from "/js/core/format.js"
 
 function money(value){
   return Number(value || 0).toLocaleString("vi-VN")
@@ -439,7 +440,7 @@ export function renderPaymentForm({
                     min="0"
                     max="${Number(doc.due)}"
                     step="0.01"
-                    value="${isChecked ? Number(doc.due) : 0}"
+                    value="${isChecked ? money(doc.due) : "0"}"
                   >
 
                 </div>
@@ -569,9 +570,7 @@ export function syncAllocationTotal(
           `.receivable-allocation-amount[data-document-id="${check.dataset.documentId}"]`
         )
 
-      total += Number(
-        input?.value || 0
-      )
+      total += parseMoney(input?.value) || 0
 
     })
 

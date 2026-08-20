@@ -98,6 +98,33 @@ export function bindEvents(){
 
   root.addEventListener("change", e=>{
     if(e.target.matches(".receivable-allocation-check")){
+
+      const check = e.target
+      const id = check.dataset.documentId
+
+      const amountInput = root.querySelector(
+        `.receivable-allocation-amount[data-document-id="${id}"]`
+      )
+
+      if(amountInput){
+
+        if(check.checked){
+          amountInput.value = amountInput.max || 0
+        }else{
+          amountInput.value = 0
+        }
+
+        // format thành 1.000.500
+        amountInput.dispatchEvent(
+          new Event("blur",{bubbles:true})
+        )
+
+        // cập nhật tổng phân bổ
+        amountInput.dispatchEvent(
+          new Event("input",{bubbles:true})
+        )
+      }
+
       syncAllocationTotal()
     }
   })
