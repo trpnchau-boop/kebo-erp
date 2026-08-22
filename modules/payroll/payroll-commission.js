@@ -3,16 +3,16 @@ import { getAll } from "/js/crud.js"
 export async function getCommissionInfo({
 
   id_employee,
-  ym
+  ym,
+  selectedRate = ""
 
-}){
+}) {
 
   /* =========================
   DOCUMENTS
   ========================= */
 
   const docs =
-
     await getAll(
       "document"
     )
@@ -22,11 +22,10 @@ export async function getCommissionInfo({
   ========================= */
 
   const rates =
-
     await getAll(
       "set_ns_rate",
       {
-        is_act:true
+        is_act: true
       }
     )
 
@@ -35,99 +34,197 @@ export async function getCommissionInfo({
   ========================= */
 
   const revenue =
-
     docs
 
-    .filter(doc => {
+      .filter(doc => {
 
-      return (
+        return (
 
-        doc.type === "SALE"
+          doc.type === "SALE"
 
-        &&
+          &&
 
-        Number(
-          doc.id_employee
-        ) ===
-        Number(id_employee)
+          Number(
+            doc.id_employee
+          ) ===
+          Number(id_employee)
 
-        &&
+          &&
 
-        String(
-          doc.day || ""
+          String(
+            doc.day || ""
+          ).startsWith(ym)
+
         )
-        .startsWith(ym)
 
+      })
+
+      .reduce(
+        (sum, doc) =>
+
+          sum +
+          Number(
+            doc.tongthanhtoan || 0
+          ),
+
+        0
       )
-
-    })
-
-    .reduce(
-
-      (sum,doc) =>
-
-        sum +
-
-        Number(
-          doc.tongthanhtoan || 0
-        ),
-
-      0
-
-    )
 
   /* =========================
-  RATE ROW
+  MANUAL RATE
   ========================= */
 
-  const rateRow =
-    rates.find(r =>
+  const isManualRate =
+    selectedRate !== ""
+    &&
+    selectedRate !== null
+    &&
+    selectedRate !== undefined
 
-      revenue >=
+  /* =========================
+  MANUAL COMMISSION
+  ========================= */
 
+  if (isManualRate) {
+
+    const rate =
       Number(
-        r.dinhmuc_min || 0
+        selectedRate
       )
 
-      &&
+    const commission =
+      Math.round(
+        revenue *
+        rate /
+        100
+      )
 
-      (
-        !r.dinhmuc_max ||
+    return {
 
-      revenue <=
+      revenue,
 
-      Number( r.dinhmuc_max || 0)
+      rate,
 
-    )
-)
-    ||
+      commission,
 
+      rateRow: null,
+
+      rateId: null,
+
+      dinhmuc_min: 0,
+
+      dinhmuc_max: 0,
+
+      isManualRate: true
+
+    }
+
+  }
+
+  /* =========================
+  TIERED COMMISSION
+  ========================= */
+
+  const sortedRates =
+    [...rates]
+      .sort(
+        (a, b) =>
+          Number(
+            a.dinhmuc_min || 0
+          )
+          -
+          Number(
+            b.dinhmuc_min || 0
+          )
+      )
+
+  let remaining =
+    revenue
+
+  let commission =
+    0
+
+  let rateRow =
     null
 
   /* =========================
-  RATE
+  CALCULATE EACH TIER
   ========================= */
 
-  const rate =
+  for (const row of sortedRates) {
 
-    Number(
-      rateRow?.rate || 0
+    const min =
+      Number(
+        row.dinhmuc_min || 0
+      )
+
+    const max =
+      row.dinhmuc_max === null
+      ||
+      row.dinhmuc_max === undefined
+      ||
+      row.dinhmuc_max === ""
+        ? Infinity
+        : Number(
+            row.dinhmuc_max
+          )
+
+    if (remaining <= 0)
+      break
+
+    if (revenue <= min)
+      continue
+
+    const tierRevenue =
+      Math.min(
+        revenue,
+        max
+      )
+      -
+      min
+
+    if (tierRevenue <= 0)
+      continue
+
+    const tierRate =
+      Number(
+        row.rate || 0
+      )
+
+    commission +=
+      tierRevenue *
+      tierRate /
+      100
+
+    /* =========================
+    CURRENT TIER
+    ========================= */
+
+    if (
+      revenue > min
+      &&
+      revenue <= max
+    ) {
+
+      rateRow =
+        row
+
+    }
+
+  }
+
+  commission =
+    Math.round(
+      commission
     )
 
   /* =========================
-  COMMISSION
+  CURRENT RATE
   ========================= */
 
-  const commission =
-
-    Math.round(
-
-      revenue *
-
-      rate /
-
-      100
-
+  const rate =
+    Number(
+      rateRow?.rate || 0
     )
 
   /* =========================
@@ -145,7 +242,8 @@ export async function getCommissionInfo({
     rateRow,
 
     rateId:
-      rateRow?.id || null,
+      rateRow?.id ||
+      null,
 
     dinhmuc_min:
       Number(
@@ -155,9 +253,67 @@ export async function getCommissionInfo({
     dinhmuc_max:
       Number(
         rateRow?.dinhmuc_max || 0
-      )  
+      ),
+
+    isManualRate: false
 
   }
 
 }
 
+export function calculateTieredCommission(
+  revenue,
+  rates
+){
+
+  let commission = 0
+
+  const sortedRates =
+    [...rates]
+      .sort(
+        (a, b) =>
+          Number(a.dinhmuc_min || 0)
+          -
+          Number(b.dinhmuc_min || 0)
+      )
+
+  for(const row of sortedRates){
+
+    const min =
+      Number(
+        row.dinhmuc_min || 0
+      )
+
+    const max =
+      row.dinhmuc_max === null ||
+      row.dinhmuc_max === undefined ||
+      row.dinhmuc_max === ""
+        ? Infinity
+        : Number(
+            row.dinhmuc_max
+          )
+
+    if(revenue <= min)
+      continue
+
+    const amount =
+      Math.min(
+        revenue,
+        max
+      ) - min
+
+    if(amount <= 0)
+      continue
+
+    commission +=
+      amount *
+      Number(row.rate || 0) /
+      100
+
+  }
+
+  return Math.round(
+    commission
+  )
+
+}

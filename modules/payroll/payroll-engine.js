@@ -85,102 +85,169 @@ export function calcNet(){
   )
 
 }
-
 export function recalcIncomeRows(){
 
-  state.root
-  .querySelectorAll(
-    ".income-formula"
-  )
-  .forEach(inp=>{
-
-    const code =
-    inp.dataset.code
-
-    const val =
-    evalFormula(
-      inp.value
-    )
-
-    if(
-      code==="SOCONG"
-    ){
-      state.congChuan =
-      val
-    }
-
-    if(
-      code==="LUONGCB"
-    ){
-      state.luongTc =
-      val
-    }
-
-  })
+  /* =========================
+     CẬP NHẬT GIÁ TRỊ TIÊU CHUẨN
+  ========================= */
 
   state.root
-  .querySelectorAll(
-    "#tbody-income tr"
-  )
-  .forEach(tr=>{
-
-    const inp =
-    tr.querySelector(
+    .querySelectorAll(
       ".income-formula"
     )
+    .forEach(inp=>{
 
-    const td =
-    tr.querySelector(
-      ".actual-cell"
+      const code =
+        inp.dataset.code
+
+      const val =
+        evalFormula(
+          inp.value
+        )
+
+      if(
+        code === "SOCONG"
+      ){
+
+        state.congChuan =
+          val
+
+      }
+
+      if(
+        code === "LUONGCB"
+      ){
+
+        state.luongTc =
+          val
+
+      }
+
+    })
+
+
+  /* =========================
+     TÍNH THỰC TẾ
+  ========================= */
+
+  state.root
+    .querySelectorAll(
+      "#tbody-income tr"
     )
+    .forEach(tr=>{
 
-    if(
-      !inp ||
-      !td
-    ) return
+      const inp =
+        tr.querySelector(
+          ".income-formula"
+        )
 
-    const code =
-    inp.dataset.code
+      const td =
+        tr.querySelector(
+          ".actual-cell"
+        )
 
-    let val = 0
+      /*
+       * Hoa hồng không có
+       * .income-formula
+       * nên bỏ qua.
+       */
 
-    if(
-      code==="SOCONG"
-    ){
+      if(
+        !inp ||
+        !td
+      ) return
 
-      val =
-      state.congThucTe
 
-    }else if(
-      code==="LUONGCB"
-    ){
+      const code =
+        inp.dataset.code
 
-      val =
-      state.congChuan
-      ? Math.round(
+      let val = 0
 
-        state.luongTc /
-        state.congChuan *
-        state.congThucTe
 
-      )
-      : 0
+      /* =========================
+         SỐ CÔNG
+      ========================= */
 
-    }else{
+      if(
+        code === "SOCONG"
+      ){
 
-      val =
-      evalFormula(
-        inp.value
-      )
+        val =
+          state.congThucTe
 
-    }
+      }
 
-    td.innerText =
-    formatDecimal(
-      val
-    )
 
-  })
+      /* =========================
+         LƯƠNG CƠ BẢN
+      ========================= */
+
+      else if(
+        code === "LUONGCB"
+      ){
+
+        val =
+          state.congChuan
+          ? Math.round(
+
+              state.luongTc /
+              state.congChuan *
+              state.congThucTe
+
+            )
+          : 0
+
+      }
+
+
+      /* =========================
+         CÁC KHOẢN NHẬP TAY
+      ========================= */
+
+      else{
+  
+        const raw =
+          String(
+            inp.value || ""
+          ).trim()
+  
+        const result =
+          evalFormula(
+            raw
+          )
+
+        const isFormula =
+          /[+\-*/()]/.test(
+            raw
+          )
+
+        if(isFormula){
+
+          val =
+            result
+
+        }
+        else{
+
+          val =
+            result *
+            state.congThucTe
+
+        }
+
+      }
+
+      td.innerText =
+        formatDecimal(
+          val
+        )
+
+    })
+
+
+  /* =========================
+     TÍNH TỔNG
+  ========================= */
 
   calcNet()
 

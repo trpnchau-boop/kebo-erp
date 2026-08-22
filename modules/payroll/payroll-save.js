@@ -3,6 +3,7 @@ import {
 }
 from "/js/components/dropdown-select.js"
 
+
 export function initPayrollSave(ctx){
 
   ctx.root
@@ -14,6 +15,7 @@ export function initPayrollSave(ctx){
 
 }
 
+
 function saveSoft(ctx){
 
   const {
@@ -23,6 +25,13 @@ function saveSoft(ctx){
     employeeSelect
 
   } = ctx
+
+
+  const commissionDropdown =
+    root.querySelector(
+      ".commission-rate"
+    )
+
 
   const data = {
 
@@ -34,6 +43,7 @@ function saveSoft(ctx){
         employeeSelect
       ),
 
+
     income:
 
       [...root.querySelectorAll(
@@ -43,6 +53,7 @@ function saveSoft(ctx){
       .map(
         inp => inp.value
       ),
+
 
     deduct:
 
@@ -54,17 +65,22 @@ function saveSoft(ctx){
         inp => inp.value
       ),
 
+
+    /*
+     * "" = Theo bậc
+     * "0.3" = chọn 0.3%
+     * "0.5" = chọn 0.5%
+     */
+
     commission:
-
-      getDropdownValue(
-
-        root.querySelector(
-          ".commission-rate"
-        )
-
-      )
+      commissionDropdown
+        ? getDropdownValue(
+            commissionDropdown
+          )
+        : ""
 
   }
+
 
   const key =
 
@@ -76,6 +92,7 @@ function saveSoft(ctx){
 
     data.id_employee
 
+
   localStorage.setItem(
 
     key,
@@ -84,9 +101,13 @@ function saveSoft(ctx){
 
   )
 
-  alert("Đã lưu tạm")
+
+  alert(
+    "Đã lưu tạm"
+  )
 
 }
+
 
 export function loadSoft(ctx){
 
@@ -97,6 +118,7 @@ export function loadSoft(ctx){
     employeeSelect
 
   } = ctx
+
 
   const key =
 
@@ -110,15 +132,23 @@ export function loadSoft(ctx){
       employeeSelect
     )
 
+
   const raw =
 
-    localStorage.getItem(key)
+    localStorage.getItem(
+      key
+    )
+
 
   if(!raw)
     return
 
+
   const data =
-    JSON.parse(raw)
+    JSON.parse(
+      raw
+    )
+
 
   /* =====================
      THU NHẬP
@@ -128,21 +158,27 @@ export function loadSoft(ctx){
     .querySelectorAll(
       ".income-formula"
     )
-    .forEach((inp,i)=>{
+    .forEach(
+      (inp,i)=>{
 
-      inp.value =
+        inp.value =
 
-        data.income?.[i]
-        ??
-        inp.value
+          data.income?.[i]
+          ??
+          inp.value
 
-      inp.dispatchEvent(
 
-        new Event("input")
+        inp.dispatchEvent(
 
-      )
+          new Event(
+            "input"
+          )
 
-    })
+        )
+
+      }
+    )
+
 
   /* =====================
      GIẢM TRỪ
@@ -152,21 +188,27 @@ export function loadSoft(ctx){
     .querySelectorAll(
       ".deduct-formula"
     )
-    .forEach((inp,i)=>{
+    .forEach(
+      (inp,i)=>{
 
-      inp.value =
+        inp.value =
 
-        data.deduct?.[i]
-        ??
-        inp.value
+          data.deduct?.[i]
+          ??
+          inp.value
 
-      inp.dispatchEvent(
 
-        new Event("input")
+        inp.dispatchEvent(
 
-      )
+          new Event(
+            "input"
+          )
 
-    })
+        )
+
+      }
+    )
+
 
   /* =====================
      HOA HỒNG
@@ -178,20 +220,38 @@ export function loadSoft(ctx){
       ".commission-rate"
     )
 
-  if(
-    dropdown &&
+
+  if(!dropdown)
+    return
+
+
+  /*
+   * Quan trọng:
+   *
+   * data.commission === ""
+   * cũng phải được load.
+   *
+   * "" = Theo bậc
+   */
+
+
+  const value =
     data.commission
-  ){
+    ?? ""
 
-    const item =
 
-      dropdown.querySelector(
+  const item =
 
-        `.dropdown-item[data-value="${data.commission}"]`
+    dropdown.querySelector(
 
-      )
+      `.dropdown-item[data-value="${value}"]`
 
-    item?.click()
+    )
+
+
+  if(item){
+
+    item.click()
 
   }
 

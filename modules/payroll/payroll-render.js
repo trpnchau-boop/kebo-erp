@@ -71,80 +71,130 @@ export function renderIncomeTable(
         : 0
 
     }
-    else if(
-      a.code === "HOAHONG"
-    ){
+else if(
+  a.code === "HOAHONG"
+){
 
-      tc =
-        commissionInfo.rate
+  /*
+   * Mặc định:
+   * → Theo bậc
+   *
+   * Nếu trước đó đã chọn thủ công:
+   * → commissionInfo.isManualRate = true
+   * → dùng commissionInfo.rate
+   */
 
-      tt =
-        commissionInfo.commission
+  const isManualRate =
+    commissionInfo.isManualRate === true
 
-      itemName = `
+  tc =
+    isManualRate
+      ? commissionInfo.rate
+      : ""
 
-        <div>
-          Hoa hồng
-        </div>
+  tt =
+    commissionInfo.commission
 
-        <div class="employee-role">
-          └─ Doanh số:
-          ${formatDecimal(
-            commissionInfo.revenue
-          )}
-        </div>
+  itemName = `
 
-        <div class="employee-role commission-range">
-          └─ Định mức:
-          ${formatDecimal(
-            commissionInfo.dinhmuc_min
-          )}
-          -
-          ${formatDecimal(
-            commissionInfo.dinhmuc_max
-          )}
-        </div>
+    <div>
+      Hoa hồng
+    </div>
 
-      `
-
-const options = rates.map(r => ({
-
-    value:r.rate,
-
-    label:r.rate + "%",
-
-    dataset:{
-
-        min:r.dinhmuc_min,
-
-        max:r.dinhmuc_max
-
-    }
-
-}))
-
-standardHtml =
-
-renderDropdownSelect({
-
-    value:tc,
-
-    options,
-
-    className:"commission-rate",
-
-    allowEmpty:false,
-
-    emptyText:"Chọn %",
-
-    dataset:{
-        revenue:
+    <div class="employee-role">
+      └─ Doanh số:
+      ${formatDecimal(
         commissionInfo.revenue
+      )}
+    </div>
+
+    <div class="employee-role commission-range">
+      ${
+        isManualRate
+          ? `
+            └─ Định mức:
+            ${formatDecimal(
+              commissionInfo.dinhmuc_min
+            )}
+            -
+            ${formatDecimal(
+              commissionInfo.dinhmuc_max
+            )}
+          `
+          : `
+            └─ Theo bậc tự động
+          `
+      }
+    </div>
+
+  `
+
+
+  /* =========================
+     DROPDOWN OPTIONS
+  ========================= */
+
+  const options = rates.map(r => ({
+
+    value:
+      r.rate,
+
+    label:
+      r.rate + "%",
+
+    dataset:{
+
+      min:
+        r.dinhmuc_min,
+
+      max:
+        r.dinhmuc_max
+
     }
 
-})
+  }))
 
-    }
+
+  /* =========================
+     DROPDOWN
+  ========================= */
+
+  standardHtml =
+
+    renderDropdownSelect({
+
+      /*
+       * "" = Theo bậc
+       */
+
+      value:
+        tc,
+
+      options,
+
+      className:
+        "commission-rate",
+
+      /*
+       * Cho phép dòng rỗng
+       */
+
+      allowEmpty:
+        true,
+
+      emptyText:
+        "Theo bậc",
+
+      dataset:{
+
+        revenue:
+          commissionInfo.revenue
+
+      }
+
+    })
+
+}
     else{
 
       tc =

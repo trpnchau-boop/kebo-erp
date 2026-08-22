@@ -1,16 +1,16 @@
 import {
-evalFormula
+  evalFormula
 }
 from "./payroll-formula.js"
 
 import {
-formatDecimal
+  formatDecimal
 }
 from "../../js/core/format.js"
 
 import {
-calcNet,
-recalcIncomeRows
+  calcNet,
+  recalcIncomeRows
 }
 from "./payroll-engine.js"
 
@@ -19,157 +19,298 @@ import {
 }
 from "/js/components/dropdown-select.js"
 
-import {state}
+import {
+  state
+}
 from "./payroll-state.js"
+
+import {
+  calculateTieredCommission
+}
+from "./payroll-commission.js"
+
+
+/* =========================
+   INPUTS
+========================= */
 
 export function bindInputs(root){
 
   root
-  .querySelectorAll(
-    ".formula-input"
-  )
-  .forEach(inp=>{
+    .querySelectorAll(
+      ".formula-input"
+    )
+    .forEach(inp => {
 
-    inp.onfocus = ()=>{
+      inp.onfocus = () => {
 
-      const val =
-      evalFormula(
-        inp.value
-      )
+        const raw =
+          String(
+            inp.value || ""
+          ).trim()
 
-      if(
-        !inp.value
-        .startsWith("=")
-      ){
+        if(
+          /[+\-*/()]/.test(raw)
+        ){
+
+          return
+
+        }
+
+        const val =
+          evalFormula(raw)
+
         inp.value =
-        val || ""
+          val || ""
+
       }
 
-    }
 
-    inp.onblur = ()=>{
+      inp.onblur = () => {
 
-      if(
-        inp.value
-        .startsWith("=")
-      ){
-        return
-      }
+        const raw =
+          String(
+            inp.value || ""
+          ).trim()
 
-      inp.value =
-      formatDecimal(
-        evalFormula(
-          inp.value
-        )
-      )
+        if(!raw)
+          return
 
-    }
+        inp.value =
+          raw.replace(
+            /\d+(?:[.,]\d+)?/g,
+            match => {
 
-    inp.oninput = ()=>{
+              const value =
+                Number(
+                  match
+                    .replace(/\./g, "")
+                    .replace(",", ".")
+                )
 
-      if(
-        inp.classList.contains(
-          "income-formula"
-        )
-      ){
+              return formatDecimal(value)
 
-        recalcIncomeRows()
-
-      }else{
-
-        const td =
-        inp.closest("tr")
-        .querySelector(
-          ".actual-cell"
-        )
-
-        td.innerText =
-        formatDecimal(
-          evalFormula(
-            inp.value
+            }
           )
-        )
-
-        calcNet()
 
       }
 
-    }
 
-  })
+      inp.oninput = () => {
+
+        if(
+          inp.classList.contains(
+            "income-formula"
+          )
+        ){
+
+          recalcIncomeRows()
+
+        }
+        else{
+
+          const td =
+            inp
+              .closest("tr")
+              ?.querySelector(
+                ".actual-cell"
+              )
+
+          if(!td)
+            return
+
+          td.innerText =
+            formatDecimal(
+              evalFormula(
+                inp.value
+              )
+            )
+
+          calcNet()
+
+        }
+
+      }
+
+    })
 
 }
 
-export function bindCommission(){
+
+/* =========================
+   COMMISSION
+========================= */
+
+export function bindCommission(
+  rates = []
+){
 
   state.root
-  .querySelectorAll(
-    ".dropdown-select.commission-rate"
-  )
-  .forEach(dropdown=>{
+    .querySelectorAll(
+      ".dropdown-select.commission-rate"
+    )
+    .forEach(dropdown => {
 
-    const trigger =
-      dropdown.querySelector(
-        ".dropdown-select-trigger"
-      )
+      const trigger =
+        dropdown.querySelector(
+          ".dropdown-select-trigger"
+        )
 
-    trigger?.addEventListener(
-      "change",
-      ()=>{
+      const row =
+        dropdown.closest("tr")
 
-        const min =
-Number(trigger.dataset.min || 0)
+      const td =
+        row?.querySelector(
+          ".actual-cell"
+        )
 
-const max =
-Number(trigger.dataset.max || 0)
+      const range =
+        row?.querySelector(
+          ".commission-range"
+        )
 
-dropdown
-.closest("tr")
-.querySelector(".commission-range")
-.innerText =
+      if(!trigger || !row || !td){
 
-"└─ Định mức: " +
+        return
 
-formatDecimal(min) +
+      }
 
-" - " +
 
-formatDecimal(max)
+      /* =========================
+         REVENUE
+      ========================= */
 
-        const revenue =
+      const revenue =
         Number(
           trigger.dataset.revenue || 0
         )
 
-        const rate =
-        Number(
-          getDropdownValue(
-            dropdown
-          )
-        )
+      row.dataset.commissionRevenue =
+        revenue
 
-        const td =
-        dropdown
-        .closest("tr")
-        .querySelector(
-          ".actual-cell"
-        )
 
-        td.innerText =
-        formatDecimal(
+      /* =========================
+         CHANGE
+      ========================= */
 
-          Math.round(
-            revenue *
-            rate / 100
-          )
+      trigger.addEventListener(
+        "change",
+        () => {
 
-        )
+          const revenue =
+            Number(
+              row.dataset.commissionRevenue || 0
+            )
 
-        calcNet()
 
-      }
-    )
+          const selectedRate =
+            getDropdownValue(
+              dropdown
+            )
 
-  })
+
+          let commission = 0
+
+
+          /* =========================
+             THEO BẬC
+          ========================= */
+
+          if(
+            selectedRate === ""
+            ||
+            selectedRate === null
+            ||
+            selectedRate === undefined
+          ){
+
+            commission =
+              calculateTieredCommission(
+                revenue,
+                rates
+              )
+
+
+            if(range){
+
+              range.innerText =
+                "└─ Theo bậc tự động"
+
+            }
+
+          }
+
+
+          /* =========================
+             CHỌN RATE THỦ CÔNG
+          ========================= */
+
+          else{
+
+            const rate =
+              Number(
+                selectedRate
+              )
+
+
+            /*
+              Logic cũ:
+
+              toàn bộ doanh số
+              × tỷ lệ được chọn
+            */
+
+            commission =
+              Math.round(
+                revenue *
+                rate /
+                100
+              )
+
+
+            const min =
+              Number(
+                trigger.dataset.min || 0
+              )
+
+            const max =
+              Number(
+                trigger.dataset.max || 0
+              )
+
+
+            if(range){
+
+              range.innerText =
+                "└─ Định mức: " +
+                formatDecimal(min) +
+                " - " +
+                formatDecimal(max)
+
+            }
+
+          }
+
+
+          /* =========================
+             UPDATE COMMISSION
+          ========================= */
+
+          td.innerText =
+            formatDecimal(
+              commission
+            )
+
+
+          /* =========================
+             UPDATE NET
+          ========================= */
+
+          calcNet()
+
+        }
+      )
+
+    })
 
 }

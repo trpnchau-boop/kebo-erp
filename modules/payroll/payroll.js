@@ -366,7 +366,7 @@ async function render(){
     state.root
   )
 
-  bindCommission()
+  bindCommission(rates)
 
   loadSoft({
 
