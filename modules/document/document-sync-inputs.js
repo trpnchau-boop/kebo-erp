@@ -12,6 +12,7 @@ from "./document-unit.js"
 import {formatMoney}
 from "/js/core/format.js"
 
+
 /* =========================================================
 SYNC INPUTS
 ========================================================= */
@@ -48,12 +49,17 @@ export async function syncInputs({
 
     const field =
       scope === "header"
-        ? formFields.find(f => f.key === key)
-        : tableFields.find(f => f.key === key)
+        ? formFields.find(
+            f => f.key === key
+          )
+        : tableFields.find(
+            f => f.key === key
+          )
 
     if(!field){
       continue
     }
+
 
     /* =========================================
     UNIT SELECT OPTIONS
@@ -74,6 +80,7 @@ export async function syncInputs({
         typeof input.setOptions === "function"
       )
     ){
+
       await refreshUnitSelect(
         input,
         target,
@@ -82,6 +89,7 @@ export async function syncInputs({
           : "table"
       )
     }
+
 
     /* =========================================
     RAW VALUE
@@ -102,8 +110,13 @@ export async function syncInputs({
 
     const value =
       hasRaw
-        ? (textValue ?? rawValue)
+        ? (
+            textValue
+            ??
+            rawValue
+          )
         : ""
+
 
     /* =========================================
     ACTIVE / OPEN CUSTOM SELECT
@@ -126,6 +139,7 @@ export async function syncInputs({
       ||
       isSelectOpen
 
+
     /* =========================================
     CHECKBOX
     ========================================= */
@@ -133,10 +147,13 @@ export async function syncInputs({
     if(
       input.type === "checkbox"
     ){
+
       input.checked =
         Boolean(rawValue)
+
       continue
     }
+
 
     /* =========================================
     LOOKUP EMPTY
@@ -147,12 +164,17 @@ export async function syncInputs({
       &&
       !hasRaw
     ){
+
       if(!isActive){
+
         input.value = ""
         input.dataset.value = ""
+
       }
+
       continue
     }
+
 
     /* =========================================
     LOOKUP
@@ -165,33 +187,39 @@ export async function syncInputs({
       &&
       hasRaw
     ){
+
       const rows =
         await loadRef(
           field.source.table
         )
 
       const found =
-        rows.find(r =>
-          String(
-            r[field.source.value]
-          )
-          ===
-          String(rawValue)
+        rows.find(
+          r =>
+            String(
+              r[field.source.value]
+            )
+            ===
+            String(rawValue)
         )
 
       if(found){
 
         const text =
           field.key === "id_product"
-            ? [found.name, found.tinhchat]
+            ? [
+                found.name,
+                found.tinhchat
+              ]
               .filter(Boolean)
               .join(" ")
             : buildDisplayName(
-              field.source.display,
-              found
-            )
+                field.source.display,
+                found
+              )
 
         if(!isActive){
+
           input.dataset.value =
             rawValue
 
@@ -205,6 +233,7 @@ export async function syncInputs({
         continue
       }
     }
+
 
     /* =========================================
     SELECT
@@ -224,42 +253,60 @@ export async function syncInputs({
 
           /* -----------------------------------
           DRAFT / INPUT BAR
-          - id_unit rỗng vẫn phải hiện unit_name
-            hoặc dvtGoc
+
+          id_unit rỗng:
+          → vẫn hiện ĐVT gốc
+
+          id_unit có giá trị:
+          → dò ID
+          → hiện unit.label
           ----------------------------------- */
+
           if(scope === "draft"){
 
             const draftValue =
               rawValue
-              || target.id_unit
-              || ""
-
-            const draftLabel =
-              target.unit_name
-              || target.dvt
-              || target.id_unit_text
-              || target.dvtGoc
-              || ""
+              ||
+              target.id_unit
+              ||
+              ""
 
             if(isCustomSelect){
 
               input.value =
                 draftValue
 
+              const selected =
+                typeof input.getSelectedOption
+                  === "function"
+                  ? input.getSelectedOption()
+                  : null
+
+              const draftLabel =
+                selected?.label
+                ||
+                target.unit_name
+                ||
+                target.dvt
+                ||
+                target.id_unit_text
+                ||
+                target.dvtGoc
+                ||
+                ""
+
               if(
                 typeof input.setDisplayText
-                === "function"
+                  === "function"
               ){
-                if(draftValue){
-                  input.setDisplayText(null)
-                }else{
-                  input.setDisplayText(
-                    draftLabel
-                  )
-                }
+
+                input.setDisplayText(
+                  draftLabel
+                )
               }
 
             }else{
+
               input.value =
                 draftValue
             }
@@ -273,10 +320,18 @@ export async function syncInputs({
             continue
           }
 
+
           /* -----------------------------------
           TABLE ROW
-          - id_unit rỗng => cột Đvt phải rỗng
+
+          id_unit rỗng:
+          → cột ĐVT rỗng
+
+          id_unit có giá trị:
+          → dò option theo ID
+          → lấy label "Thùng", "Lốc", ...
           ----------------------------------- */
+
           if(!rawValue){
 
             input.value = ""
@@ -287,13 +342,14 @@ export async function syncInputs({
               typeof input.setDisplayText
                 === "function"
             ){
+
               input.setDisplayText("")
             }
 
           }else{
 
             input.value =
-              rawValue ?? ""
+              rawValue
 
             if(
               isCustomSelect
@@ -301,9 +357,37 @@ export async function syncInputs({
               typeof input.setDisplayText
                 === "function"
             ){
-              input.setDisplayText(null)
-            }
 
+              /*
+              Sau refreshUnitSelect(),
+              option đã được load.
+
+              Lấy chính option đang được chọn
+              thay vì để document-select tự
+              fallback về raw ID.
+              */
+
+              const selected =
+                typeof input.getSelectedOption
+                  === "function"
+                  ? input.getSelectedOption()
+                  : null
+
+              const unitLabel =
+                selected?.label
+                ||
+                target.unit_name
+                ||
+                target.dvt
+                ||
+                target.id_unit_text
+                ||
+                ""
+
+              input.setDisplayText(
+                unitLabel
+              )
+            }
           }
 
           applyPriceWarning(
@@ -314,6 +398,7 @@ export async function syncInputs({
 
           continue
         }
+
 
         /* =====================================
         NORMAL SELECT
@@ -332,6 +417,7 @@ export async function syncInputs({
       continue
     }
 
+
     /* =========================================
     MONEY
     ========================================= */
@@ -339,10 +425,14 @@ export async function syncInputs({
     if(
       field.type === "money"
     ){
+
       if(!isActive){
+
         input.value =
           formatMoney(
-            Number(rawValue || 0)
+            Number(
+              rawValue || 0
+            )
           )
       }
 
@@ -355,12 +445,15 @@ export async function syncInputs({
       continue
     }
 
+
     /* =========================================
     DEFAULT
     ========================================= */
 
     if(!isActive){
-      input.value = value
+
+      input.value =
+        value
     }
 
     applyPriceWarning(
@@ -371,6 +464,7 @@ export async function syncInputs({
   }
 }
 
+
 /* =========================================================
 FLATTEN FIELDS
 ========================================================= */
@@ -378,28 +472,39 @@ FLATTEN FIELDS
 function flattenFields(
   fields = []
 ){
+
   const result = []
 
-  for(const field of fields){
+  for(
+    const field
+    of fields
+  ){
 
     if(
       field.type === "group"
       &&
-      Array.isArray(field.fields)
+      Array.isArray(
+        field.fields
+      )
     ){
+
       result.push(
         ...flattenFields(
           field.fields
         )
       )
+
       continue
     }
 
-    result.push(field)
+    result.push(
+      field
+    )
   }
 
   return result
 }
+
 
 /* =========================================================
 PRICE WARNING
@@ -442,13 +547,20 @@ function applyPriceWarning(
 
   }else{
 
-    input.style.color = ""
-    input.style.background = ""
-    input.style.borderColor = ""
-    input.style.fontWeight = ""
+    input.style.color =
+      ""
 
+    input.style.background =
+      ""
+
+    input.style.borderColor =
+      ""
+
+    input.style.fontWeight =
+      ""
   }
 }
+
 
 /* =========================================================
 DISPLAY NAME
@@ -460,7 +572,10 @@ function buildDisplayName(
 ){
 
   return display
-    .map(key => data[key])
+    .map(
+      key =>
+        data[key]
+    )
     .filter(Boolean)
     .join(" - ")
 }
