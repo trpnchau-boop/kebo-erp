@@ -24,6 +24,7 @@ export const DOCUMENT_LIST_TYPES = {
       { key:"bulk_print", label:"In hàng loạt" }, 
       { key:"bulk_release", label:"Phát hành hàng loạt" },
       { key:"bulk_export_stock", label:"Xuất kho hàng loạt" },  
+      { key:"bulk_export_document_details", label:"Xuất Excel chi tiết CT" },
     ],
     rowActions:[
       { key:"remove", label:"Xóa" },

@@ -4,6 +4,8 @@ import {bulkDeleteDocuments} from "../../services/bulk-delete-documents.js"
 import {printDocument} from "../../services/bulk-print-documents.js"
 import {paymentDocument} from "../../services/document-payment.js"
 import {bulkStockDocument} from "../../services/bulk-export-stock.js"
+import {bulkExportDocumentDetails}
+from "../../services/bulk-export-document-details.js"
 import {
   openReleasePage
 }
@@ -23,7 +25,9 @@ export const BULK_ACTION_MAP = {
 
   bulk_release: openReleasePage,
 
-  bulk_export_stock: bulkStockDocument
+  bulk_export_stock: bulkStockDocument,
+
+  bulk_export_document_details: bulkExportDocumentDetails
 
 
 }
