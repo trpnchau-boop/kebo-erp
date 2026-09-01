@@ -183,7 +183,7 @@ padding:0px 10px;
 
 #form.form-layout-inline .field{
 display:grid;
-grid-template-columns:180px 1fr;
+grid-template-columns:1fr;
 align-items:center;
 gap:16px;
 padding:8px 0;
