@@ -29,10 +29,6 @@
 
 }
 
-.doc-table th:first-child{
-    padding-left:14px;
-}
-
 .doc-table th,
 .doc-table td{
     font-size:16px;
@@ -78,6 +74,7 @@
 .doc-table input[type="checkbox"]{
     outline:none;
     box-shadow:none;
+    margin-right: -4px;
 }
 
 .doc-table input[type="checkbox"]:focus{

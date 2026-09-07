@@ -444,8 +444,8 @@ export const BASE_DOCUMENT = {
           event:"createProduct",
           permission:"product.create"
         },
-        width:180,
-        maxWidth:250,
+        width:230,
+        maxWidth:350,
         placeholder:"Tên sản phẩm",
         required:true,
         editable:true,
@@ -539,7 +539,7 @@ export const BASE_DOCUMENT = {
           value:"id",
           label:"name"
         },  
-        width:120,
+        width:100,
         placeholder:"Kho",
         editable:true,
         show:{
