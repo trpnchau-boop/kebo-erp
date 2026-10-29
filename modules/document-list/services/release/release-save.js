@@ -137,6 +137,12 @@ export async function saveReleaseDocuments(rows = []){
       name:
         item.name,
 
+      line:
+
+        Number(
+          item.dinhluong || 0
+        ),
+
       tongsoluong:
 
         Number(

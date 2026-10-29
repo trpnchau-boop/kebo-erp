@@ -179,12 +179,35 @@ export function createLookupField(
   ===================================================== */
 
   input.dataset.value =
-    row[field.key] || ""
+  row[field.key] || ""
 
-  input.value =
-    row[field.key + "_text"]
-    ||
-    ""
+const isXmlUnmappedProduct =
+  state?.xmlPreview === true &&
+  field.key === "id_product" &&
+  !row[field.key]
+
+input.value =
+  isXmlUnmappedProduct
+    ? (row.name || "")
+    : (
+        state?.xmlPreview === true &&
+        field.key === "product_code"
+          ? (
+              row.product_code_text ||
+              row.product_code ||
+              ""
+            )
+          : (
+              row[field.key + "_text"] || ""
+            )
+      )
+
+if (isXmlUnmappedProduct) {
+  input.readOnly = true
+
+  input.title =
+    "Tên hàng lấy từ XML — chưa ánh xạ sản phẩm trong kho"
+}
 
   /* =====================================================
   SUGGEST BOX
@@ -347,6 +370,86 @@ await syncInputs({
 
           const displayName =
             item.label || ""
+
+          /* =============================================
+          XML: ÁNH XẠ MÃ SP NỘI BỘ
+          Chỉ xử lý khi lookup đang ở cột product_code
+          ============================================= */
+
+          if(
+            state?.xmlPreview === true &&
+            field.key === "product_code"
+          ){
+
+            const productId =
+              data.id || ""
+
+            const productCode =
+              data.code || ""
+
+            const productName =
+              data.name || ""
+
+            // Cập nhật ô Mã SP
+            input.dataset.value =
+              productCode
+
+            input.value =
+              productCode
+
+            if(box){
+              clearSuggest(box)
+            }
+
+            // Liên kết sản phẩm nội bộ
+            row.product_code =
+              productCode
+
+            row.product_code_text =
+              productCode  
+
+            row.id_product =
+              productId
+
+            row.id_product_text =
+              productName
+
+            // Đổi tên XML sang tên sản phẩm nội bộ
+            row.name =
+              productName
+
+            // Nạp thông tin nội bộ
+            row.dvtGoc =
+              data.dvtGoc || ""
+
+            row.id_warehouse =
+              data.id_warehouse || ""
+
+            row.dongiavon =
+              Number(data.giavon || 0)
+
+            // Giữ đơn vị gốc
+            row.id_unit = ""
+
+            row.unit_name =
+              row.dvtGoc
+
+            row.ratio = 1
+
+            // Đồng bộ giao diện dòng, không tính lại giá XML
+            await syncInputs({
+              schema: state.schema,
+              target: row,
+              scope:
+                row === state.draftRow
+                  ? "draft"
+                  : "row"
+            })
+
+            updateSummaryBar(state.root)
+
+            return
+          }
 
           /* =============================================
           INPUT UI

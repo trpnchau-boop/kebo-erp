@@ -1,34 +1,120 @@
-//document-table.js//
 
-import {computeTableRow}
-from "./document-compute.js"
+/* =========================================================
+DOCUMENT TABLE
+========================================================= */
 
-import {renderField}
-from "./document-render-field.js"
+import {
+  computeTableRow
+} from "./document-compute.js";
 
-import {isVisible}
-from "./document-visible.js"
+import {
+  renderField
+} from "./document-render-field.js";
+
+import {
+  isVisible
+} from "./document-visible.js";
 
 import {
   setRowInput
-}
-from "./document-input-map.js"
+} from "./document-input-map.js";
 
-import {computeHeader}
-from "./document-compute-header.js"
+import {
+  computeHeader
+} from "./document-compute-header.js";
 
-import {syncInputs}
-from "./document-sync-inputs.js"
+import {
+  syncInputs
+} from "./document-sync-inputs.js";
 
-import {getDocType}
-from "./document-get-doc-type.js"
+import {
+  getDocType
+} from "./document-get-doc-type.js";
 
 import {
   updateSummaryBar
-}
-from "./document-summary-bar.js"
+} from "./document-summary-bar.js";
 
-import { loadRef } from "/js/relation-cache.js"
+import {
+  loadRef
+} from "/js/relation-cache.js";
+
+
+/* =========================================================
+CHECK XML DOCUMENT
+========================================================= */
+
+function getXmlMode(schema, state){
+
+  const docType =
+    getDocType(schema, state);
+
+  if(
+    state?.xmlPreview === true ||
+    state?.docType === "XML_PREVIEW" ||
+    docType === "XML_PREVIEW"
+  ){
+
+    return "preview";
+
+  }
+
+  if(
+    state?.docType === "XML_IN" ||
+    docType === "XML_IN"
+  ){
+
+    return "incoming";
+
+  }
+
+  return null;
+
+}
+
+
+function isXmlDocument(schema, state){
+
+  return !!getXmlMode(
+    schema,
+    state
+  );
+
+}
+
+
+/* =========================================================
+COMPUTE ROW
+========================================================= */
+
+function computeDocumentRow(
+  schema,
+  row,
+  state,
+  changedKey = ""
+){
+
+  const xmlMode =
+    getXmlMode(
+      schema,
+      state
+    );
+
+  computeTableRow(
+    schema,
+    row,
+    changedKey,
+    {
+      xmlPreview:
+        xmlMode === "preview",
+
+      xmlIn:
+        xmlMode === "incoming"
+    }
+  );
+
+}
+
 
 /* =========================================================
 TABLE
@@ -40,37 +126,50 @@ export async function renderDocumentTable(
   state
 ){
 
-  renderHead(root, schema, state)
+  renderHead(
+    root,
+    schema,
+    state
+  );
 
   await renderBody(
     root,
     schema,
     state
-  )
+  );
 
 }
+
 
 /* =========================================================
 HEAD
 ========================================================= */
 
-function renderHead(root, schema, state){
+function renderHead(
+  root,
+  schema,
+  state
+){
 
   const thead =
     root.querySelector(
       "#document-thead"
-    )
+    );
 
-  thead.innerHTML = ""
+  if(!thead){
+    return;
+  }
+
+  thead.innerHTML = "";
 
   const tr =
-    document.createElement("tr")
+    document.createElement("tr");
 
   const sys =
-    schema.table.system || {}
+    schema.table.system || {};
 
   const canSplit =
-    schema.capabilities?.split
+    schema.capabilities?.split;
 
   /* =====================================================
   CHECKBOX
@@ -79,18 +178,19 @@ function renderHead(root, schema, state){
   if(sys.checkbox && canSplit){
 
     const th =
-      document.createElement("th")
+      document.createElement("th");
 
     th.className =
-      "doc-th-checkbox"
+      "doc-th-checkbox";
 
     th.innerHTML = `
       <input type="checkbox">
-    `
+    `;
 
-    tr.appendChild(th)
+    tr.appendChild(th);
 
   }
+
 
   /* =====================================================
   STT
@@ -99,23 +199,25 @@ function renderHead(root, schema, state){
   if(sys.stt){
 
     const th =
-      document.createElement("th")
+      document.createElement("th");
 
     th.className =
-      "doc-th-stt"
+      "doc-th-stt";
 
-    th.textContent = "STT"
+    th.textContent =
+      "STT";
 
-    tr.appendChild(th)
+    tr.appendChild(th);
 
   }
+
 
   /* =====================================================
   COLUMNS
   ===================================================== */
 
   const docType =
-    getDocType(schema, state)
+    getDocType(schema, state);
 
   schema.table.columns
 
@@ -124,52 +226,68 @@ function renderHead(root, schema, state){
       isVisible(
         col,
         "table",
-        docType
+        docType,
+        schema
       )
 
     )
 
-    .forEach(col=>{
+    .forEach(col => {
 
       const th =
-        document.createElement("th")
+        document.createElement("th");
 
       th.textContent =
-        col.label || ""
+        col.label || "";
 
-        
+
+      /* =====================================
+      REFRESH COST
+      ===================================== */
+
       if(col.key === "dongiavon"){
 
-        th.style.cursor = "pointer"
+        th.style.cursor =
+          "pointer";
 
         th.title =
-          "Cập nhật giá vốn"
+          "Cập nhật giá vốn";
 
-        th.onclick = async ()=>{
+        th.onclick = async () => {
 
           await refreshAllCost(
             root,
             schema,
             state
-          )
+          );
 
-        }
+        };
 
       }
 
+
+      /* =====================================
+      WIDTH
+      ===================================== */
+
       if(col.width){
+
         th.style.minWidth =
-          col.width + "px"
+          col.width + "px";
+
       }
 
       if(col.maxWidth){
+
         th.style.maxWidth =
-          col.maxWidth + "px"
+          col.maxWidth + "px";
+
       }
 
-      tr.appendChild(th)
+      tr.appendChild(th);
 
-    })
+    });
+
 
   /* =====================================================
   DELETE
@@ -178,108 +296,163 @@ function renderHead(root, schema, state){
   if(sys.delete){
 
     const th =
-      document.createElement("th")
+      document.createElement("th");
 
-    th.textContent = ""
+    th.textContent = "";
 
-    tr.appendChild(th)
+    tr.appendChild(th);
 
   }
 
-  thead.appendChild(tr)
+
+  thead.appendChild(tr);
 
 }
+
+
+/* =========================================================
+SCROLL
+========================================================= */
 
 function getTableScrollWrap(root){
 
   return (
-    root.querySelector(".document-table-wrap")
-    ||
-    root.querySelector(".doc-table-wrap")
-    ||
-    root.querySelector(".table-wrap")
-    ||
-    root.querySelector("#document-table")
-    ||
+    root.querySelector(".document-table-wrap") ||
+    root.querySelector(".doc-table-wrap") ||
+    root.querySelector(".table-wrap") ||
+    root.querySelector("#document-table") ||
     root
-  )
+  );
+
 }
+
 
 function scrollToLastRow(root){
 
   const wrap =
-    root.querySelector(".doc-table-wrap")
+    root.querySelector(".doc-table-wrap");
 
   const body =
-    root.querySelector("#document-body")
+    root.querySelector("#document-body");
 
   if(!wrap || !body){
-    return
+    return;
   }
 
   const rows =
-    body.querySelectorAll("tr")
+    body.querySelectorAll("tr");
 
   const lastRow =
-    rows[rows.length - 1]
+    rows[rows.length - 1];
 
   if(!lastRow){
-    return
+    return;
   }
 
-  wrap.scrollTop = wrap.scrollHeight
+  wrap.scrollTop =
+    wrap.scrollHeight;
 
   lastRow.scrollIntoView({
+
     block: "nearest",
+
     behavior: "smooth"
-  })
+
+  });
+
 }
+
 
 /* =========================================================
 PUSH ROW
 ========================================================= */
+
 export async function pushItemRow(
   root,
   row,
   state
 ){
 
-  state.items.push(row)
+  state.items.push(row);
 
-  computeTableRow(
+
+  /* =====================================
+  COMPUTE ROW
+  ===================================== */
+
+  computeDocumentRow(
     state.schema,
-    row
-  )
+    row,
+    state
+  );
+
+
+  /* =====================================
+  COMPUTE HEADER
+  ===================================== */
 
   computeHeader(
     state.schema,
     state
-  )
+  );
+
+
+  /* =====================================
+  SYNC HEADER
+  ===================================== */
 
   await syncInputs({
-    schema: state.schema,
-    target: state.header,
-    scope: "header"
-  })
 
-  updateSummaryBar(state.root)
+    schema: state.schema,
+
+    target: state.header,
+
+    scope: "header"
+
+  });
+
+
+  /* =====================================
+  SUMMARY
+  ===================================== */
+
+  updateSummaryBar(
+    state.root
+  );
+
+
+  /* =====================================
+  RENDER
+  ===================================== */
 
   await renderBody(
     root,
     state.schema,
     state
-  )
+  );
+
+
+  /* =====================================
+  SCROLL
+  ===================================== */
 
   requestAnimationFrame(() => {
 
-    const isMobile = window.matchMedia("(pointer: coarse)").matches
+    const isMobile =
+      window.matchMedia(
+        "(pointer: coarse)"
+      ).matches;
 
-    if (!isMobile) {
-      scrollToLastRow(root)
+    if(!isMobile){
+
+      scrollToLastRow(root);
+
     }
 
-  })
+  });
+
 }
+
 
 /* =========================================================
 BODY
@@ -294,28 +467,65 @@ async function renderBody(
   const body =
     root.querySelector(
       "#document-body"
-    )
+    );
 
-  body.innerHTML = ""
+  if(!body){
+    return;
+  }
+
+  body.innerHTML = "";
+
 
   const sys =
-    schema.table.system || {}
+    schema.table.system || {};
 
   const canSplit =
-    schema.capabilities?.split
+    schema.capabilities?.split;
 
   const docType =
-    getDocType(schema, state)
+    getDocType(schema, state);
+
+
+  /* =====================================================
+  XML PREVIEW / XML_IN COMPUTE
+  ===================================================== */
+
+  const xmlMode =
+    getXmlMode(
+      schema,
+      state
+    );
+
+  if(xmlMode){
+
+    for(const row of state.items){
+
+      computeDocumentRow(
+        schema,
+        row,
+        state
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+  RENDER ROWS
+  ===================================================== */
 
   for(
-    const [index,row]
+    const [index, row]
     of state.items.entries()
   ){
 
     const tr =
-      document.createElement("tr")
+      document.createElement("tr");
 
-    tr.className = `doc-row doc-row-${docType.toLowerCase()}`  
+    tr.className =
+      `doc-row doc-row-${docType.toLowerCase()}`;
+
 
     /* =================================================
     CHECKBOX
@@ -324,32 +534,36 @@ async function renderBody(
     if(sys.checkbox && canSplit){
 
       const td =
-        document.createElement("td")
+        document.createElement("td");
 
       td.className =
-        "doc-td-checkbox"
+        "doc-td-checkbox";
 
       const checkbox =
-        document.createElement("input")
+        document.createElement("input");
 
       checkbox.type =
-        "checkbox"
+        "checkbox";
 
       checkbox.checked =
-        !!row.checked
+        !!row.checked;
 
       checkbox.addEventListener(
         "change",
-        ()=>{
-          row.checked =
-            checkbox.checked
-        }
-      )
+        () => {
 
-      td.appendChild(checkbox)
-      tr.appendChild(td)
+          row.checked =
+            checkbox.checked;
+
+        }
+      );
+
+      td.appendChild(checkbox);
+
+      tr.appendChild(td);
 
     }
+
 
     /* =================================================
     STT
@@ -358,17 +572,18 @@ async function renderBody(
     if(sys.stt){
 
       const td =
-        document.createElement("td")
+        document.createElement("td");
 
       td.className =
-        "doc-td-stt"
+        "doc-td-stt";
 
       td.textContent =
-        index + 1
+        index + 1;
 
-      tr.appendChild(td)
+      tr.appendChild(td);
 
     }
+
 
     /* =================================================
     COLUMNS
@@ -381,33 +596,42 @@ async function renderBody(
         isVisible(
           col,
           "table",
-          docType
+          docType,
+          schema
         )
 
       )
 
-      .forEach(col=>{
+      .forEach(col => {
 
         const td =
-          document.createElement("td")
+          document.createElement("td");
 
         const input =
           renderField({
+
             field: col,
+
             row,
+
             state
-          })
+
+          });
+
 
         setRowInput(
           row,
           col.key,
           input
-        )
+        );
 
-        td.appendChild(input)
-        tr.appendChild(td)
 
-      })
+        td.appendChild(input);
+
+        tr.appendChild(td);
+
+      });
+
 
     /* =================================================
     DELETE
@@ -416,61 +640,92 @@ async function renderBody(
     if(sys.delete){
 
       const td =
-        document.createElement("td")
+        document.createElement("td");
 
       const btn =
-        document.createElement("button")
+        document.createElement("button");
 
       btn.className =
-        "doc-delete-btn"
+        "doc-delete-btn";
 
       btn.textContent =
-        "✕"
+        "✕";
 
-      btn.onclick = async ()=>{
+      btn.onclick = async () => {
 
         state.items.splice(
           index,
           1
-        )
+        );
+
 
         await renderBody(
           root,
           schema,
           state
-        )
+        );
+
 
         computeHeader(
           state.schema,
           state
-        )
+        );
+
 
         await syncInputs({
+
           schema: state.schema,
+
           target: state.header,
+
           scope: "header"
-        })
 
-        updateSummaryBar(state.root)
+        });
 
-      }
 
-      td.appendChild(btn)
-      tr.appendChild(td)
+        updateSummaryBar(
+          state.root
+        );
+
+      };
+
+
+      td.appendChild(btn);
+
+      tr.appendChild(td);
 
     }
 
-    body.appendChild(tr)
+
+    /* =================================================
+    APPEND ROW
+    ================================================= */
+
+    body.appendChild(tr);
+
+
+    /* =================================================
+    SYNC ROW INPUTS
+    ================================================= */
 
     await syncInputs({
-      schema: state.schema,
+
+      schema,
+
       target: row,
+
       scope: "row"
-    })
+
+    });
 
   }
 
 }
+
+
+/* =========================================================
+REFRESH ALL COST
+========================================================= */
 
 async function refreshAllCost(
   root,
@@ -479,71 +734,127 @@ async function refreshAllCost(
 ){
 
   const products =
-    await loadRef("data_product")
+    await loadRef(
+      "data_product"
+    );
+
 
   const productMap =
     new Map(
-      products.map(p => [
-        String(p.id),
-        p
-      ])
-    )
 
-  let changed = false
+      products.map(p => [
+
+        String(p.id),
+
+        p
+
+      ])
+
+    );
+
+
+  let changed = false;
+
+
+  /* =====================================================
+  UPDATE COST
+  ===================================================== */
 
   for(const row of state.items){
 
     const product =
       productMap.get(
         String(row.id_product)
-      )
+      );
+
 
     if(!product){
-      continue
+      continue;
     }
+
 
     const newCost =
-      Number(product.giavon) || 0
+      Number(product.giavon) || 0;
+
 
     if(row.dongiavon === newCost){
-      continue
+      continue;
     }
 
-    row.dongiavon = newCost
 
-    computeTableRow(
+    row.dongiavon =
+      newCost;
+
+
+    computeDocumentRow(
       schema,
-      row
-    )
+      row,
+      state
+    );
 
-    changed = true
+
+    changed = true;
 
   }
+
+
+  /* =====================================================
+  NO CHANGE
+  ===================================================== */
 
   if(!changed){
+
     console.log(
       "Giá vốn đã mới nhất."
-    )
-    return
+    );
+
+    return;
+
   }
+
+
+  /* =====================================================
+  COMPUTE HEADER
+  ===================================================== */
 
   computeHeader(
     schema,
     state
-  )
+  );
+
+
+  /* =====================================================
+  SYNC HEADER
+  ===================================================== */
 
   await syncInputs({
-    schema,
-    target: state.header,
-    scope: "header"
-  })
 
-  updateSummaryBar(root)
+    schema,
+
+    target: state.header,
+
+    scope: "header"
+
+  });
+
+
+  /* =====================================================
+  SUMMARY
+  ===================================================== */
+
+  updateSummaryBar(
+    root
+  );
+
+
+  /* =====================================================
+  RENDER
+  ===================================================== */
 
   await renderBody(
     root,
     schema,
     state
-  )
+  );
 
 }

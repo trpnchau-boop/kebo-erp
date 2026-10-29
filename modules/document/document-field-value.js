@@ -4,7 +4,8 @@ from "/js/core/format.js"
 export function setFieldValue(
   input,
   field,
-  row
+  row,
+  state
 ){
 
   const key =
@@ -46,6 +47,10 @@ export function setFieldValue(
   LOOKUP
   ========================= */
 
+  /* =========================
+  LOOKUP
+  ========================= */
+
   if(
     field.type === "lookup"
   ){
@@ -53,10 +58,29 @@ export function setFieldValue(
     input.dataset.value =
       row[key] ?? ""
 
-    input.value =
-      row[key + "_text"]
-      ??
-      ""
+    // XML Preview: chưa ghép sản phẩm
+    if(
+      key === "id_product" &&
+      state?.xmlPreview === true &&
+      !row.id_product
+    ){
+
+      input.value =
+        row.name || ""
+
+      input.readOnly = true
+
+      input.title =
+        "Tên hàng lấy từ XML - chưa ghép sản phẩm"
+
+    }else{
+
+      input.value =
+        row[key + "_text"]
+        ??
+        ""
+
+    }
 
     return
 

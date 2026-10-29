@@ -243,16 +243,37 @@ export async function initDocument(
   }
 
 
-  /* =====================================================
-     CREATE NEW DOCUMENT
-  ===================================================== */
+/* =====================================================
+   CREATE NEW DOCUMENT
+===================================================== */
 
-  else{
+else {
+
+  // XML_PREVIEW: giữ dữ liệu đã parse từ hóa đơn XML
+  if (state.xmlPreview === true) {
+
+    state.header =
+      state.header || {}
+
+    state.items =
+      Array.isArray(state.items)
+        ? state.items
+        : []
+
+    state.draftRow =
+      state.draftRow || {}
+
+    state.header.type =
+      schema.meta.code
+
+  }
+
+  // Chứng từ mới thông thường
+  else {
 
     state.header = {}
     state.items = []
     state.draftRow = {}
-
 
     state.header.type =
       schema.meta.code
@@ -263,9 +284,11 @@ export async function initDocument(
     state.header.day =
       new Date()
         .toISOString()
-        .slice(0,10)
+        .slice(0, 10)
 
   }
+
+}
 
 
   /* =====================================================

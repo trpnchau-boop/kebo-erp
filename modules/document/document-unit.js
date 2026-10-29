@@ -52,6 +52,52 @@ export async function getProductUnits(
 }
 
 /* =========================================================
+GET UNIT RATIO
+- Tìm Ratio theo sản phẩm và đơn vị đã chọn
+- ĐVT gốc: Ratio = 1
+========================================================= */
+
+export async function getUnitRatio(row){
+
+  if(!row?.id_product){
+    return 1
+  }
+
+  /* ĐVT gốc */
+  if(
+    row.id_unit === ""
+    ||
+    row.id_unit === null
+    ||
+    row.id_unit === undefined
+  ){
+    return 1
+  }
+
+  const units =
+    await getProductUnits(
+      row.id_product
+    )
+
+  const unit =
+    units.find(
+      u =>
+        String(u.id)
+        ===
+        String(row.id_unit)
+    )
+
+  if(!unit){
+    return 1
+  }
+
+  return Number(
+    unit.ratio || 1
+  )
+
+}
+
+/* =========================================================
 NORMALIZE
 ========================================================= */
 
@@ -80,13 +126,18 @@ export async function loadUnitOptions(
   }
 
   const product =
-    await getProduct(
-      row.id_product
-    )
+  await getProduct(
+    row.id_product
+  )
 
   if(!product){
     return []
   }
+
+  // Đồng bộ thông tin đơn vị gốc từ sản phẩm nội bộ
+  row.dvtGoc =
+    product.dvtGoc || row.dvtGoc || ""
+
 
   const units =
     await getProductUnits(
@@ -363,20 +414,22 @@ export function getSelectedRatio(input){
 
 /* =========================================================
 SYNC ROW RATIO
+- Ưu tiên tìm Ratio từ product_unit
+- Fallback về Ratio trên dropdown
 ========================================================= */
 
-export function syncRowRatio(
-
+export async function syncRowRatio(
   input,
-
   row
-
 ){
 
+  const ratio =
+    await getUnitRatio(row)
+
   row.ratio =
-    getSelectedRatio(
-      input
-    )
+    Number(ratio || 1)
+
+  return row.ratio
 
 }
 

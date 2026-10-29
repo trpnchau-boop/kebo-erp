@@ -159,6 +159,14 @@ export async function syncInputs({
     LOOKUP EMPTY
     ========================================= */
 
+
+    /* =========================================
+    LOOKUP EMPTY
+
+    XML chưa ghép sản phẩm:
+    id_product rỗng nhưng vẫn hiển thị row.name
+    ========================================= */
+
     if(
       field.type === "lookup"
       &&
@@ -167,8 +175,28 @@ export async function syncInputs({
 
       if(!isActive){
 
-        input.value = ""
-        input.dataset.value = ""
+        if(
+          key === "id_product"
+          &&
+          target.name
+        ){
+
+          // Giữ tên hàng từ XML
+          input.value =
+            target.name
+
+          input.dataset.value = ""
+
+          input.title =
+            "Tên hàng XML - chưa ghép sản phẩm"
+
+        }else{
+
+          input.value = ""
+
+          input.dataset.value = ""
+
+        }
 
       }
 

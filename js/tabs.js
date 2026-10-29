@@ -11,6 +11,7 @@ let activeTabId = null
 OPEN TAB
 ========================= */
 
+
 export async function openTab(
   id,
   title,
@@ -24,21 +25,17 @@ export async function openTab(
     return
   }
 
+  /* =========================
+  GIỮ STATE ĐƯỢC TRUYỀN VÀO
+  ========================= */
+
+  let nextState = {
+    ...(state || {})
+  }
 
   /* =========================
   KẾ THỪA QUYỀN TỪ TAB CHA
   ========================= */
-
-  let nextState = {}
-
-  if(
-    state?.permissionCode
-  ){
-
-    nextState.permissionCode =
-      state.permissionCode
-
-  }
 
   const parent =
     tabs[activeTabId]
@@ -48,13 +45,6 @@ export async function openTab(
     !nextState.permissionCode
   ){
 
-    /*
-
-      Nếu cha đã là con của một permission khác
-      thì tiếp tục giữ permission gốc.
-
-    */
-
     if(
       parent.state?.permissionCode
     ){
@@ -63,11 +53,6 @@ export async function openTab(
         parent.state.permissionCode
 
     }else{
-
-      /*
-        Cha là tab gốc.
-        Lấy permission trực tiếp của cha.
-      */
 
       nextState.permissionCode =
         getPermissionCode(
@@ -79,6 +64,9 @@ export async function openTab(
 
   }
 
+  /* =========================
+  CREATE TAB
+  ========================= */
 
   createTab(
     id,
@@ -92,6 +80,7 @@ export async function openTab(
 
   saveTabs()
 }
+
 
 /* =========================
 ACTIVATE

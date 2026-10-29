@@ -1,4 +1,3 @@
-//document-bind.js//
 
 import {computeTableRow}
 from "./document-compute.js"
@@ -28,10 +27,9 @@ import {
 }
 from "./document-summary-bar.js"
 
+
 /* =========================================================
 PRESERVE ROOT UNIT
-- nếu đang dùng ĐVT gốc (id_unit = "")
-- luôn giữ unit_name = dvtGoc để input bar không mất label
 ========================================================= */
 
 function preserveRootUnit(row){
@@ -56,12 +54,15 @@ function preserveRootUnit(row){
       ||
       Number.isNaN(Number(row.ratio))
     ){
+
       row.ratio = 1
+
     }
 
   }
 
 }
+
 
 /* =========================================================
 GET SYNC SCOPE
@@ -77,6 +78,82 @@ function getRowScope(
     : "row"
 
 }
+
+
+/* =========================================================
+GET XML MODE
+========================================================= */
+
+function getXmlMode(state){
+
+  const docType =
+    String(
+      state?.docType ||
+      state?.header?.type ||
+      state?.schema?.type ||
+      ""
+    ).toUpperCase()
+
+  if(
+    state?.xmlPreview === true ||
+    docType === "XML_PREVIEW"
+  ){
+
+    return "preview"
+
+  }
+
+  if(
+    state?.xmlIn === true ||
+    docType === "XML_IN"
+  ){
+
+    return "incoming"
+
+  }
+
+  return null
+
+}
+
+
+/* =========================================================
+PRESERVE XML ORIGINAL AMOUNT
+========================================================= */
+
+function preserveXmlAmount(
+  row,
+  xmlMode
+){
+
+  if(
+    !row ||
+    !xmlMode
+  ){
+
+    return
+
+  }
+
+  /*
+  Lưu Thành tiền XML gốc.
+
+  Chỉ khởi tạo một lần.
+  Những lần sửa SL tiếp theo không ghi đè.
+  */
+
+  if(
+    row._xmlThanhtien === undefined ||
+    row._xmlThanhtien === null
+  ){
+
+    row._xmlThanhtien =
+      Number(row.thanhtien) || 0
+
+  }
+
+}
+
 
 /* =========================================================
 BIND FIELD
@@ -103,6 +180,22 @@ export function bindField(
     ??
     ""
 
+
+  /* =====================================================
+  XML ORIGINAL AMOUNT
+
+  Khởi tạo trước khi người dùng sửa input.
+  ===================================================== */
+
+  const xmlMode =
+    getXmlMode(state)
+
+  preserveXmlAmount(
+    row,
+    xmlMode
+  )
+
+
   /* =====================================================
   INIT INPUT VALUE
   ===================================================== */
@@ -110,20 +203,24 @@ export function bindField(
   setFieldValue(
     input,
     field,
-    row
+    row,
+    state
   )
+
 
   /* =====================================================
   COMPUTED
   ===================================================== */
 
   if(
-    field.computed
-    &&
+    field.computed &&
     field.readonly !== false
   ){
+
     input.readOnly = true
+
   }
+
 
   /* =====================================================
   AVOID DUPLICATE BIND
@@ -132,10 +229,13 @@ export function bindField(
   if(
     input.dataset.bound === "1"
   ){
+
     return
+
   }
 
   input.dataset.bound = "1"
+
 
   /* =====================================================
   INPUT EVENT
@@ -145,27 +245,44 @@ export function bindField(
     "input",
     async ()=>{
 
+      /* =====================================
+      XML PREVIEW PRODUCT CODE
+      ===================================== */
+
+      if(
+        state?.xmlPreview === true &&
+        key === "product_code"
+      ){
+
+        return
+
+      }
+
+
+      /* =====================================
+      GET INPUT VALUE
+      ===================================== */
+
       const value =
         getFieldValue(
           input,
           field
         )
 
-      row[key] = value
+      row[key] =
+        value
 
-      /* =================================================
+
+      /* =====================================
       LOOKUP / SELECT MAPPING
-      ================================================= */
+      ===================================== */
 
       if(
         (
-          field.type === "lookup"
-          ||
+          field.type === "lookup" ||
           field.type === "select"
-        )
-        &&
-        field.mapping
-        &&
+        ) &&
+        field.mapping &&
         field.source
       ){
 
@@ -175,18 +292,20 @@ export function bindField(
           )
 
         const found =
-          rows.find(r =>
-            String(
-              r[field.source.value]
-            )
-            ===
-            String(value)
+          rows.find(
+            r =>
+              String(
+                r[field.source.value]
+              ) ===
+              String(value)
           )
 
         if(found){
 
-          Object.entries(field.mapping)
-            .forEach(([targetKey,sourceKey])=>{
+          Object.entries(
+            field.mapping
+          ).forEach(
+            ([targetKey,sourceKey])=>{
 
               const mappedValue =
                 found[sourceKey]
@@ -194,44 +313,49 @@ export function bindField(
               row[targetKey] =
                 mappedValue ?? ""
 
-            })
+            }
+          )
 
         }
 
       }
 
-      /* =================================================
+
+      /* =====================================
       LOOKUP TEXT
-      ================================================= */
+      ===================================== */
 
       if(
         field.type === "lookup"
       ){
+
         row[key + "_text"] =
           input.value || ""
+
       }
 
-      /* =================================================
+
+      /* =====================================
       PRODUCT CHANGED
-      - luôn reset về ĐVT gốc
-      - id_unit = "" để table hiển thị rỗng ở cột Đvt
-      - unit_name vẫn giữ dvtGoc để input bar còn label
-      ================================================= */
+      ===================================== */
 
       if(
         key === "id_product"
       ){
 
         row.id_unit = ""
+
         row.unit_name =
           row.dvtGoc || ""
+
         row.ratio = 1
 
       }
 
-      /* =================================================
+
+      /* =====================================
       UNIT CHANGED
-      ================================================= */
+      ===================================== */
 
       if(
         key === "id_unit"
@@ -239,43 +363,76 @@ export function bindField(
 
         if(!row.id_unit){
 
-          /* đang dùng ĐVT gốc */
           row.unit_name =
-            row.dvtGoc
-            || row.unit_name
-            || ""
+            row.dvtGoc ||
+            row.unit_name ||
+            ""
+
+          row.ratio = 1
+
+        }else{
+
+          await syncRowRatio(
+            input,
+            row
+          )
 
         }
 
-        syncRowRatio(
-          input,
-          row
-        )
-
       }
 
-      /* =================================================
+
+      /* =====================================
+      PRESERVE XML ORIGINAL AMOUNT
+
+      Bảo đảm giá trị gốc tồn tại trước compute.
+      ===================================== */
+
+      preserveXmlAmount(
+        row,
+        xmlMode
+      )
+
+
+      /* =====================================
       COMPUTE ROW
-      ================================================= */
+
+      XML_PREVIEW:
+      - Thành tiền giữ nguyên theo XML
+      - SL thay đổi -> Đơn giá thay đổi
+
+      XML_IN:
+      - Thành tiền giữ nguyên theo XML
+      - SL thay đổi -> Đơn giá thay đổi
+      - Giữ nguyên giá vốn đã lưu
+      ===================================== */
 
       computeTableRow(
         state.schema,
         row,
-        key
+        key,
+        {
+          xmlPreview:
+            xmlMode === "preview",
+
+          xmlIn:
+            xmlMode === "incoming"
+        }
       )
 
-      /* =================================================
+
+      /* =====================================
       PRESERVE ROOT UNIT
-      - rất quan trọng:
-      - sau compute/sync, nếu id_unit = ""
-        thì vẫn phải giữ unit_name = dvtGoc
-      ================================================= */
+      ===================================== */
 
-      preserveRootUnit(row)
+      preserveRootUnit(
+        row
+      )
 
-      /* =================================================
+
+      /* =====================================
       SYNC ROW UI
-      ================================================= */
+      ===================================== */
 
       await syncInputs({
         schema: state.schema,
@@ -286,18 +443,20 @@ export function bindField(
         )
       })
 
-      /* =================================================
+
+      /* =====================================
       COMPUTE HEADER
-      ================================================= */
+      ===================================== */
 
       computeHeader(
         state.schema,
         state
       )
 
-      /* =================================================
+
+      /* =====================================
       SYNC HEADER UI
-      ================================================= */
+      ===================================== */
 
       await syncInputs({
         schema: state.schema,
@@ -305,9 +464,15 @@ export function bindField(
         scope: "header"
       })
 
+
+      /* =====================================
+      UPDATE SUMMARY
+      ===================================== */
+
       updateSummaryBar(
         state.root
       )
+
     }
   )
 

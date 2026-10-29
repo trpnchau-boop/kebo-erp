@@ -1,0 +1,22 @@
+<section class="invoice-import" id="invoice-import">
+  <header class="invoice-import__header">
+    <h2>Nạp hóa đơn đầu vào</h2>
+    <p>Chọn XML, PDF, Excel hoặc ảnh hóa đơn. Dữ liệu sẽ được đọc và đối chiếu trước khi mở chứng từ.</p>
+  </header>
+  <label class="invoice-import__picker">
+    <span>Chọn file hóa đơn</span>
+    <input id="invoice-import-file" type="file" accept=".xml,.pdf,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.webp,image/*,application/pdf,text/xml" multiple />
+  </label>
+  <div id="invoice-import-status" role="status" aria-live="polite"></div>
+  <div id="invoice-import-preview"></div>
+  <button id="invoice-import-open" type="button" disabled>Mở chứng từ để kiểm tra</button>
+</section>
+<style>
+.invoice-import{padding:20px;border-radius: 5px 5px 0 0;background: white;border-bottom: 1px solid #e5e7eb;color:var(--text-color,#222)}
+.invoice-import__header h2{margin:0 0 8px}.invoice-import__header p{margin:0 0 18px;color:#666}
+.invoice-import__picker{display:flex;align-items:center;gap:14px;padding:18px;border:1px dashed #9ca3af;border-radius:12px;cursor:pointer;flex-wrap:wrap}
+.invoice-import__picker input{max-width:100%}#invoice-import-status{margin:14px 0;white-space:pre-wrap}
+.invoice-import__preview{overflow:auto}#invoice-import-preview table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+#invoice-import-preview th,#invoice-import-preview td{border:1px solid #ddd;padding:7px;text-align:left}#invoice-import-preview tr.unmatched{background:#fff0e6}
+#invoice-import-open{padding:10px 18px;border:0;border-radius:8px;background:#2c3f70;color:#fff;cursor:pointer}#invoice-import-open:disabled{opacity:.45;cursor:not-allowed}
+</style>

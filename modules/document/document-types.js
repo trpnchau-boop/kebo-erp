@@ -76,6 +76,121 @@ function deepMerge(
 }
 
 /* =========================================================
+XML_IN
+========================================================= */
+
+const XML_IN = mergeDocument(
+  BASE_DOCUMENT,
+  {
+    dbTable: "tax_invoice",
+    itemTable: "tax_invoice_items",
+
+    meta: {
+      code: "XML_IN",
+      prefix: "XML",
+      title: "HÓA ĐƠN ĐẦU VÀO"
+    },
+
+    workflow: {
+      postable: false
+    },
+
+    validate: {
+      requireCustomer: false
+    },
+
+    capabilities: {
+      split: false
+    },
+
+    table: {
+      columns: {
+        price: {
+          visible: true
+        },
+
+        amount: {
+          visible: true
+        }
+      }
+    }
+  }
+)
+
+/* =========================================================
+   XML PREVIEW
+========================================================= */
+
+const XML_PREVIEW = mergeDocument(
+  BASE_DOCUMENT,
+  {
+
+    meta: {
+
+      code: "XML_PREVIEW",
+
+      prefix: "XML",
+
+      title: "KIỂM TRA HÓA ĐƠN ĐẦU VÀO"
+
+    },
+
+    workflow: {
+
+      postable: false
+
+    },
+
+    validate: {
+
+      requireCustomer: false
+
+    },
+
+    capabilities: {
+
+      split: false
+
+    },
+
+    table: {
+
+      columns: {
+
+        // Hiện cột Mã SP
+        product_code: {
+          visible: true
+        },
+
+        // Ẩn phí phân bổ
+        cost_alloc: {
+          visible: true
+        },
+
+        // Ẩn giá vốn
+        dongiavon: {
+          visible: true
+        },
+
+        // Ẩn tiền vốn
+        tienvon: {
+          visible: true
+        },
+
+        // Giữ cột Sản phẩm
+        id_product: {
+          visible: true
+        }
+
+      }
+
+    }
+
+  }
+)
+
+
+/* =========================================================
 SALE
 ========================================================= */
 
@@ -501,6 +616,10 @@ export const DOCUMENT_TYPES = {
 
   ADJUST,
 
-  ISSUE
+  ISSUE,
+
+  XML_IN,
+
+  XML_PREVIEW
 
 }

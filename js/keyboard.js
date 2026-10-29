@@ -41,14 +41,23 @@ function getSuggestState(current){
   const wrapper =
     current.closest?.(".suggest-wrapper")
 
-  const items = wrapper
-    ? [...wrapper.querySelectorAll(".suggest-box .suggest-item")]
+  const box =
+    wrapper?.querySelector(".suggest-box")
+
+  const items = box
+    ? [...box.querySelectorAll(".suggest-item")]
     : []
 
   return {
     wrapper,
+    box,
     items,
-    hasSuggest: items.length > 0
+
+    hasSuggest:
+      !!(
+        box &&
+        box._list?.length
+      )
   }
 }
 
@@ -106,8 +115,25 @@ export function initKeyboard(){
       }
     }    
 
+
+    /* =====================================================
+       ARROW DOWN / UP
+       - Có suggest: để suggest xử lý lựa chọn
+       - Không có suggest: điều hướng cùng cột
+    ===================================================== */
+
     if(e.key === "ArrowDown"){
 
+      const {hasSuggest} =
+        getSuggestState(el)
+
+      // Có box gợi ý -> không điều hướng xuống dòng
+      // Để suggest xử lý ArrowDown
+      if(hasSuggest){
+        return
+      }
+
+      // Không có box gợi ý -> xuống ô cùng cột
       if(moveVertical(el,1)){
 
         e.preventDefault()
@@ -120,6 +146,16 @@ export function initKeyboard(){
 
     if(e.key === "ArrowUp"){
 
+      const {hasSuggest} =
+        getSuggestState(el)
+
+      // Có box gợi ý -> không điều hướng lên dòng
+      // Để suggest xử lý ArrowUp
+      if(hasSuggest){
+        return
+      }
+
+      // Không có box gợi ý -> lên ô cùng cột
       if(moveVertical(el,-1)){
 
         e.preventDefault()
@@ -129,6 +165,7 @@ export function initKeyboard(){
 
       return
     }
+
 
     if(e.key !== "Enter") return
 

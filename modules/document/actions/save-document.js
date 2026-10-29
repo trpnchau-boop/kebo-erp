@@ -35,6 +35,8 @@ import {
 }
 from "/modules/receivable/receivable-load.js"
 
+import { saveXmlIncoming } from "./save-xml-incoming.js"
+
 export async function saveDocument({
   root,
   schema,
@@ -49,6 +51,35 @@ export async function saveDocument({
     )
     return
   }
+
+  // XML input invoices use tax_invoice tables, not document/document_items.
+  if (
+    state.xmlPreview === true ||
+    state.xmlIn === true ||
+    schema?.meta?.code === "XML_PREVIEW" ||
+    schema?.meta?.code === "XML_IN"
+  ) {
+  try {
+
+    return await saveXmlIncoming({
+      root,
+      schema,
+      state,
+      status
+    })
+
+  } catch (error) {
+
+    if (error.message === "Thiếu NCC") {
+      alert("Thiếu NCC")
+      return
+    }
+
+    throw error
+
+  }
+
+}
 
   if(
     state.header.in_cong_no === true

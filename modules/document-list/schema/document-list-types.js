@@ -143,6 +143,7 @@ export const DOCUMENT_LIST_TYPES = {
       { key:"bulk_post", label:"Ghi sổ hàng loạt" },
       { key:"bulk_delete", label:"Xóa hàng loạt" },
       { key:"bulk_print", label:"In hàng loạt" },
+      { key:"bulk_export_document_details", label:"Xuất Excel chi tiết CT" },
     ],
 
     rowActions:[
@@ -151,6 +152,33 @@ export const DOCUMENT_LIST_TYPES = {
       { key:"post", label:"Ghi sổ" },
     ]
   },
+  XML_IN:{
+    table:"tax_invoice",
+    itemTable:"tax_invoice_items",
+    title:"Hóa đơn đầu vào",
+
+    list:[
+      "code",
+      "day",
+      "id_customer",
+      "id_customer",
+      "note",      
+      "tongthanhtoan",
+    ],
+
+    actions:[
+      { key:"bulk_post", label:"Ghi sổ hàng loạt" },
+      { key:"bulk_delete", label:"Xóa hàng loạt" },
+      { key:"bulk_print", label:"In hàng loạt" },
+      { key:"bulk_export_document_details", label:"Xuất Excel chi tiết CT" },
+    ],
+
+    rowActions:[
+      { key:"remove", label:"Xóa" },
+      { key:"print", label:"In" },
+      { key:"post", label:"Ghi sổ" },
+    ]
+  },  
   TRANSFER:{
     table:"document",
 

@@ -1,7 +1,9 @@
+
 export function isVisible(
   item,
   area,
-  docType
+  docType,
+  schema
 ){
 
   if(
@@ -10,12 +12,14 @@ export function isVisible(
     return false
   }
 
-  if(
-    area &&
-    item.show?.[area] === false
-  ){
-    return false
-  }
+  /* =====================================
+  CẤU HÌNH RIÊNG THEO LOẠI CHỨNG TỪ
+  ===================================== */
+
+  const columnConfig =
+    area === "table"
+      ? schema?.table?.columns?.[item.key]
+      : null
 
   /* =====================================
   CHỈ HIỆN Ở MỘT SỐ LOẠI CHỨNG TỪ
@@ -34,6 +38,29 @@ export function isVisible(
 
   if(
     item.hideInDocTypes?.includes(docType)
+  ){
+    return false
+  }
+
+  /* =====================================
+  ƯU TIÊN CẤU HÌNH RIÊNG
+  ===================================== */
+
+  if(
+    typeof columnConfig?.visible === "boolean"
+  ){
+
+    return columnConfig.visible
+
+  }
+
+  /* =====================================
+  KIỂM TRA HIỂN THỊ MẶC ĐỊNH
+  ===================================== */
+
+  if(
+    area &&
+    item.show?.[area] === false
   ){
     return false
   }

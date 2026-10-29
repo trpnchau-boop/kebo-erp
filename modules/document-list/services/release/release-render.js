@@ -137,14 +137,22 @@ export function renderReleaseRows(rows = []){
               </div>
 
               <div
-                style=" font-size:14px; color:#6b7280; margin-top:6px;"
+                style="
+                  font-size:14px;
+                  margin-top:6px;
+                  color:${
+                    Number(item.qty_balance ?? 0) <= 0
+                    ? "#dc2626"
+                    : "#6b7280"
+                  };
+                "
               >
                 Tồn kho:
                 ${
                   item.qty_balance || 0
                 }
                 ${
-                  item.dvtGoc || ""
+                  item.stock_unit || ""
                 }
               </div>
 

@@ -37,6 +37,21 @@ export function clearSuggest(box){
 
 /* ========================= */
 
+export function isSuggestOpen(input){
+
+  const wrapper =
+    input.closest(".suggest-wrapper")
+
+  const box =
+    wrapper?.querySelector(".suggest-box")
+
+  return !!(
+    box &&
+    box._list?.length
+  )
+}
+/* ========================= */
+
 export function renderSuggest(box, list, onSelect, options = {}){
 
   box.innerHTML = ""

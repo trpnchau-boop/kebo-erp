@@ -511,6 +511,25 @@ export async function loadDocument(
     items || []
 
   /* =========================
+  XML_IN - MAP VAT
+  ========================= */
+
+  if(
+    String(
+      state.header?.type || ""
+    ).toUpperCase() === "XML_IN"
+  ){
+
+    state.items.forEach(item => {
+
+      item.vatAmount =
+        Number(item.vat_amount) || 0
+
+    })
+
+  }
+
+  /* =========================
   COMPUTE
   ========================= */
 

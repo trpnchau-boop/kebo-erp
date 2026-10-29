@@ -1,27 +1,53 @@
-import {db} from "/js/supabase.js"
+
+import { db } from "/js/supabase.js"
 
 
-export async function bulkExportDocumentDetails(ctx = {}){
+export async function bulkExportDocumentDetails(ctx = {}) {
 
-  const ids =
-    ctx.ids || []
+  const ids = ctx.ids || []
 
-  if(!ids.length){
-
+  if (!ids.length) {
     alert("Chưa chọn chứng từ")
-
     return
-
   }
 
-
-  if(typeof XLSX === "undefined"){
-
+  if (typeof XLSX === "undefined") {
     alert("Thiếu thư viện XLSX")
-
     return
-
   }
+
+
+  /* =========================================
+     XÁC ĐỊNH BẢNG THEO LOẠI CHỨNG TỪ
+  ========================================= */
+
+  const schema = ctx.schema || {}
+
+  const docType = String(
+    ctx.type ||
+    schema.type ||
+    "SALE"
+  )
+    .split(",")[0]
+    .trim()
+    .toUpperCase()
+
+  const headerTable =
+    schema.table ||
+    (
+      docType === "ISSUE"
+        ? "tax_invoice"
+        : "document"
+    )
+
+  const itemTable =
+    schema.itemTable ||
+    schema.detailTable ||
+    (
+      docType === "ISSUE"
+        ? "tax_invoice_items"
+        : "document_items"
+    )
 
 
   /* =========================================
@@ -61,27 +87,27 @@ export async function bulkExportDocumentDetails(ctx = {}){
      LOAD TỪNG CHỨNG TỪ
   ========================================= */
 
-  for(const id of ids){
+  for (const id of ids) {
 
     /* -----------------------------------------
        HEADER
     ----------------------------------------- */
 
     const {
-      data:header,
-      error:headerError
+      data: header,
+      error: headerError
     } = await db
 
-      .from("document")
+      .from(headerTable)
 
       .select("*")
 
-      .eq("id",id)
+      .eq("id", id)
 
       .single()
 
 
-    if(headerError){
+    if (headerError || !header) {
 
       console.error(
         "LOAD HEADER ERROR",
@@ -100,7 +126,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
     let customer = null
 
 
-    if(header.id_customer){
+    if (header.id_customer) {
 
       const {
         data,
@@ -124,14 +150,14 @@ export async function bulkExportDocumentDetails(ctx = {}){
         .single()
 
 
-      if(error){
+      if (error) {
 
         console.error(
           "LOAD CUSTOMER ERROR",
           error
         )
 
-      }else{
+      } else {
 
         customer = data
 
@@ -145,11 +171,11 @@ export async function bulkExportDocumentDetails(ctx = {}){
     ----------------------------------------- */
 
     const {
-      data:items,
-      error:itemError
+      data: items,
+      error: itemError
     } = await db
 
-      .from("document_items")
+      .from(itemTable)
 
       .select("*")
 
@@ -159,7 +185,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
       )
 
 
-    if(itemError){
+    if (itemError) {
 
       console.error(
         "LOAD ITEMS ERROR",
@@ -169,6 +195,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
       continue
 
     }
+
 
     /* -----------------------------------------
        LOAD TÊN SẢN PHẨM GỐC
@@ -182,61 +209,65 @@ export async function bulkExportDocumentDetails(ctx = {}){
       )
     ]
 
+
     let productMap = {}
 
-    if(productIds.length){
 
-        const {
-            data:products,
-            error:productError
-        } = await db
+    if (productIds.length) {
+
+      const {
+        data: products,
+        error: productError
+      } = await db
 
         .from("data_product")
+
         .select(`
-            id,
-            name
+          id,
+          name
         `)
+
         .in(
-            "id",
-            productIds
+          "id",
+          productIds
         )
 
-        if(productError){
-            
-            console.error(
-                "LOAD PRODUCTS ERROR",
-                productError
-            )
 
-        }else{
+      if (productError) {
 
-            ;(products || []).forEach(product => {
+        console.error(
+          "LOAD PRODUCTS ERROR",
+          productError
+        )
 
-                productMap[product.id] =
-                product.name || ""
+      } else {
 
-            })
+        ;(products || []).forEach(product => {
 
-        }
+          productMap[product.id] =
+            product.name || ""
+
+        })
+
+      }
 
     }
+
 
     /* -----------------------------------------
        MỖI SẢN PHẨM = 1 DÒNG EXCEL
     ----------------------------------------- */
 
-    for(const item of (items || [])){
+    for (const item of (items || [])) {
 
-      const qty =
-        Number(
-          item.tongsoluong || 0
-        )
+      const qty = Number(
+        item.tongsoluong || 0
+      )
 
 
-      const price =
-        Number(
-          item.dongia || 0
-        )
+      const price = Number(
+        item.dongia || 0
+      )
 
 
       const amount =
@@ -250,64 +281,44 @@ export async function bulkExportDocumentDetails(ctx = {}){
 
       data.push([
 
-        /* 1 */
         "Bán hàng hóa trong nước",
 
-        /* 2 */
         "Chưa thu tiền",
 
-        /* 3 */
         "Không",
 
-        /* 4 */
         "Không",
 
-        /* 5 */
         "Không",
 
-        /* 6 */
         "Chưa lập",
 
-        /* 7 */
         header.day || "",
 
-        /* 8 */
         header.day || "",
 
-        /* 9 */
         header.code || "",
 
-        /* 10 */
         customer?.code || "",
 
-        /* 11 */
         productMap[item.id_product] || "",
 
-        /* 12 */
         "131",
 
-        /* 13 */
         "5111",
 
-        /* 14 */
         item.dvtGoc || "",
 
-        /* 15 */
         qty,
 
-        /* 16 */
         price,
 
-        /* 17 */
         amount,
 
-        /* 18 */
         "101",
 
-        /* 19 */
         "Bán hàng thông thường",
 
-        /* 20 */
         0
 
       ])
@@ -321,7 +332,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
      KHÔNG CÓ DỮ LIỆU
   ========================================= */
 
-  if(data.length <= 1){
+  if (data.length <= 1) {
 
     alert(
       "Không có chi tiết chứng từ để xuất"
@@ -337,9 +348,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
   ========================================= */
 
   const ws =
-    XLSX.utils.aoa_to_sheet(
-      data
-    )
+    XLSX.utils.aoa_to_sheet(data)
 
 
   /* =========================================
@@ -348,26 +357,26 @@ export async function bulkExportDocumentDetails(ctx = {}){
 
   ws["!cols"] = [
 
-    {wch:28},
-    {wch:24},
-    {wch:20},
-    {wch:18},
-    {wch:24},
-    {wch:18},
-    {wch:18},
-    {wch:18},
-    {wch:20},
-    {wch:18},
-    {wch:35},
-    {wch:24},
-    {wch:24},
-    {wch:12},
-    {wch:14},
-    {wch:16},
-    {wch:18},
-    {wch:18},
-    {wch:28},
-    {wch:14}
+    { wch: 28 },
+    { wch: 24 },
+    { wch: 20 },
+    { wch: 18 },
+    { wch: 24 },
+    { wch: 18 },
+    { wch: 18 },
+    { wch: 18 },
+    { wch: 20 },
+    { wch: 18 },
+    { wch: 35 },
+    { wch: 24 },
+    { wch: 24 },
+    { wch: 12 },
+    { wch: 14 },
+    { wch: 16 },
+    { wch: 18 },
+    { wch: 18 },
+    { wch: 28 },
+    { wch: 14 }
 
   ]
 
@@ -376,26 +385,30 @@ export async function bulkExportDocumentDetails(ctx = {}){
      ĐỊNH DẠNG HEADER
   ========================================= */
 
-  for(let c = 0; c < columns.length; c++){
+  for (
+    let c = 0;
+    c < columns.length;
+    c++
+  ) {
 
     const cell =
       XLSX.utils.encode_cell({
-        r:0,
+        r: 0,
         c
       })
 
 
-    if(ws[cell]){
+    if (ws[cell]) {
 
       ws[cell].s = {
 
-        font:{
-          bold:true
+        font: {
+          bold: true
         },
 
-        alignment:{
-          vertical:"center",
-          wrapText:true
+        alignment: {
+          vertical: "center",
+          wrapText: true
         }
 
       }
@@ -423,7 +436,7 @@ export async function bulkExportDocumentDetails(ctx = {}){
   const today =
     new Date()
       .toISOString()
-      .slice(0,10)
+      .slice(0, 10)
 
 
   XLSX.writeFile(
