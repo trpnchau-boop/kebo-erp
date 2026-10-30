@@ -1,67 +1,36 @@
 import {render} from "./stock-render.js"
+import {toggleCheckMode,saveCheck} from "./stock-check.js"
+import {toggleTransferMode,saveTransfer} from "./stock-transfer.js"
+import {loadStock,syncSourceControls} from "./stock-load.js"
+import {stockState} from "./stock-state.js"
+import {getDropdownValue} from "/js/components/dropdown-select.js"
 
-import {
-toggleCheckMode,
-saveCheck
-} from "./stock-check.js"
-
-import {
-toggleTransferMode,
-saveTransfer
-} from "./stock-transfer.js"
-
-function $(root,id){
-  return root.querySelector(`#${id}`)
-}
+function $(root,id){return root.querySelector(`#${id}`)}
 
 export function bindEvents(root){
+  $(root,"search-stock")?.addEventListener("input",()=>render(root))
 
-  $(root,"search-stock")
-  ?.addEventListener(
-    "input",
-    ()=>render(root)
-  )
+  $(root,"stock-source")?.addEventListener("change",async()=>{
+    const selected=getDropdownValue($(root,"stock-source"))
+    stockState.stockSource=selected==="tax"?"tax":"stock"
+    stockState.checkCache={}
+    stockState.transferCache={}
+    stockState.onlyChanged=false
+    stockState.checkMode=false
+    stockState.transferMode=false
+    const mode=$(root,"btn-mode")
+    if(mode) mode.textContent="Kiểm kê"
+    const save=$(root,"btn-save-check")
+    if(save) save.style.display="none"
+    syncSourceControls(root)
+    await loadStock(root)
+  })
 
-  $(root,"filter-kho")
-  ?.addEventListener(
-    "change",
-    ()=>render(root)
-  )
-
-  $(root,"filter-status")
-  ?.addEventListener(
-    "change",
-    ()=>render(root)
-  )
-
-  $(root,"btn-mode")
-  ?.addEventListener(
-    "click",
-    ()=>toggleCheckMode(root)
-  )
-
-  $(root,"btn-transfer")
-  ?.addEventListener(
-    "click",
-    ()=>toggleTransferMode(root)
-  )
-
-  $(root,"btn-save-check")
-  ?.addEventListener(
-    "click",
-    ()=>saveCheck(root)
-  )
-
-  $(root,"transfer-to")
-  ?.addEventListener(
-    "change",
-    ()=>render(root)
-  )
-
-  $(root,"btn-save-transfer")
-  ?.addEventListener(
-    "click",
-    ()=>saveTransfer(root)
-  )
-
+  $(root,"filter-kho")?.addEventListener("change",()=>render(root))
+  $(root,"filter-status")?.addEventListener("change",()=>render(root))
+  $(root,"btn-mode")?.addEventListener("click",()=>toggleCheckMode(root))
+  $(root,"btn-transfer")?.addEventListener("click",()=>toggleTransferMode(root))
+  $(root,"btn-save-check")?.addEventListener("click",()=>saveCheck(root))
+  $(root,"transfer-to")?.addEventListener("change",()=>render(root))
+  $(root,"btn-save-transfer")?.addEventListener("click",()=>saveTransfer(root))
 }

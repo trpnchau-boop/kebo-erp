@@ -2,6 +2,7 @@
 
 export const stockState = {
   rows: [],
+  stockSource: "stock",
 
   productMap: {},
   warehouseMap: {},
@@ -29,6 +30,7 @@ export const stockState = {
 export function resetStockState(){
 
   stockState.rows = []
+  stockState.stockSource = "stock"
 
   stockState.productMap = {}
   stockState.warehouseMap = {}

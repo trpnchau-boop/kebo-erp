@@ -21,6 +21,7 @@ export async function saveTaxInvoice({
   state,
   status = "draft",
   sourceId = null,
+  invoiceType = "ISSUE",
 
   /* =========================================
   OPTIONAL SNAPSHOT
@@ -59,12 +60,15 @@ export async function saveTaxInvoice({
 
     })
 
+  delete payload.header.in_cong_no
+  delete payload.header.no_khachhang
+
   /* =========================================
   HEADER
   ========================================= */
 
   payload.header.type =
-    "ISSUE"
+    invoiceType
 
   payload.header.status =
     status
@@ -157,7 +161,7 @@ export async function saveTaxInvoice({
 
         meta:{
           table:"tax_invoice",
-          prefix:"PH"
+          prefix: invoiceType === "XML_IN" ? "XML" : "PH"
         }
 
       })

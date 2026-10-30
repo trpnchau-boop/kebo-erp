@@ -1,256 +1,555 @@
-import {getAll} from "../../js/crud.js"
-import {formatDecimal} from "../../js/core/format.js"
+
+import { getAll } from "../../js/crud.js"
+
+import { formatDecimal } from "../../js/core/format.js"
 
 import {
   createDatepicker
-}
-from "/js/ui/init-datepicker.js"
+} from "/js/ui/init-datepicker.js"
+
+
+/* =========================================================
+INIT
+========================================================= */
 
 export async function init(params = {}, root){
 
-const state = {
-root,
+  const state = {
 
-productId : Number(
-params.id ||
-params.ref ||
-new URLSearchParams(location.search).get("id") ||
-0
-),
+    root,
 
-docs: [],
-items: [],
-products: [],
+    productId: Number(
+      params.id ||
+      params.ref ||
+      new URLSearchParams(location.search).get("id") ||
+      0
+    ),
+
+    isTax: params.isTax === true,
+
+    docs: [],
+    items: [],
+    products: []
+
+  }
+
+  initDate(state)
+
+  createDatepicker(
+    state.root,
+    "#from-date",
+    () => render(state)
+  )
+
+  createDatepicker(
+    state.root,
+    "#to-date",
+    () => render(state)
+  )
+
+  bindEvents(state)
+
+  await loadMaster(state)
+
+  await loadData(state)
+
 }
 
-initDate(state)
 
-createDatepicker(
-  state.root,
-  "#from-date",
-  ()=>render(state)
-)
-
-createDatepicker(
-  state.root,
-  "#to-date",
-  ()=>render(state)
-)
-
-bindEvents(state)
-
-await loadMaster(state)
-await loadData(state)
-
-}
-
-/* =========================
+/* =========================================================
 HELPER
-========================= */
+========================================================= */
 
-function $(state,id){
-return state.root.querySelector(`#${id}`)
+
+function $(id, state){
+
+  return state.root.querySelector(`#${id}`)
+
 }
 
-/* =========================
-INIT
-========================= */
+
+
+/* =========================================================
+INIT DATE
+========================================================= */
 
 function initDate(state){
 
-const today = new Date()
+  const today = new Date()
 
-const to =
-today.toISOString().slice(0,10)
+  const to =
+    today.toISOString().slice(0,10)
 
-const fromDate = new Date()
-fromDate.setDate(today.getDate() - 30)
+  const fromDate = new Date()
 
-const from =
-fromDate.toISOString().slice(0,10)
+  fromDate.setDate(
+    today.getDate() - 30
+  )
 
-$(state,"from-date").value = from
-$(state,"to-date").value = to
+  const from =
+    fromDate.toISOString().slice(0,10)
+
+  $("from-date", state).value = from
+
+  $("to-date", state).value = to
 
 }
+
+
+/* =========================================================
+EVENTS
+========================================================= */
 
 function bindEvents(state){
 
-$(state,"btn-load")
-?.addEventListener(
-"click",
-()=>render(state)
-)
+  $("btn-load", state)
+    ?.addEventListener(
+      "click",
+      () => render(state)
+    )
 
 }
 
-/* =========================
-LOAD
-========================= */
+
+/* =========================================================
+LOAD MASTER
+========================================================= */
 
 async function loadMaster(state){
 
-const products =
-await getAll("data_product")
+  const products =
+    await getAll("data_product")
 
-state.products = products
+  state.products = products || []
 
 }
+
+
+/* =========================================================
+LOAD DATA
+========================================================= */
 
 async function loadData(state){
 
-const [docs,items] =
-await Promise.all([
-getAll("document"),
-getAll("document_items")
-])
+  const docTable = state.isTax
+    ? "tax_invoice"
+    : "document"
 
-state.docs = docs
-state.items = items
+  const itemTable = state.isTax
+    ? "tax_invoice_items"
+    : "document_items"
 
-render(state)
+  const [docs, items] = await Promise.all([
+
+    getAll(docTable),
+
+    getAll(itemTable)
+
+  ])
+
+  state.docs = docs || []
+
+  state.items = items || []
+
+  render(state)
 
 }
 
-/* =========================
+
+/* =========================================================
+DOCUMENT TYPE
+========================================================= */
+
+function getImportTypes(state){
+
+  return state.isTax
+    ? ["XML_IN"]
+    : ["IMPORT"]
+
+}
+
+
+function getExportTypes(state){
+
+  return state.isTax
+    ? ["XML_OUT"]
+    : ["EXPORT"]
+
+}
+
+
+/* =========================================================
+GET DOCUMENT
+========================================================= */
+
+function getDocument(state, item){
+
+  return state.docs.find(
+    doc =>
+      Number(doc.id) === Number(item.id_doc)
+  )
+
+}
+
+
+/* =========================================================
+GET PRODUCT ROWS
+========================================================= */
+
+function getProductRows(state){
+
+  return state.items.filter(item => {
+
+    return Number(item.id_product) === state.productId
+
+  })
+
+}
+
+
+/* =========================================================
+GET MOVEMENT
+========================================================= */
+
+function getMovement(state, item, doc){
+
+  const qty = Number(
+    item.tongsoluong || 0
+  )
+
+  const importTypes =
+    getImportTypes(state)
+
+  const exportTypes =
+    getExportTypes(state)
+
+  let nhap = 0
+
+  let xuat = 0
+
+  if(importTypes.includes(doc.type)){
+
+    nhap = qty
+
+  }
+
+  if(exportTypes.includes(doc.type)){
+
+    xuat = qty
+
+  }
+
+  return {
+
+    nhap,
+
+    xuat,
+
+    delta: nhap - xuat
+
+  }
+
+}
+
+
+/* =========================================================
+SORT ROWS
+========================================================= */
+
+function sortRows(state, rows){
+
+  return [...rows].sort((a,b) => {
+
+    const docA =
+      getDocument(state, a)
+
+    const docB =
+      getDocument(state, b)
+
+    const dayA =
+      docA?.day || ""
+
+    const dayB =
+      docB?.day || ""
+
+    if(dayA === dayB){
+
+      return Number(a.id) - Number(b.id)
+
+    }
+
+    return dayA.localeCompare(dayB)
+
+  })
+
+}
+
+
+/* =========================================================
 RENDER
-========================= */
+========================================================= */
 
 function render(state){
 
-const body =
-$(state,"ledger-body")
+  const body =
+    $("ledger-body", state)
 
-const from =
-$(state,"from-date").value
+  if(!body) return
 
-const to =
-$(state,"to-date").value
 
-const product =
-state.products.find(
-x => Number(x.id) === state.productId
-)
+  const from =
+    $("from-date", state).value
 
-let rows =
-state.items.filter(r =>
-Number(r.id_product) === state.productId
-)
+  const to =
+    $("to-date", state).value
 
-rows = rows.filter(r=>{
 
-const doc =
-state.docs.find(
-x => Number(x.id) === Number(r.id_doc)
-)
+  const product =
+    state.products.find(
+      p =>
+        Number(p.id) === state.productId
+    )
 
-if(!doc) return false
 
-if(from && doc.day < from) return false
-if(to && doc.day > to) return false
+  const importTypes =
+    getImportTypes(state)
 
-const stockTypes = [
-  "IMPORT",
-  "EXPORT",
-  "ADJUST",
-  "TRANSFER"
-]
+  const exportTypes =
+    getExportTypes(state)
 
-if(
-  !stockTypes.includes(doc.type)
-){
-  return false
-}
 
-return true
+  /*
+  Lấy tất cả dòng sản phẩm
+  */
 
-})
+  let rows =
+    getProductRows(state)
 
-rows.sort((a,b)=>{
 
-const da =
-state.docs.find(
-x => Number(x.id) === Number(a.id_doc)
-)?.day || ""
+  /*
+  Ghép chứng từ
+  */
 
-const db =
-state.docs.find(
-x => Number(x.id) === Number(b.id_doc)
-)?.day || ""
+  rows = rows
+    .map(item => {
 
-if(da === db){
-return Number(a.id) - Number(b.id)
-}
+      const doc =
+        getDocument(state, item)
 
-return da.localeCompare(db)
+      return {
 
-})
+        item,
 
-let ton = 0
+        doc
 
-body.innerHTML = rows.map(r=>{
+      }
 
-const doc =
-state.docs.find(
-x => Number(x.id) === Number(r.id_doc)
-) || {}
+    })
+    .filter(row => {
 
-const qty =
-Number(r.tongsoluong || 0)
+      if(!row.doc) return false
 
-let nhap = 0
-let xuat = 0
+      const type = row.doc.type
 
-if(doc.type === "IMPORT"){
-nhap = qty
-ton += qty
-}
+      return [
 
-if(doc.type === "EXPORT"){
-xuat = qty
-ton -= qty
-}
+        ...importTypes,
 
-return `
-<tr>
-<td>${doc.day || ""}</td>
-<td>${doc.code || ""}</td>
-<td>${doc.type || ""}</td>
+        ...exportTypes
 
-<td class="num">
-${formatDecimal(nhap)}
-</td>
+      ].includes(type)
 
-<td class="num">
-${formatDecimal(xuat)}
-</td>
+    })
 
-<td class="num">
-${formatDecimal(ton)}
-</td>
-</tr>
-`
 
-}).join("")
+  /*
+  Sắp xếp theo ngày
+  */
 
-if(!rows.length){
+  rows.sort((a,b) => {
 
-body.innerHTML = `
-<tr>
-<td colspan="7" style="text-align:center;padding:20px">
-Không có dữ liệu
-</td>
-</tr>
-`
+    const dayA =
+      a.doc.day || ""
 
-}
+    const dayB =
+      b.doc.day || ""
 
-const title =
-document.getElementById("page-title")
+    if(dayA === dayB){
 
-if(title){
-title.textContent =
-"Thẻ kho - " + (product?.name || "")
-}
+      return Number(a.item.id) -
+        Number(b.item.id)
+
+    }
+
+    return dayA.localeCompare(dayB)
+
+  })
+
+
+  /*
+  TÍNH TỒN ĐẦU KỲ
+
+  Tồn đầu kỳ = tất cả nhập - xuất
+  trước ngày bắt đầu
+  */
+
+  let ton = 0
+
+  rows.forEach(row => {
+
+    const day =
+      row.doc.day || ""
+
+    if(from && day >= from) return
+
+    const movement =
+      getMovement(
+        state,
+        row.item,
+        row.doc
+      )
+
+    ton += movement.delta
+
+  })
+
+
+  const tonDauKy = ton
+
+
+  /*
+  LỌC CHỨNG TỪ TRONG KỲ
+  */
+
+  const periodRows =
+    rows.filter(row => {
+
+      const day =
+        row.doc.day || ""
+
+      if(from && day < from) return false
+
+      if(to && day > to) return false
+
+      return true
+
+    })
+
+
+  /*
+  RENDER TABLE
+
+  Tồn đầu kỳ được giữ làm số dư
+  ban đầu trước dòng đầu tiên
+  */
+
+  body.innerHTML = periodRows
+    .map(row => {
+
+      const item = row.item
+
+      const doc = row.doc
+
+      const movement =
+        getMovement(
+          state,
+          item,
+          doc
+        )
+
+      const nhap =
+        movement.nhap
+
+      const xuat =
+        movement.xuat
+
+      ton += movement.delta
+
+
+      return `
+        <tr>
+
+          <td>
+            ${doc.day || ""}
+          </td>
+
+          <td>
+            ${doc.code || ""}
+          </td>
+
+          <td>
+            ${doc.type || ""}
+          </td>
+
+          <td class="num">
+            ${formatDecimal(nhap)}
+          </td>
+
+          <td class="num">
+            ${formatDecimal(xuat)}
+          </td>
+
+          <td class="num">
+            ${formatDecimal(ton)}
+          </td>
+
+        </tr>
+      `
+
+    })
+    .join("")
+
+
+  /*
+  EMPTY
+  */
+
+  if(!periodRows.length){
+
+    body.innerHTML = `
+      <tr>
+
+        <td
+          colspan="7"
+          style="
+            text-align:center;
+            padding:20px
+          "
+        >
+          Không có dữ liệu
+        </td>
+
+      </tr>
+    `
+
+  }
+
+
+  /*
+  TITLE
+  */
+
+  const title =
+    document.getElementById("page-title")
+
+  if(title){
+
+    title.textContent =
+      "Thẻ kho - " +
+      (product?.name || "")
+
+  }
+
+
+  /*
+  LƯU TỒN ĐẦU KỲ
+
+  Có thể sử dụng để hiển thị
+  thêm dòng tồn đầu kỳ trên HTML
+  */
+
+  state.tonDauKy = tonDauKy
+
+  state.tonCuoiKy = ton
 
 }

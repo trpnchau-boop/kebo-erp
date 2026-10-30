@@ -189,6 +189,9 @@ function normalizeRoute(
     ids:
       params.ids || "",
 
+    isTax:
+      params.isTax === true,  
+
     state:
       params.state || null
 
