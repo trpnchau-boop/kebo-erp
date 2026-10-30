@@ -29,14 +29,36 @@ export function computeTableRow(
     const ratio =
       Number(row.ratio) || 1;
 
-    /* =====================================
-    TỔNG SỐ LƯỢNG
 
-    Tổng SL = SL * Ratio
-    ===================================== */
 
-    row.tongsoluong =
-      qty * ratio;
+    if(options.xmlIn){
+
+      const quantityChanged =
+        changedKey === "qty" ||
+        changedKey === "id_unit";
+
+      if(quantityChanged){
+
+        row.tongsoluong =
+          qty * ratio;
+
+      }
+      else{
+
+        // Mở XML_IN: giữ nguyên Tổng SL từ DB
+        row.tongsoluong =
+          Number(row.tongsoluong) || 0;
+
+      }
+
+    }
+    else{
+
+      // XML_PREVIEW
+      row.tongsoluong =
+        qty * ratio;
+ 
+    }
 
     /* =====================================
     THÀNH TIỀN XML GỐC
